@@ -1,12 +1,22 @@
-import BasicRouter from './router/BasicRouter'
+import BasicRouter from "./router/BasicRouter";
+import { Button, ConfigProvider, Space } from "antd";
+import React from "react";
 
-function App() {
+const App: React.FC = () => (
+  <ConfigProvider
+    theme={{
+      token: {
+        // Seed Token
+        colorPrimary: "#ec222c",
+        borderRadius: 2,
 
-  return (
-    <>
-      <BasicRouter />
-    </>
-  )
-}
+        // Alias Token
+        // colorBgContainer: "#f6ffed",
+      },
+    }}
+  >
+    <BasicRouter />
+  </ConfigProvider>
+);
 
-export default App
+export default App;

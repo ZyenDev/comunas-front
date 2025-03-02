@@ -17,10 +17,10 @@ import {
   getAllComunas,
   deleteComuna,
   createComuna,
-  ComunaInterface,
   updateComuna,
   getComunaByID,
 } from "../../controllers/ComunaController";
+import { ComunaInterface } from "../../models/ComunaModel";
 import {
   getAllAmbitos,
   getAmbito,
@@ -49,7 +49,7 @@ const ComunasHeadContent: React.FC<{
         } else if (idComuna != null) {
           const data = await updateComuna(idComuna, values);
         } else {
-          throw new Error("fallo al optener un id");
+          throw new Error("¡Fallo al obtener ID!");
         }
         setOpen(false);
         setError(false);

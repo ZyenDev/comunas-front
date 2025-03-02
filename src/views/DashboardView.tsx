@@ -26,7 +26,7 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem(
-    "Consejos",
+    "Consejos Comunales",
     "Consejos Comunales",
     <Link to="/dashboard/consejocomunal">
       <UsergroupAddOutlined />
@@ -36,6 +36,14 @@ const items: MenuItem[] = [
     "Comunas",
     "Comunas",
     <Link to="/dashboard/comuna">
+      {" "}
+      <HomeOutlined />{" "}
+    </Link>
+  ),
+  getItem(
+    "Vivienda",
+    "Viviendas",
+    <Link to="/dashboard/viviendas">
       {" "}
       <HomeOutlined />{" "}
     </Link>

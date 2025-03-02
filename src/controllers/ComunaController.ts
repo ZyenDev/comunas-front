@@ -1,20 +1,9 @@
 import axios from 'axios';
-
-export interface ComunaInterface {
-    id_comuna: number;
-    codigo_situr: string;
-    rif: string;
-    nombre: string;
-    cantidad_consejo_comunal: number;
-    fecha_creacion: string;
-    fecha_actualizacion: string;
-    id_ambito_territorial: number;
-}
+import { ComunaInterface } from '../models/ComunaModel';
 
 
-//temporal dick head
 const apiUrl = import.meta.env.VITE_API_URL;
-const baseUrl = apiUrl + "api/comunidades/comunas"; // Replace with your actual API URL
+const baseUrl = apiUrl + "api/comunidades/comunas";
 
 // Create a new Comuna
 export const createComuna = async (comuna: ComunaInterface): Promise<ComunaInterface> => {

@@ -1,3 +1,4 @@
+//habitante
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -355,9 +356,9 @@ const ConsejoComunal: React.FC = () => {
         <Table
           title={() => (
             <Flex vertical={false} justify="space-between" align="center">
-              <h1>Listado de Consejos Comunales</h1>
+              <h1>Listado de Habitantes</h1>
               <Button type="primary" onClick={showModal}>
-                Añadir Consejo Comunal
+                Añadir Habitante
               </Button>
             </Flex>
           )}

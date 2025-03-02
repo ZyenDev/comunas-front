@@ -1,34 +1,28 @@
 import axios from 'axios';
-
-
-export interface AmbitoTerritorial {
-    id_ambito_territorial: number
-    longitud: number
-    latitud: number
-}
+import { AmbitoTerritorialInterface } from '../models/AmbitoTerritorialModel';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const baseUrl = apiUrl + "api/ubicaciones/ambitoterritorial/"; // Replace with your actual API URL
 
 
 
-export const getAllAmbitos = async (): Promise<AmbitoTerritorial[]> => {
+export const getAllAmbitos = async (): Promise<AmbitoTerritorialInterface[]> => {
     try {
-        const response = await axios.get<AmbitoTerritorial[]>(baseUrl);
+        const response = await axios.get<AmbitoTerritorialInterface[]>(baseUrl);
         return response.data;
     } catch (error) {
-        console.error('Error fetching users:', error);
-        throw new Error('Failed to fetch users');
+        console.error('Error al buscar Usuario:', error);
+        throw new Error('Fallo al buscar Usuario');
     }
 };
 
 
-export const getAmbito = async (id: number): Promise<AmbitoTerritorial> => {
+export const getAmbito = async (id: number): Promise<AmbitoTerritorialInterface> => {
     try {
-        const response = await axios.get<AmbitoTerritorial>(`${baseUrl}${id}/`);
+        const response = await axios.get<AmbitoTerritorialInterface>(`${baseUrl}${id}/`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching user:', error);
-        throw new Error('Failed to fetch user');
+        console.error('Error al buscar Usuario:', error);
+        throw new Error('Fallo al buscar Usuario');
     }
 }

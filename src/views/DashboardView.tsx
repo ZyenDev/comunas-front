@@ -72,7 +72,6 @@ const Dashboard: React.FC = () => {
       >
         <div className="demo-logo-vertical" />
         <Menu
-          theme="dark"
           defaultSelectedKeys={["1"]}
           mode="inline"
           items={items}

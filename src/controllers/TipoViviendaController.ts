@@ -13,3 +13,4 @@ export const getViviendaById = async (id: string): Promise<TipoViviendaInterface
     const response = await axios.get(`${baseUrl}${id}`);
     return response.data;
 };
+

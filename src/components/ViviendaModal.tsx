@@ -35,6 +35,12 @@ import { TipoTechoInterface } from "../models/TipoTechoModel";
 import { getAllTipoPared } from "../controllers/TipoParedController";
 import { getAllTipoPiso } from "../controllers/TipoPisoController";
 import { getAllSituacionVivienda } from "../controllers/SituacionViviendaController";
+import { data } from "react-router";
+import { TipoOcupacionViviendaInterface } from "../models/TipoOcupacionViviendaModel";
+import {
+  createTipoOcupacionVivienda,
+  updateTipoOcupacionVivienda,
+} from "../controllers/TipoOcupacionVivienda";
 
 const ViviendasContent: React.FC<{
   open: boolean;
@@ -57,31 +63,52 @@ const ViviendasContent: React.FC<{
   const [error, setError] = useState(false);
 
   const handleOk = () => {
-    console.log(form.getFieldsValue());
-    // form.validateFields().then(async (values) => {
-    //   try {
-    //     if (!isUpdated) {
-    //       const data = await createVivienda(values);
-    //     } else if (idVivienda != null) {
-    //       const data = await updateVivienda(idVivienda, values);
-    //     } else {
-    //       //este error en teoria es imposible
-    //       throw new Error("¡Fallo al obtener ID!");
-    //     }
-    //     form.resetFields();
-    //     setOpen(false);
-    //     setError(false);
-    //   } catch (error: any) {
-    //     let responceArray = error?.response.data;
-    //     for (const key in responceArray) {
-    //       if (responceArray.hasOwnProperty(key)) {
-    //         openNotificationError(responceArray[key][0]);
-    //         setError(true);
-    //       }
-    //     }
-    //   }
-    // });
+    form.validateFields().then(async (values) => {
+      let tipoOcupacionVivienda: TipoOcupacionViviendaInterface = {
+        subtipo_ocupacion: values.tipo_ocupacion_vivienda.subtipo_ocupacion,
+        id_tipo_ocupacion: values.tipo_ocupacion_vivienda.id_tipo_ocupacion,
+        vivienda_ocupada: values.tipo_ocupacion_vivienda.vivienda_ocupada,
+        tiene_documentacion: values.tipo_ocupacion_vivienda.tiene_documentacion,
+        respuesta_otro: values.tipo_ocupacion_vivienda.respuesta_otro,
+      };
+      if (!isUpdated) {
+        try {
+          const data = await createTipoOcupacionVivienda(tipoOcupacionVivienda);
+          values.tipo_ocupacion_vivienda = tipoOcupacionVivienda;
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+        try {
+          const data = await createVivienda(values);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          if (values.id_tipo_ocupacion_vivienda != null) {
+            const data = await updateTipoOcupacionVivienda(
+              values.id_tipo_ocupacion_vivienda,
+              tipoOcupacionVivienda
+            );
+            values.tipo_ocupacion_vivienda = tipoOcupacionVivienda;
+          }
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+
+        try {
+          if (idVivienda != null) {
+            const data = await updateVivienda(idVivienda, values);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
   };
+
   const handleCancel = () => {
     form.resetFields();
     setOpen(false);
@@ -146,7 +173,7 @@ const ViviendasContent: React.FC<{
           });
           setTipoPiso(opt);
         } catch (error) {
-          console.error("Fallo al encontrar Tipos de Piso:", error);
+          console.error("Fallo al encontrar los Tipos de Piso:", error);
         }
       };
       const getSituacionVivienda = async () => {
@@ -161,7 +188,10 @@ const ViviendasContent: React.FC<{
           });
           setSituacionVivienta(opt);
         } catch (error) {
-          console.error("Fallo al encontrar Situaciones de Vivienda:", error);
+          console.error(
+            "Fallo al encontrar las Situaciones de Vivienda:",
+            error
+          );
         }
       };
       const getComunas = async () => {
@@ -176,7 +206,7 @@ const ViviendasContent: React.FC<{
           });
           setComunas(opt);
         } catch (error) {
-          console.error("Fallo al encontrar Comunas:", error);
+          console.error("Fallo al encontrar las Comunas:", error);
         }
       };
       const getTipoPared = async () => {
@@ -191,7 +221,7 @@ const ViviendasContent: React.FC<{
           });
           setTipoPared(opt);
         } catch (error) {
-          console.error("Fallo al encontrar Comunas:", error);
+          console.error("Fallo al encontrar las Comunas:", error);
         }
       };
       const getConsejoComunalbyid = async () => {
@@ -233,41 +263,10 @@ const ViviendasContent: React.FC<{
     </Button>,
   ];
 
-  /*
-  
-  En propiedad 3A. 
-  ¿Tiene título de propiedad? Sí No
-  Alquilada 3B. 
-  ¿Tiene contrato de alquiler? Sí No
-  Cedida  3C.
-  ¿Tiene documentación que lo acredite? Sí No
-
-  Ocupada sin título de ocupación
-
-  Otra. Indicar:_______________________
-
-   */
   function haddleCheckId_tipo_ocupacion_vivienda() {
     console.log(check);
     setCheckBox(!check);
   }
-
-  // const optOcupada = [
-  //   {
-  //     value: "propiedad_titulo",
-  //     label: "En propiedad 3A. ¿Tiene título de propiedad? Sí No",
-  //   }, //1
-  //   {
-  //     value: "alquilada_contrato",
-  //     label: "Alquilada 3B. ¿Tiene contrato de alquiler? Sí No",
-  //   }, //2
-  //   {
-  //     value: "cedida_documentacion",
-  //     label: "Cedida 3C. ¿Tiene documentación que lo acredite? Sí No",
-  //   }, //3
-  //   { value: "ocupada_sin_titulo", label: "Ocupada sin título de ocupación" }, //4
-  //   { value: "otra", label: "Otra. Indicar:" }, //5
-  // ];
 
   const optOcupada = [
     {
@@ -409,7 +408,7 @@ const ViviendasContent: React.FC<{
                   <Select options={Comuna} />
                 </Form.Item>
               </Flex>
-              <Flex vertical>
+              <Flex vertical style={{ width: "50%" }}>
                 {/* ID Tipo de Vivienda */}
                 <Form.Item
                   label="Tipo de Vivienda"
@@ -481,35 +480,37 @@ const ViviendasContent: React.FC<{
                   <Select options={situacionVivienda} />
                 </Form.Item>
 
-                {/* ID Tipo de Ocupación de Vivienda */}
-                <Form.Item
-                  label="Tipo de Ocupación de Vivienda"
-                  name="id_tipo_ocupacion_vivienda"
-                  rules={[
-                    {
-                      required: true,
-                      message:
-                        "¡Por favor, ingrese el Tipo de Ocupación de la Vivienda!",
-                    },
-                  ]}
-                >
-                  <Flex vertical gap="small">
+                <Flex vertical gap="small">
+                  {/* vivienda opcupada */}
+                  <Form.Item name="vivienda_ocupada" valuePropName="checked">
                     <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
-                      vivenda ocupada
+                      ¿Vivienda ocupada?
                     </Checkbox>
-                    <Flex gap="small">
+                  </Form.Item>
+                  <Flex>
+                    <Form.Item name="subtipo_ocupacion">
                       <Select
+                        defaultValue={
+                          check ? optOcupada[0].value : optDesocupada[0].value
+                        }
                         options={check ? optOcupada : optDesocupada}
                         onChange={(value) => setCheckBoxint(value)}
                       />
-                      {checkboxint == 0 ||
-                        (checkboxint != 5 && (
-                          <Checkbox style={{ transform: "scale(1.5)" }} />
-                        ))}
-                    </Flex>
-                    {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}
+                    </Form.Item>
+                    {checkboxint == 0 ||
+                      (checkboxint != 5 && (
+                        <Form.Item
+                          name="tiene_documentacion"
+                          valuePropName="checked"
+                        >
+                          <Checkbox />
+                        </Form.Item>
+                      ))}
                   </Flex>
-                </Form.Item>
+                  <Form.Item name="respuesta_otro">
+                    {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}
+                  </Form.Item>
+                </Flex>
               </Flex>
             </Flex>
           </Form>

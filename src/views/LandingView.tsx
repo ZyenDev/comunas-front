@@ -109,12 +109,16 @@ function Landing(): JSX.Element {
               }}
             />
             <div>
-              <h1>Historia General:</h1>
+              <h1>Comuna Jose Miguel Guanaguanay:</h1>
               <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam
-                a et, in culpa, corporis rem quis, tempore tempora vero minus
-                cumque sed? Optio placeat cumque quo veniam, eligendi dicta
-                quas?
+                La comuna Cacique Guanaguanay, la cual cuenta con una cantidad
+                de habitantes aproximada de 8.208, representa un centro de
+                funcionabilidades diversas para el sector los "Godos" que sin
+                lugar a dudas implica la responsabilidad de cubrir internamente
+                variados departamentos y a su vez es encargada de gestionar las
+                actividades de distintos consejos comunales con el objetivo de
+                un desarrollo social eficiente y un sistema ciudadano
+                participativo y lleno de respeto.
               </p>
             </div>
           </Flex>

@@ -31,244 +31,105 @@ import {
 } from "../../controllers/AmbitoTerritorialController";
 import { DeleteFilled, EditOutlined } from "@ant-design/icons";
 import { DefaultOptionType } from "antd/es/select";
+import HabitanteModal from "./HabitanteModal";
+import {
+  deleteHabitante,
+  getAllHabitantes,
+} from "../../controllers/ControllerHabitantes";
+import { HabitanteInterface } from "../../models/HabitanteModel";
+import { useParams } from "react-router";
 
 const { Content } = Layout;
 
-const ConsejoComunalContent: React.FC<{
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isUpdated: boolean;
-  id_consejo?: number;
-}> = ({ open, setOpen, isUpdated, id_consejo }) => {
-  const [form] = Form.useForm<ConsejoComunalInterface>();
-  const [Ambito, setAmbito] = useState<DefaultOptionType[]>();
-  const [Comuna, setComunas] = useState<DefaultOptionType[]>();
-  const [api, contextHolder] = notification.useNotification();
-  const [error, setError] = useState(false);
-
-  const handleOk = () => {
-    form.validateFields().then(async (values) => {
-      try {
-        if (!isUpdated) {
-          const data = await createConsejoComunal(values);
-        } else if (id_consejo != null) {
-          const data = await updateConsejoComuna(id_consejo, values);
-        } else {
-          //este error en teoria es imposible
-          throw new Error("fallo a optener un id");
-        }
-        form.resetFields();
-        setOpen(false);
-        setError(false);
-      } catch (error: any) {
-        let responceArray = error?.response.data;
-        for (const key in responceArray) {
-          if (responceArray.hasOwnProperty(key)) {
-            openNotificationError(responceArray[key][0]);
-            setError(true);
-          }
-        }
-      }
-    });
-  };
-  const handleCancel = () => {
-    form.resetFields();
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    if (open) {
-      const getAmbitos = async () => {
-        try {
-          const data = await getAllAmbitos();
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_ambito_territorial,
-              label: "y " + element.latitud + " x" + element.longitud,
-            });
-          });
-          setAmbito(opt);
-        } catch (error) {
-          console.error("Fallo al encontrar Ámbitos Territoriales:", error);
-        }
-      };
-      const getComunas = async () => {
-        try {
-          const data = await getAllComunas();
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_comuna,
-              label: element.nombre,
-            });
-          });
-          setComunas(opt);
-        } catch (error) {
-          console.error("Fallo al encontrar Comunas:", error);
-        }
-      };
-      const getConsejoComunalbyid = async () => {
-        if (isUpdated && id_consejo != null && open) {
-          try {
-            const data = await getConsejoComunalById(id_consejo);
-            form.setFieldsValue(data);
-          } catch (error) {
-            console.log(error);
-          }
-        } else {
-          form.resetFields();
-        }
-      };
-      getConsejoComunalbyid();
-      getComunas();
-      getAmbitos();
-      setError(false);
-    }
-  }, [open]);
-
-  const openNotificationError = (msg: string) => {
-    api.error({
-      message: msg,
-    });
-  };
-
-  const customFooter = [
-    <Button key="back" onClick={handleCancel}>
-      Cancelar
-    </Button>,
-    <Button key="submit" type="primary" onClick={handleOk}>
-      Entregar
-    </Button>,
-  ];
-
-  return (
-    <>
-      <Flex vertical>
-        {contextHolder}
-        <Divider />
-        <Modal
-          title="Consejo Comunal: "
-          open={open}
-          onCancel={handleCancel}
-          footer={customFooter}
-        >
-          <Form
-            form={form}
-            layout="vertical"
-            name="form_in_modal"
-            initialValues={{ cantidad_consejo_comunal: 1 }}
-          >
-            <Form.Item
-              name="nombre"
-              label="Nombre"
-              rules={[
-                { required: true, message: "¡Por favor, ingrese el Nombre!" },
-              ]}
-              validateStatus={error ? "error" : ""}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="codigo_situr"
-              label="Código Situr"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Código Situr!",
-                },
-              ]}
-              validateStatus={error ? "error" : ""}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="rif"
-              label="RIF"
-              rules={[
-                { required: true, message: "¡Por favor, ingresa el RIF!" },
-              ]}
-              validateStatus={error ? "error" : ""}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="id_ambito_territorial"
-              label="Ámbito Territorial"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, selecciona el Ámbito Territorial!",
-                },
-              ]}
-              validateStatus={error ? "error" : ""}
-            >
-              <Select options={Ambito} />
-            </Form.Item>
-            <Form.Item
-              name="id_comuna"
-              label="COMUNA"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, selecciona el Ámbito Territorial!",
-                },
-              ]}
-              validateStatus={error ? "error" : ""}
-            >
-              <Select options={Comuna} />
-            </Form.Item>
-          </Form>
-        </Modal>
-      </Flex>
-    </>
-  );
-};
-
-const ConsejoComunal: React.FC = () => {
-  const [consejo, setConsejoComunal] = useState<ConsejoComunalInterface[]>();
+const Habitante: React.FC = () => {
+  const [habitante, setHabitante] = useState<HabitanteInterface[]>();
   const [open, setOpen] = useState(false);
   const [update, setUpdate] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [id_consejo_update, setUpdateID] = useState<number>();
+  const { id_habitantes } = useParams();
+  console.log("habitante here : " + id_habitantes);
 
-  const columns = [
+  const columns: any = [
     {
       title: "ID",
-      dataIndex: "id_consejo_comunal",
-      key: "id_consejo_comunal",
+      dataIndex: "id_habitante",
+      key: "id_habitante",
       sorter: (a: ConsejoComunalInterface, b: ConsejoComunalInterface) =>
         b.id_comuna - a.id_comuna,
     },
     {
-      title: "Nombre",
-      dataIndex: "nombre",
-      key: "nombre",
+      title: "Cédula",
+      dataIndex: "cedula",
+      key: "cedula",
     },
     {
-      title: "Código Situr",
-      dataIndex: "codigo_situr",
-      key: "codigo_situr",
+      title: "Primer Nombre",
+      dataIndex: "primer_nombre",
+      key: "primer_nombre",
     },
     {
-      title: "RIF",
-      dataIndex: "rif",
-      key: "rif",
+      title: "Segundo Nombre",
+      dataIndex: "segundo_nombre",
+      key: "segundo_nombre",
     },
     {
-      title: "Ámbito Territorial",
-      dataIndex: "nombre_ambito_territorial",
-      key: "id_ambito_territorial",
+      title: "Primer Apellido",
+      dataIndex: "primer_apellido",
+      key: "primer_apellido",
     },
     {
-      title: "Comuna",
-      dataIndex: "nombre_comuna",
-      key: "id_comuna",
+      title: "Segundo Apellido",
+      dataIndex: "segundo_apellido",
+      key: "segundo_apellido",
+    },
+    {
+      title: "Fecha de Nacimiento",
+      dataIndex: "fecha_nacimiento",
+      key: "fecha_nacimiento",
+    },
+    {
+      title: "Edad",
+      dataIndex: "edad",
+      key: "edad",
+    },
+    {
+      title: "Sexo",
+      dataIndex: "sexo",
+      key: "sexo",
+      render: (sexo: any) => (sexo === "1" ? "Masculino" : "Femenino"),
+    },
+    {
+      title: "Discapacidad",
+      dataIndex: "discapacidad",
+      key: "discapacidad",
+      render: (discapacidad: any) => (discapacidad === 1 ? "Sí" : "No"),
+    },
+    {
+      title: "Pertenece a Etnia",
+      dataIndex: "pertenece_etnia",
+      key: "pertenece_etnia",
+      render: (pertenece_etnia: any) => (pertenece_etnia === 1 ? "Sí" : "No"),
+    },
+    {
+      title: "Nacionalidad",
+      dataIndex: "id_nacionalidad",
+      key: "id_nacionalidad",
+    },
+    {
+      title: "País de Origen",
+      dataIndex: "id_pais_origen",
+      key: "id_pais_origen",
+    },
+    {
+      title: "Vivienda",
+      dataIndex: "id_vivienda",
+      key: "id_vivienda",
     },
     {
       title: "Acción",
       key: "action",
-      render: (consejo: ConsejoComunalInterface) => (
+      render: (habitante: HabitanteInterface) => (
         <Flex vertical={false} gap="8px">
           <Button
             type="primary"
@@ -277,16 +138,16 @@ const ConsejoComunal: React.FC = () => {
             onClick={() => {
               setUpdate(true);
               setOpen(true);
-              setUpdateID(consejo.id_consejo_comunal);
+              setUpdateID(habitante.id_habitante);
             }}
           />
           <Popconfirm
-            title="¿Desea eliminar éste Consejo Comunal?"
+            title="¿Desea eliminar éste Habitante?"
             onConfirm={async () => {
               try {
-                await deleteConsejoComunal(consejo.id_consejo_comunal);
-                openNotificationSuccess("¡Comuna eliminada con exito!");
-                getConsejoComunal();
+                await deleteHabitante(habitante.id_habitante);
+                openNotificationSuccess("¡Habitante eliminado con exito!");
+                gethabitante();
               } catch (error: any) {
                 openNotificationError(error?.message || "Error desconocido.");
               }
@@ -301,36 +162,21 @@ const ConsejoComunal: React.FC = () => {
     },
   ];
 
-  const getConsejoComunal = async () => {
+  const gethabitante = async () => {
     try {
-      const data = await getAllConsejoComunal();
-      const mappedData = await Promise.all(
-        data.map(async (item) => {
-          const nombre_comuna = await getComunaByID(item.id_comuna);
-          const nombre_ambito_territorial = await getAmbito(
-            item.id_ambito_territorial
-          );
-          return {
-            ...item,
-            nombre_ambito_territorial:
-              nombre_ambito_territorial.latitud +
-              " x " +
-              nombre_ambito_territorial.longitud,
-            nombre_comuna: nombre_comuna.nombre,
-          };
-        })
-      );
-      setConsejoComunal(mappedData);
+      const data = await getAllHabitantes();
+      console.log(data);
+      setHabitante(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
     }
   };
 
   useEffect(() => {
-    getConsejoComunal();
+    gethabitante();
   }, []);
   useEffect(() => {
-    getConsejoComunal();
+    gethabitante();
   }, [open]);
 
   const showModal = () => {
@@ -349,6 +195,11 @@ const ConsejoComunal: React.FC = () => {
     });
   };
 
+  /*
+    1 = masculino
+    2 = femenino
+ */
+
   return (
     <div>
       {contextHolder}
@@ -362,19 +213,19 @@ const ConsejoComunal: React.FC = () => {
               </Button>
             </Flex>
           )}
-          dataSource={consejo}
+          dataSource={habitante}
           columns={columns}
           pagination={{ pageSize: 5 }}
         />
-        <ConsejoComunalContent
+        <HabitanteModal
           open={open}
           setOpen={setOpen}
           isUpdated={update}
-          id_consejo={id_consejo_update}
+          id_habitante={id_consejo_update}
         />
       </Content>
     </div>
   );
 };
 
-export default ConsejoComunal;
+export default Habitante;

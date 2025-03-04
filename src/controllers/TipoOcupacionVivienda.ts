@@ -5,6 +5,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const baseUrl = apiUrl + "api/viviendas/tipoocupacionvivienda/";
 
 export const createTipoOcupacionVivienda = async (tipoOcupacionVivienda: TipoOcupacionViviendaInterface): Promise<TipoOcupacionViviendaInterface> => {
+    //esto tiene un int que no deberia estar alli debe ser bool
     const response = await axios.post(baseUrl, tipoOcupacionVivienda);
     return response.data;
 };

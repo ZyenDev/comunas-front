@@ -14,33 +14,40 @@ import {
   InputNumber,
   Checkbox,
 } from "antd";
-import { getAllComunas, getComunaByID } from "../controllers/ComunaController";
+import {
+  getAllComunas,
+  getComunaByID,
+} from "../../controllers/ComunaController";
 import {
   createVivienda,
+  getViviendaById,
   updateVivienda,
-} from "../controllers/ViviendaController";
-import { ViviendaInterface } from "../models/ViviendaModel";
+} from "../../controllers/ViviendaController";
+import { ViviendaInterface } from "../../models/ViviendaModel";
 import {
   getAllAmbitos,
   getAmbito,
-} from "../controllers/AmbitoTerritorialController";
-import { UbicacionInterface } from "../models/UbicacionModel";
-import { getAllUbicaciones } from "../controllers/UbicacionController";
-import { getConsejoComunalById } from "../controllers/ConsejoComunalController";
+} from "../../controllers/AmbitoTerritorialController";
+import { UbicacionInterface } from "../../models/UbicacionModel";
+import { getAllUbicaciones } from "../../controllers/UbicacionController";
+import {
+  getAllConsejoComunal,
+  getConsejoComunalById,
+} from "../../controllers/ConsejoComunalController";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllTipoVivienda } from "../controllers/TipoViviendaController";
-import { TipoViviendaInterface } from "../models/TipoViviendaModel";
-import { getAllTipoTecho } from "../controllers/TipoTechoController";
-import { TipoTechoInterface } from "../models/TipoTechoModel";
-import { getAllTipoPared } from "../controllers/TipoParedController";
-import { getAllTipoPiso } from "../controllers/TipoPisoController";
-import { getAllSituacionVivienda } from "../controllers/SituacionViviendaController";
+import { getAllTipoVivienda } from "../../controllers/TipoViviendaController";
+import { TipoViviendaInterface } from "../../models/TipoViviendaModel";
+import { getAllTipoTecho } from "../../controllers/TipoTechoController";
+import { TipoTechoInterface } from "../../models/TipoTechoModel";
+import { getAllTipoPared } from "../../controllers/TipoParedController";
+import { getAllTipoPiso } from "../../controllers/TipoPisoController";
+import { getAllSituacionVivienda } from "../../controllers/SituacionViviendaController";
 import { data } from "react-router";
-import { TipoOcupacionViviendaInterface } from "../models/TipoOcupacionViviendaModel";
+import { TipoOcupacionViviendaInterface } from "../../models/TipoOcupacionViviendaModel";
 import {
   createTipoOcupacionVivienda,
   updateTipoOcupacionVivienda,
-} from "../controllers/TipoOcupacionVivienda";
+} from "../../controllers/TipoOcupacionVivienda";
 
 const ViviendasContent: React.FC<{
   open: boolean;
@@ -64,46 +71,50 @@ const ViviendasContent: React.FC<{
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
+      console.log(values);
       let tipoOcupacionVivienda: TipoOcupacionViviendaInterface = {
-        subtipo_ocupacion: values.tipo_ocupacion_vivienda.subtipo_ocupacion,
-        id_tipo_ocupacion: values.tipo_ocupacion_vivienda.id_tipo_ocupacion,
-        vivienda_ocupada: values.tipo_ocupacion_vivienda.vivienda_ocupada,
-        tiene_documentacion: values.tipo_ocupacion_vivienda.tiene_documentacion,
-        respuesta_otro: values.tipo_ocupacion_vivienda.respuesta_otro,
+        id_tipo_ocupacion: values.id_tipo_ocupacion,
+        subtipo_ocupacion: values.subtipo_ocupacion,
+        vivienda_ocupada: values.vivienda_ocupada,
+        tiene_documentacion: values.tiene_documentacion,
+        respuesta_otro: values.respuesta_otro,
       };
       if (!isUpdated) {
+        //TODO:finish
         try {
+          if (tipoOcupacionVivienda.respuesta_otro !== null) {
+            tipoOcupacionVivienda.respuesta_otro = "a";
+          }
+
           const data = await createTipoOcupacionVivienda(tipoOcupacionVivienda);
-          values.tipo_ocupacion_vivienda = tipoOcupacionVivienda;
+          console.log(data.id_tipo_ocupacion);
+
+          if (data.id_tipo_ocupacion !== undefined) {
+            values.id_tipo_ocupacion_vivienda = data.id_tipo_ocupacion;
+          }
+
+          const datav = await createVivienda(values);
         } catch (error) {
           console.log(error);
-          return;
         }
-        try {
-          const data = await createVivienda(values);
-        } catch (error) {
-          console.log(error);
-        }
+        setOpen(false);
+        openNotificationSuccess("se creo la vivienda");
       } else {
         try {
-          if (values.id_tipo_ocupacion_vivienda != null) {
-            const data = await updateTipoOcupacionVivienda(
-              values.id_tipo_ocupacion_vivienda,
+          if (
+            idVivienda != null &&
+            tipoOcupacionVivienda.id_tipo_ocupacion != null
+          ) {
+            const datavivienda = await updateTipoOcupacionVivienda(
+              tipoOcupacionVivienda.id_tipo_ocupacion,
               tipoOcupacionVivienda
             );
-            values.tipo_ocupacion_vivienda = tipoOcupacionVivienda;
-          }
-        } catch (error) {
-          console.log(error);
-          return;
-        }
 
-        try {
-          if (idVivienda != null) {
             const data = await updateVivienda(idVivienda, values);
           }
         } catch (error) {
           console.log(error);
+          return;
         }
       }
     });
@@ -194,13 +205,13 @@ const ViviendasContent: React.FC<{
           );
         }
       };
-      const getComunas = async () => {
+      const getConsejo = async () => {
         try {
-          const data = await getAllComunas();
+          const data = await getAllConsejoComunal();
           let opt: DefaultOptionType[] = [];
           data.forEach((element) => {
             opt.push({
-              value: element.id_comuna,
+              value: element.id_consejo_comunal,
               label: element.nombre,
             });
           });
@@ -224,10 +235,10 @@ const ViviendasContent: React.FC<{
           console.error("Fallo al encontrar las Comunas:", error);
         }
       };
-      const getConsejoComunalbyid = async () => {
+      const getViviendabyId = async () => {
         if (isUpdated && idVivienda != null && open) {
           try {
-            const data = await getConsejoComunalById(idVivienda);
+            const data = await getViviendaById(idVivienda);
             form.setFieldsValue(data);
           } catch (error) {
             console.log(error);
@@ -236,20 +247,29 @@ const ViviendasContent: React.FC<{
           form.resetFields();
         }
       };
+      //llamar par el edit
+      getViviendabyId();
+
+      //selects
       getSituacionVivienda();
       getTipoPiso();
       getTipoPared();
       getTipoTecho();
       getTipoVivienda();
-      getConsejoComunalbyid();
-      getComunas();
+      getConsejo();
       getUbicaciones();
+      //errors
       setError(false);
     }
   }, [open]);
 
   const openNotificationError = (msg: string) => {
     api.error({
+      message: msg,
+    });
+  };
+  const openNotificationSuccess = (msg: string) => {
+    api.success({
       message: msg,
     });
   };

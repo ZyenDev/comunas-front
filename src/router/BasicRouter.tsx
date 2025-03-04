@@ -6,6 +6,7 @@ import Dashboard from "../views/DashboardView";
 import ComunaViews from "../views/comunas/ComunaViews";
 import Consejoscomunales from "../views/consejoscomunales/ConsejoscomunalesView";
 import ViviendasViews from "../views/vivienda/ViviendaViews";
+import Habitante from "../views/habitante/HabitanteViews";
 
 function BasicRouter() {
   return (
@@ -18,6 +19,10 @@ function BasicRouter() {
           <Route path="comuna" element={<ComunaViews />} />
           <Route path="consejocomunal" element={<Consejoscomunales />} />
           <Route path="viviendas" element={<ViviendasViews />} />
+          <Route
+            path="viviendas/habitantes/:id_habitantes"
+            element={<Habitante />}
+          />
         </Route>
       </Routes>
     </>

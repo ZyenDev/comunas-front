@@ -1,13 +1,22 @@
 //habitante
 import React, { useEffect, useState } from "react";
-import { Table, Layout, Flex, Button, Popconfirm, notification } from "antd";
+import {
+  Table,
+  Layout,
+  Flex,
+  Button,
+  Popconfirm,
+  notification,
+  Tooltip,
+} from "antd";
 import {
   getAllVivienda,
   deleteVivienda,
 } from "../../controllers/ViviendaController";
 import { ViviendaInterface } from "../../models/ViviendaModel";
-import { DeleteFilled, EditOutlined } from "@ant-design/icons";
-import ModalVivienda from "../../components/ViviendaModal";
+import { DeleteFilled, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import ModalVivienda from "./ViviendaModal";
+import { useNavigate } from "react-router";
 
 const { Content } = Layout;
 
@@ -16,7 +25,8 @@ const viviendas: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [update, setUpdate] = useState(false);
   const [api, contextHolder] = notification.useNotification();
-  const [id_consejo_update, setUpdateID] = useState<number>();
+  const [id_vivienda_update, setUpdateID] = useState<number>();
+  let navigate = useNavigate();
 
   const columns = [
     {
@@ -95,16 +105,32 @@ const viviendas: React.FC = () => {
       key: "action",
       render: (vivienda: ViviendaInterface) => (
         <Flex vertical={false} gap="8px">
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
-            size="middle"
-            onClick={() => {
-              setUpdate(true);
-              setOpen(true);
-              setUpdateID(vivienda.id_vivienda);
-            }}
-          />
+          <Tooltip title="editar">
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              size="middle"
+              onClick={() => {
+                console.log(vivienda);
+                setUpdate(true);
+                setOpen(true);
+                setUpdateID(vivienda.id_vivienda);
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="info">
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              size="middle"
+              onClick={() => {
+                navigate(
+                  `/dashboard/viviendas/habitantes/${vivienda.id_vivienda}`
+                );
+                //setUpdateID(vivienda.id_vivienda);
+              }}
+            />
+          </Tooltip>
           <Popconfirm
             title="¿Desea eliminar ésta vivienda?"
             onConfirm={async () => {
@@ -205,7 +231,7 @@ const viviendas: React.FC = () => {
           open={open}
           setOpen={setOpen}
           isUpdated={update}
-          idVivienda={id_consejo_update}
+          idVivienda={id_vivienda_update}
         />
       </Content>
     </div>

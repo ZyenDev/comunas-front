@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { UsergroupAddOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  UsergroupAddOutlined,
+  HomeOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
@@ -48,6 +52,14 @@ const items: MenuItem[] = [
       <HomeOutlined />{" "}
     </Link>
   ),
+  getItem(
+    "Habitante",
+    "Habitantes",
+    <Link to="/dashboard/habitante">
+      {" "}
+      <UserOutlined />{" "}
+    </Link>
+  ),
 ];
 
 const Dashboard: React.FC = () => {
@@ -73,6 +85,7 @@ const Dashboard: React.FC = () => {
         <div className="demo-logo-vertical" />
         <Menu
           defaultSelectedKeys={["1"]}
+          theme="light"
           mode="inline"
           items={items}
           onSelect={handleMenuSelect}

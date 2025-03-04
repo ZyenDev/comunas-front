@@ -1,4 +1,3 @@
-import { TipoOcupacionViviendaInterface } from "./TipoOcupacionViviendaModel";
 
 export interface ViviendaInterface {
     id_vivienda: number;
@@ -16,5 +15,9 @@ export interface ViviendaInterface {
     id_situacion_vivienda: number;
     id_tipo_ocupacion_vivienda: number;
     // solo usado para parse no llega al servidor
-    tipo_ocupacion_vivienda: TipoOcupacionViviendaInterface;
+    id_tipo_ocupacion?: number;
+    vivienda_ocupada: boolean;
+    subtipo_ocupacion: string;
+    tiene_documentacion: boolean;
+    respuesta_otro?: string;
 }

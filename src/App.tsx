@@ -22,9 +22,15 @@ const App: React.FC = () => (
           headerBg: "#5c0011",
         },
         Menu: {
+          //dark
           colorText: "#fff",
           fontSize: 14,
           darkItemBg: "#5c0011",
+          //light
+          itemBg: "#5c0011",
+          itemHoverBg: "rgba(0, 0, 0, 0.23)",
+          itemSelectedColor: "#fff", // text color
+          itemSelectedBg: "#ec222c",
         },
       },
     }}

@@ -2,3 +2,13 @@ body {
     margin: 0;
     padding: 0;
 }
+
+h1 {
+    font-size: 1.5em;
+    /* Ajusta el tamaño según tus necesidades */
+}
+
+p {
+    font-size: 1.2em;
+    /* Ajusta el tamaño según tus necesidades */
+}

@@ -25,7 +25,14 @@ import cajasimg from "../assets/cajas.jpg";
 const { Header, Footer, Content } = Layout;
 const { Title, Paragraph } = Typography;
 const { Meta } = Card;
-
+const styles = {
+  heading: {
+    fontSize: "2em", // Ajusta el tamaño según tus necesidades
+  },
+  paragraph: {
+    fontSize: "1.2em", // Ajusta el tamaño según tus necesidades
+  },
+};
 const headerStyle: React.CSSProperties = {
   textAlign: "center",
   color: "#fff",
@@ -47,15 +54,13 @@ const footerStyle: React.CSSProperties = {
   backgroundColor: "#5c0011",
 };
 
-const CcontentStyle: React.CSSProperties = {
+const ContentStyle: React.CSSProperties = {
   margin: 0,
   height: "660px",
   color: "#fff",
   lineHeight: "160px",
   textAlign: "center",
   background: "#364d79",
-  backgroundImage:
-    "url(https://cdn.pixabay.com/photo/2020/10/22/16/14/building-5676506_960_720.jpg)",
 };
 
 function Landing(): JSX.Element {
@@ -95,7 +100,18 @@ function Landing(): JSX.Element {
               overflow: "hidden",
             }}
           >
-            <Image // -------------------------- Chandro has la puta imagen oscurita por favor >:3
+            {/* Capa oscura encima de la imagen */}
+            <div
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.5)", // Capa oscura
+                zIndex: 1,
+              }}
+            ></div>
+
+            <Image
               preview={false}
               width="100%"
               src={image02}
@@ -103,16 +119,18 @@ function Landing(): JSX.Element {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.5)", // Sombra correctamente aplicada
               }}
             />
+
+            {/* Contenido de texto centrado */}
             <div
               style={{
                 position: "absolute",
                 top: "50%",
                 left: "20%",
                 transform: "translate(-50%, -50%)",
-                // textAlign: "center",
                 color: "#fff",
                 padding: "20px",
                 borderRadius: "10px",
+                zIndex: 2, // Asegura que el texto quede encima de la capa oscura
               }}
             >
               <Title level={2} style={{ color: "#fff", margin: 0 }}>
@@ -121,6 +139,21 @@ function Landing(): JSX.Element {
               <Paragraph style={{ color: "#fff", margin: 0 }}>
                 Descubre nuestra comunidad y participa en su desarrollo.
               </Paragraph>
+              <Button
+                type="primary"
+                shape="square"
+                size="large"
+                ghost
+                style={{
+                  color: "#fff", // Texto en blanco
+                  marginTop: "15px", // Espaciado debajo del texto
+                }}
+                onClick={() => {
+                  navigate("/historia");
+                }}
+              >
+                Historia
+              </Button>
             </div>
           </div>
 
@@ -158,7 +191,7 @@ function Landing(): JSX.Element {
 
           <Divider />
 
-          <Flex align="center" vertical style={{ padding: "20px" }}>
+          <Flex align="center" vertical style={{ padding: "25px" }}>
             <h1>Nuestra comunidad</h1>
             <Row gutter={16} justify="space-between">
               <Col span={8}>
@@ -205,7 +238,7 @@ function Landing(): JSX.Element {
           <Flex
             align="center"
             gap="small"
-            style={{ width: "100vw", height: "300px", padding: "20px" }}
+            style={{ width: "100vw", height: "300px", padding: "45px" }}
           >
             <div>
               <h1>Objetivos de los consejos comunales:</h1>
@@ -231,8 +264,39 @@ function Landing(): JSX.Element {
               }}
             />
           </Flex>
+
+          <Divider />
+
+          <Flex
+            align="center"
+            gap="small"
+            style={{ width: "100vw", height: "300px", padding: "25px" }}
+          >
+            {/* Mapa de Google Maps */}
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3932.44733983676!2d-63.20357762589083!3d9.728121577655832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c33475f3ab547b7%3A0xb4028927879acce7!2sAv.%20Principal%20de%20Los%20Godos!5e0!3m2!1ses!2sve!4v1707193193663!5m2!1ses!2sve"
+                width="30%"
+                height="250px"
+                style={{ borderRadius: "10px", border: "none" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            <div style={{ flex: 1 }}>
+              <p>
+                Actualmente la comuna "Cacique Jose Miguel Guanaguanay" se
+                encuentra ubicada en el sector Los Godos, detrás del Estadio Los
+                Comunales lateral a la escuela Manola Luna Silva.
+              </p>
+            </div>
+          </Flex>
+
+          <Divider />
         </Content>
-        <Footer style={footerStyle}>Footer</Footer>
+        <Footer style={footerStyle}>
+          Desarrollado por Universidad Bolivariana de Venezuela. Maturín, Estado
+          Monagas.
+        </Footer>
       </Layout>
     </Flex>
   );

@@ -127,7 +127,6 @@ const viviendas: React.FC = () => {
                 navigate(
                   `/dashboard/viviendas/habitantes/${vivienda.id_vivienda}`
                 );
-                //setUpdateID(vivienda.id_vivienda);
               }}
             />
           </Tooltip>
@@ -211,9 +210,9 @@ const viviendas: React.FC = () => {
   };
 
   return (
-    <div>
+    <>
       {contextHolder}
-      <Content style={{ padding: "24px", background: "#fff" }}>
+      <Content style={{ padding: "24px", background: "#fff", width: "100%" }}>
         <Table
           title={() => (
             <Flex vertical={false} justify="space-between" align="center">
@@ -226,6 +225,7 @@ const viviendas: React.FC = () => {
           dataSource={vienda}
           columns={columns}
           pagination={{ pageSize: 5 }}
+          scroll={{ x: "max-content" }}
         />
         <ModalVivienda
           open={open}
@@ -234,7 +234,7 @@ const viviendas: React.FC = () => {
           idVivienda={id_vivienda_update}
         />
       </Content>
-    </div>
+    </>
   );
 };
 

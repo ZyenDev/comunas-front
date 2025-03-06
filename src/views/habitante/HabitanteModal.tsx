@@ -46,9 +46,8 @@ const HabitanteContent: React.FC<{
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
   const [paisOrigen, setPaisOrigen] = useState<any>();
-
+  const [vene, setNAd] = useState<boolean>(false);
   const { id_habitantes } = useParams();
-  console.log("habitante here : " + id_habitantes);
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
@@ -60,6 +59,7 @@ const HabitanteContent: React.FC<{
         new Date(values.fecha_nacimiento).getFullYear();
       try {
         if (!isUpdated) {
+          values.id_vivienda = Number(id_habitantes);
           const data = await createHabitante(values);
         } else if (id_habitante != null) {
           const data = await updateHabitante(id_habitante, values);
@@ -152,15 +152,43 @@ const HabitanteContent: React.FC<{
             style={{ display: "flex", gap: "20px" }}
           >
             <Flex vertical>
-              <Form.Item
-                name="cedula"
-                label="Cédula"
-                rules={[
-                  { required: true, message: "Por favor ingrese la cédula" },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+              <Flex align="center">
+                <Form.Item
+                  name="id_nacionalidad"
+                  label=" "
+                  // rules={[
+                  //   {
+                  //     required: true,
+                  //     message: "Por favor ingrese la nacionalidad",
+                  //   },
+                  // ]}
+                  initialValue={2}
+                >
+                  <Select
+                    style={{ width: "50px" }}
+                    defaultValue={2}
+                    onChange={(value) => {
+                      if (value === 2) {
+                        setNAd(false);
+                      } else {
+                        setNAd(true);
+                      }
+                    }}
+                  >
+                    <Select.Option value={1}>E</Select.Option>
+                    <Select.Option value={2}>V</Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  name="cedula"
+                  label="Cédula"
+                  rules={[
+                    { required: true, message: "Por favor ingrese la cédula" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Flex>
               <Form.Item
                 name="primer_nombre"
                 label="Primer Nombre"
@@ -221,6 +249,7 @@ const HabitanteContent: React.FC<{
                 name="discapacidad"
                 label="Discapacidad"
                 valuePropName="checked"
+                initialValue={false}
               >
                 <Checkbox />
               </Form.Item>
@@ -228,44 +257,24 @@ const HabitanteContent: React.FC<{
                 name="pertenece_etnia"
                 label="Pertenece a Etnia"
                 valuePropName="checked"
+                initialValue={false}
               >
                 <Checkbox />
               </Form.Item>
-              <Form.Item
-                name="id_nacionalidad"
-                label="Nacionalidad"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor ingrese la nacionalidad",
-                  },
-                ]}
-              >
-                <Select>
-                  <Select.Option value={1}>E</Select.Option>
-                  <Select.Option value={2}>V</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="id_pais_origen"
-                label="País de Origen"
-                rules={[
-                  {
-                    required: true,
-                    message: "Por favor ingrese el país de origen",
-                  },
-                ]}
-              >
-                <Select
-                  showSearch
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
-                  options={paisOrigen}
-                />
-              </Form.Item>
+
+              {vene && (
+                <Form.Item name="id_pais_origen" label="País de Origen">
+                  <Select
+                    showSearch
+                    filterOption={(input, option) =>
+                      (option?.label ?? "")
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
+                    options={paisOrigen}
+                  />
+                </Form.Item>
+              )}
             </Flex>
           </Form>
         </Modal>

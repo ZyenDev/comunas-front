@@ -12,6 +12,7 @@ import {
 import { JSX } from "react";
 import { useNavigate } from "react-router";
 import { UserOutlined } from "@ant-design/icons";
+import logocomuna from "../assets/logo.png";
 import image01 from "../assets/carousel-img/32r.jpg";
 import image02 from "../assets/carousel-img/cap223.jpg";
 import image03 from "../assets/carousel-img/espc4.jpg";
@@ -26,7 +27,7 @@ const headerStyle: React.CSSProperties = {
   height: 64,
   paddingInline: 48,
   lineHeight: "64px",
-  backgroundColor: "#4096ff",
+  backgroundColor: "#5c0011",
   justifyContent: "center",
 };
 
@@ -38,7 +39,7 @@ const layoutStyle = {
 const footerStyle: React.CSSProperties = {
   textAlign: "center",
   color: "#fff",
-  backgroundColor: "#4096ff",
+  backgroundColor: "#5c0011",
 };
 
 const CcontentStyle: React.CSSProperties = {
@@ -65,7 +66,8 @@ function Landing(): JSX.Element {
             align="center"
             style={{ height: "64px" }}
           >
-            <h1>CACIQUE JOSE MIGUEL GUANAGUANAY</h1>
+            <Image preview={false} width="45px" src={logocomuna} />
+            <h1>GUANAGUANAY</h1>
             <Button
               type="primary"
               shape="round"
@@ -124,7 +126,7 @@ function Landing(): JSX.Element {
           </Flex>
           <Divider />
           <Flex align="center" vertical style={{ padding: "20px" }}>
-            <h1>Nuestra historia right</h1>
+            <h1>Nuestra comunidad</h1>
             <Row gutter={16} justify="space-between">
               <Col span={8}>
                 <Card
@@ -133,8 +135,8 @@ function Landing(): JSX.Element {
                   cover={<img alt="example" src={image01} />}
                 >
                   <Meta
-                    title="Europe Street beat"
-                    description=" Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+                    title="Mision y vision"
+                    description=" Los lideres comunales: caracteristicas, objetivos y desempeño social."
                   />
                 </Card>
               </Col>
@@ -145,8 +147,8 @@ function Landing(): JSX.Element {
                   cover={<img alt="example" src={image01} />}
                 >
                   <Meta
-                    title="Europe Street beat"
-                    description=" Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+                    title="Historia"
+                    description=" Nuestra historia y acontecimientos mas relevantes."
                   />
                 </Card>
               </Col>
@@ -157,8 +159,8 @@ function Landing(): JSX.Element {
                   cover={<img alt="example" src={image01} />}
                 >
                   <Meta
-                    title="Europe Street beat"
-                    description=" Lorem, ipsum dolor sit amet consectetur adipisicing elit."
+                    title="Consejo comunal"
+                    description=" Los lideres comunales: caracteristicas, objetivos y desempeño social."
                   />
                 </Card>
               </Col>
@@ -171,12 +173,16 @@ function Landing(): JSX.Element {
             style={{ width: "100vw", height: "300px", padding: "20px" }}
           >
             <div>
-              <h1>Historia General:</h1>
+              <h1>Objetivos de los consejos comunales:</h1>
               <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam
-                a et, in culpa, corporis rem quis, tempore tempora vero minus
-                cumque sed? Optio placeat cumque quo veniam, eligendi dicta
-                quas?
+                Los consejos comunales son organizaciones de base popular en
+                Venezuela que tienen como objetivo la participación ciudadana en
+                la gestión de políticas públicas y el desarrollo comunitario. la
+                importancia de los Consejos Comunales está dirigida a buscar
+                soluciones y a ejecutar acciones tendentes a mejorar las
+                situaciones que afecten a las comunidades, entendiendo éstas
+                como el ámbito operativo más adecuado para detectar las
+                necesidades y problemas que se manifiesten.
               </p>
             </div>
             <Image

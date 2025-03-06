@@ -35,20 +35,23 @@ import HabitanteModal from "./HabitanteModal";
 import {
   deleteHabitante,
   getAllHabitantes,
+  getHabitanteByViviendaID,
 } from "../../controllers/ControllerHabitantes";
 import { HabitanteInterface } from "../../models/HabitanteModel";
 import { useParams } from "react-router";
+import { ViviendaInterface } from "../../models/ViviendaModel";
+import { getViviendaById } from "../../controllers/ViviendaController";
 
 const { Content } = Layout;
 
 const Habitante: React.FC = () => {
   const [habitante, setHabitante] = useState<HabitanteInterface[]>();
+  const [vivienda, setVivienda] = useState<ViviendaInterface>();
   const [open, setOpen] = useState(false);
   const [update, setUpdate] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [id_consejo_update, setUpdateID] = useState<number>();
   const { id_habitantes } = useParams();
-  console.log("habitante here : " + id_habitantes);
 
   const columns: any = [
     {
@@ -64,30 +67,35 @@ const Habitante: React.FC = () => {
       key: "cedula",
     },
     {
-      title: "Primer Nombre",
-      dataIndex: "primer_nombre",
-      key: "primer_nombre",
+      title: "Nombre",
+      dataIndex: "nombre",
+      key: "nombre",
     },
-    {
-      title: "Segundo Nombre",
-      dataIndex: "segundo_nombre",
-      key: "segundo_nombre",
-    },
-    {
-      title: "Primer Apellido",
-      dataIndex: "primer_apellido",
-      key: "primer_apellido",
-    },
-    {
-      title: "Segundo Apellido",
-      dataIndex: "segundo_apellido",
-      key: "segundo_apellido",
-    },
-    {
-      title: "Fecha de Nacimiento",
-      dataIndex: "fecha_nacimiento",
-      key: "fecha_nacimiento",
-    },
+    // {
+    //   title: "Primer Nombre",
+    //   dataIndex: "primer_nombre",
+    //   key: "primer_nombre",
+    // },
+    // {
+    //   title: "Segundo Nombre",
+    //   dataIndex: "segundo_nombre",
+    //   key: "segundo_nombre",
+    // },
+    // {
+    //   title: "Primer Apellido",
+    //   dataIndex: "primer_apellido",
+    //   key: "primer_apellido",
+    // },
+    // {
+    //   title: "Segundo Apellido",
+    //   dataIndex: "segundo_apellido",
+    //   key: "segundo_apellido",
+    // },
+    // {
+    //   title: "Fecha de Nacimiento",
+    //   dataIndex: "fecha_nacimiento",
+    //   key: "fecha_nacimiento",
+    // },
     {
       title: "Edad",
       dataIndex: "edad",
@@ -121,11 +129,11 @@ const Habitante: React.FC = () => {
       dataIndex: "id_pais_origen",
       key: "id_pais_origen",
     },
-    {
-      title: "Vivienda",
-      dataIndex: "id_vivienda",
-      key: "id_vivienda",
-    },
+    // {
+    //   title: "Vivienda",
+    //   dataIndex: "id_vivienda",
+    //   key: "id_vivienda",
+    // },
     {
       title: "Acción",
       key: "action",
@@ -164,15 +172,37 @@ const Habitante: React.FC = () => {
 
   const gethabitante = async () => {
     try {
-      const data = await getAllHabitantes();
-      console.log(data);
-      setHabitante(data);
+      if (id_habitantes != undefined) {
+        let id_habitantes_par = parseInt(id_habitantes);
+        //const data = await getHabitanteByViviendaID(id_habitantes_par);
+        const data = await getAllHabitantes();
+        data.forEach((item: HabitanteInterface) => {
+          if (item.sexo === "Masculino") {
+            item.sexo = "1";
+          } else {
+            item.sexo = "2";
+          }
+          item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
+        });
+        setHabitante(data);
+      }
+    } catch (error: any) {
+      openNotificationError(error?.message || "Error desconocido.");
+    }
+  };
+  const getVivienda = async () => {
+    try {
+      if (id_habitantes != undefined) {
+        const data = await getViviendaById(parseInt(id_habitantes));
+        setVivienda(data);
+      }
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
     }
   };
 
   useEffect(() => {
+    getVivienda();
     gethabitante();
   }, []);
   useEffect(() => {
@@ -195,15 +225,11 @@ const Habitante: React.FC = () => {
     });
   };
 
-  /*
-    1 = masculino
-    2 = femenino
- */
-
   return (
-    <div>
+    <>
       {contextHolder}
-      <Content style={{ padding: "24px", background: "#fff" }}>
+      <Content style={{ padding: "24px", background: "#fff", width: "100%" }}>
+        <h1>Nro. Casa: {vivienda?.numero_vivienda}</h1>
         <Table
           title={() => (
             <Flex vertical={false} justify="space-between" align="center">
@@ -216,6 +242,7 @@ const Habitante: React.FC = () => {
           dataSource={habitante}
           columns={columns}
           pagination={{ pageSize: 5 }}
+          scroll={{ x: "max-content" }}
         />
         <HabitanteModal
           open={open}
@@ -224,7 +251,7 @@ const Habitante: React.FC = () => {
           id_habitante={id_consejo_update}
         />
       </Content>
-    </div>
+    </>
   );
 };
 

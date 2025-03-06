@@ -52,49 +52,54 @@ const items: MenuItem[] = [
       <HomeOutlined />{" "}
     </Link>
   ),
-  getItem(
-    "Habitante",
-    "Habitantes",
-    <Link to="/dashboard/habitante">
-      {" "}
-      <UserOutlined />{" "}
-    </Link>
-  ),
+  // getItem(
+  //   "Habitante",
+  //   "Habitantes",
+  //   <Link to="/dashboard/habitante">
+  //     {" "}
+  //     <UserOutlined />{" "}
+  //   </Link>
+  // ),
 ];
 
 const Dashboard: React.FC = () => {
   //let navigate = useNavigate();
   const [current, SetCurrent] = useState("home");
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  // const {
+  //   token: { colorBgContainer, borderRadiusLG },
+  // } = theme.useToken();
 
   const handleMenuSelect = (info: any) => {
     console.log(info.key);
     SetCurrent(info.key);
   };
 
+  const siderStyle: React.CSSProperties = {
+    overflow: "auto",
+    height: "100vh",
+    position: "sticky",
+    insetInlineStart: 0,
+    top: 0,
+    bottom: 0,
+    scrollbarWidth: "thin",
+    scrollbarGutter: "stable",
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
+      <Sider style={{ ...siderStyle, zIndex: 1000 }}>
         <div className="demo-logo-vertical" />
         <Menu
-          defaultSelectedKeys={["1"]}
-          theme="light"
+          theme="dark"
           mode="inline"
+          defaultSelectedKeys={["4"]}
           items={items}
-          onSelect={handleMenuSelect}
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
+        {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
         <Content style={{ margin: "0 16px" }}>
-          <h1 style={{ margin: "16px 0" }}>{current}</h1>
           <Outlet />
         </Content>
         {/* <Footer style={{ textAlign: "center" }}>

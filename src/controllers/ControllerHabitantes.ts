@@ -19,6 +19,12 @@ export const getAllHabitantes = async (): Promise<HabitanteInterface[]> => {
     return response.data;
 };
 
+export const getHabitanteByViviendaID = async (id: number): Promise<HabitanteInterface[]> => {
+    const response = await axios.get<HabitanteInterface>(`${baseUrl}/${id}/`);
+    return response.data;
+};
+
+
 export const updateHabitante = async (id: number, habitante: HabitanteInterface): Promise<HabitanteInterface> => {
     const response = await axios.put<HabitanteInterface>(`${baseUrl}/${id}/`, habitante);
     return response.data;

@@ -13,4 +13,5 @@ export interface HabitanteInterface {
     id_nacionalidad: number;
     id_pais_origen: number;
     id_vivienda: number;
+    nombre?: string;
 }

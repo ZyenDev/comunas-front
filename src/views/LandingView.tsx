@@ -8,6 +8,7 @@ import {
   Card,
   Image,
   Divider,
+  Typography,
 } from "antd";
 import { JSX } from "react";
 import { useNavigate } from "react-router";
@@ -16,9 +17,13 @@ import logocomuna from "../assets/logo.png";
 import image01 from "../assets/carousel-img/32r.jpg";
 import image02 from "../assets/carousel-img/cap223.jpg";
 import image03 from "../assets/carousel-img/espc4.jpg";
+import cardimg01 from "../assets/card-img/espc1.png";
+import cardimg02 from "../assets/card-img/espc2.png";
+import cardimg03 from "../assets/card-img/espc3.jpg";
+import cajasimg from "../assets/cajas.jpg";
 
 const { Header, Footer, Content } = Layout;
-
+const { Title, Paragraph } = Typography;
 const { Meta } = Card;
 
 const headerStyle: React.CSSProperties = {
@@ -82,19 +87,45 @@ function Landing(): JSX.Element {
           </Flex>
         </Header>
         <Content>
-          <Carousel
-            arrows
-            autoplay
-            style={{ height: "700px", overflow: "hidden" }}
+          {/* Imagen fija (image01) */}
+          <div
+            style={{
+              position: "relative",
+              height: "700px",
+              overflow: "hidden",
+            }}
           >
-            <div>
-              <Image preview={false} width="100vw" src={image01} />
+            <Image // -------------------------- Chandro has la puta imagen oscurita por favor >:3
+              preview={false}
+              width="100%"
+              src={image02}
+              style={{
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.5)", // Sombra correctamente aplicada
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "20%",
+                transform: "translate(-50%, -50%)",
+                // textAlign: "center",
+                color: "#fff",
+                padding: "20px",
+                borderRadius: "10px",
+              }}
+            >
+              <Title level={2} style={{ color: "#fff", margin: 0 }}>
+                Bienvenido a Guanaguanay
+              </Title>
+              <Paragraph style={{ color: "#fff", margin: 0 }}>
+                Descubre nuestra comunidad y participa en su desarrollo.
+              </Paragraph>
             </div>
-            <div>
-              <Image preview={false} width="100vw" src={image02} />
-            </div>
-          </Carousel>
+          </div>
+
           <Divider />
+
           <Flex
             align="center"
             gap="small"
@@ -124,7 +155,9 @@ function Landing(): JSX.Element {
               </p>
             </div>
           </Flex>
+
           <Divider />
+
           <Flex align="center" vertical style={{ padding: "20px" }}>
             <h1>Nuestra comunidad</h1>
             <Row gutter={16} justify="space-between">
@@ -132,7 +165,7 @@ function Landing(): JSX.Element {
                 <Card
                   hoverable
                   style={{ width: 240 }}
-                  cover={<img alt="example" src={image01} />}
+                  cover={<img alt="example" src={cardimg01} />}
                 >
                   <Meta
                     title="Mision y vision"
@@ -144,7 +177,7 @@ function Landing(): JSX.Element {
                 <Card
                   hoverable
                   style={{ width: 240 }}
-                  cover={<img alt="example" src={image01} />}
+                  cover={<img alt="example" src={cardimg02} />}
                 >
                   <Meta
                     title="Historia"
@@ -156,7 +189,7 @@ function Landing(): JSX.Element {
                 <Card
                   hoverable
                   style={{ width: 240 }}
-                  cover={<img alt="example" src={image01} />}
+                  cover={<img alt="example" src={cardimg03} />}
                 >
                   <Meta
                     title="Consejo comunal"
@@ -166,7 +199,9 @@ function Landing(): JSX.Element {
               </Col>
             </Row>
           </Flex>
+
           <Divider />
+
           <Flex
             align="center"
             gap="small"
@@ -187,7 +222,7 @@ function Landing(): JSX.Element {
             </div>
             <Image
               preview={false}
-              src={image03}
+              src={cajasimg}
               style={{
                 overflow: "hidden",
                 width: "350px",

@@ -10,7 +10,7 @@ const App: React.FC = () => (
         //colorPrimary: "#",
         colorPrimary: "#ec222c",
         colorInfo: "#ec222c",
-        colorBgBase: "#f5f5f5",
+        // colorBgBase: "#f5f5f5",
 
         // Alias Token
         // colorBgContainer: "#f6ffed",

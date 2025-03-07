@@ -25,11 +25,21 @@ import {
 } from "../../controllers/ConsejoComunalController";
 import { ConsejoComunalInterface } from "../../models/ConsejoComunalModel";
 import {
+  createAmbito,
   getAllAmbitos,
   getAmbito,
+  updateAmbito,
 } from "../../controllers/AmbitoTerritorialController";
 import { DeleteFilled, EditOutlined } from "@ant-design/icons";
 import { DefaultOptionType } from "antd/es/select";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvent,
+} from "react-leaflet";
+import { LatLngTuple } from "leaflet";
 
 const { Content } = Layout;
 
@@ -44,13 +54,46 @@ const ConsejoComunalContent: React.FC<{
   const [Comuna, setComunas] = useState<DefaultOptionType[]>();
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
+  const [markerPosition, setMarkerPosition] = useState<LatLngTuple | null>(
+    null
+  );
+
+  // Component to handle map click events
+  const MapClickHandler: React.FC = () => {
+    useMapEvent("click", (e) => {
+      setMarkerPosition([e.latlng.lat, e.latlng.lng]);
+    });
+    return null; // This component doesn't render anything
+  };
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
       try {
+        if (!markerPosition) {
+          openNotificationError(
+            "¡Por favor, seleccione una posición en el mapa!"
+          );
+          throw new Error("¡Por favor, seleccione una posición en el mapa!");
+        }
+        const formattedLat = parseFloat(markerPosition[0].toFixed(6));
+        const formattedLng = parseFloat(markerPosition[1].toFixed(6));
         if (!isUpdated) {
+          const ambito = await createAmbito({
+            id_ambito_territorial: 0, // Assuming the backend will generate this ID
+            latitud: formattedLat,
+            longitud: formattedLng,
+          });
+          values.id_ambito_territorial = ambito.id_ambito_territorial;
           const data = await createConsejoComunal(values);
         } else if (id_consejo != null) {
+          const comuna = await getComunaByID(id_consejo);
+          const ambito = await updateAmbito(comuna.id_ambito_territorial, {
+            id_ambito_territorial: comuna.id_ambito_territorial, // Assuming the backend will generate this ID
+            latitud: formattedLat,
+            longitud: formattedLng,
+          });
+
+          values.id_ambito_territorial = ambito.id_ambito_territorial;
           const data = await updateConsejoComuna(id_consejo, values);
         } else {
           //este error en teoria es imposible
@@ -192,17 +235,41 @@ const ConsejoComunalContent: React.FC<{
               <Input />
             </Form.Item>
             <Form.Item
-              name="id_ambito_territorial"
-              label="Ámbito Territorial"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, selecciona el Ámbito Territorial!",
-                },
-              ]}
+              style={{ width: "100%" }}
+              name="longitud"
+              label="Ambito territorial"
               validateStatus={error ? "error" : ""}
             >
-              <Select options={Ambito} />
+              <div
+                style={{
+                  height: "400px",
+                  width: "100%",
+                  backgroundColor: "black",
+                }}
+              >
+                <MapContainer
+                  center={[9.74619, -63.18598]}
+                  zoom={14}
+                  style={{ height: "100%", width: "100%" }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  {markerPosition && (
+                    <Marker position={markerPosition}>
+                      <Popup>
+                        Marker at <br />
+                        Lat: {markerPosition[0].toFixed(4)}, Lng:{" "}
+                        {markerPosition[1].toFixed(4)}
+                      </Popup>
+                    </Marker>
+                  )}
+
+                  {/* Add the MapClickHandler component to handle map clicks */}
+                  <MapClickHandler />
+                </MapContainer>
+              </div>
             </Form.Item>
             <Form.Item
               name="id_comuna"
@@ -363,6 +430,7 @@ const ConsejoComunal: React.FC = () => {
           )}
           dataSource={consejo}
           columns={columns}
+          scroll={{ x: "max-content" }}
           pagination={{ pageSize: 5 }}
         />
         <ConsejoComunalContent

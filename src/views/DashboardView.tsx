@@ -52,29 +52,9 @@ const items: MenuItem[] = [
       <HomeOutlined />{" "}
     </Link>
   ),
-  // getItem(
-  //   "Habitante",
-  //   "Habitantes",
-  //   <Link to="/dashboard/habitante">
-  //     {" "}
-  //     <UserOutlined />{" "}
-  //   </Link>
-  // ),
 ];
 
 const Dashboard: React.FC = () => {
-  //let navigate = useNavigate();
-  const [current, SetCurrent] = useState("home");
-  const [collapsed, setCollapsed] = useState(false);
-  // const {
-  //   token: { colorBgContainer, borderRadiusLG },
-  // } = theme.useToken();
-
-  const handleMenuSelect = (info: any) => {
-    console.log(info.key);
-    SetCurrent(info.key);
-  };
-
   const siderStyle: React.CSSProperties = {
     overflow: "auto",
     height: "100vh",
@@ -88,23 +68,60 @@ const Dashboard: React.FC = () => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider style={{ ...siderStyle, zIndex: 1000 }}>
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["4"]}
-          items={items}
-        />
+      <Sider
+        style={{
+          ...siderStyle,
+          zIndex: 1000,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>
+            <div
+              style={{ padding: "16px", display: "flex", alignItems: "center" }}
+            >
+              <UserOutlined
+                style={{ fontSize: "24px", marginRight: "8px", color: "white" }}
+              />
+              <span style={{ color: "white" }}>Username</span>
+            </div>
+            <div className="demo-logo-vertical" />
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={["4"]}
+              items={items}
+            />
+          </div>
+          <div style={{ marginTop: "auto" }}>
+            <Menu
+              theme="dark"
+              mode="inline"
+              items={[
+                getItem(
+                  <Link to="/logout">
+                    <UserOutlined />
+                    <span>Cerrar Sesión</span>
+                  </Link>,
+                  "logout"
+                ),
+              ]}
+            />
+          </div>
+        </div>
       </Sider>
       <Layout>
-        {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
         <Content style={{ margin: "0 16px" }}>
           <Outlet />
         </Content>
-        {/* <Footer style={{ textAlign: "center" }}>
-          Universidad Bolivariana de Venezuela ©{new Date().getFullYear()}
-        </Footer> */}
       </Layout>
     </Layout>
   );

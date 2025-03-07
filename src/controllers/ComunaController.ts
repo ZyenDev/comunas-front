@@ -5,7 +5,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const baseUrl = apiUrl + "api/comunidades/comunas";
 
 export const createComuna = async (comuna: ComunaInterface): Promise<ComunaInterface> => {
-    const response = await axios.post<ComunaInterface>(baseUrl, comuna);
+    const response = await axios.post<ComunaInterface>(baseUrl+"/", comuna);
     return response.data;
 };
 

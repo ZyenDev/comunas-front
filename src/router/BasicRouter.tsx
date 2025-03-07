@@ -7,6 +7,7 @@ import ComunaViews from "../views/comunas/ComunaViews";
 import Consejoscomunales from "../views/consejoscomunales/ConsejoscomunalesView";
 import ViviendasViews from "../views/vivienda/ViviendaViews";
 import Habitante from "../views/habitante/HabitanteViews";
+import NotFound from "../views/NotFound";
 
 function BasicRouter() {
   return (
@@ -15,7 +16,7 @@ function BasicRouter() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/dashboard" element={<Dashboard />}>
+        <Route path="/dashboard">
           <Route path="comuna" element={<ComunaViews />} />
           <Route path="consejocomunal" element={<Consejoscomunales />} />
           <Route path="viviendas" element={<ViviendasViews />} />
@@ -24,6 +25,7 @@ function BasicRouter() {
             element={<Habitante />}
           />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

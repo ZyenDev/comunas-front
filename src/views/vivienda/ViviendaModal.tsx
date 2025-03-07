@@ -1,8 +1,6 @@
 //habitante
 import React, { useEffect, useState } from "react";
 import {
-  Table,
-  Layout,
   Flex,
   Button,
   Divider,
@@ -14,26 +12,16 @@ import {
   InputNumber,
   Checkbox,
 } from "antd";
-import {
-  getAllComunas,
-  getComunaByID,
-} from "../../controllers/ComunaController";
+
 import {
   createVivienda,
   getViviendaById,
   updateVivienda,
 } from "../../controllers/ViviendaController";
 import { ViviendaInterface } from "../../models/ViviendaModel";
-import {
-  getAllAmbitos,
-  getAmbito,
-} from "../../controllers/AmbitoTerritorialController";
 import { UbicacionInterface } from "../../models/UbicacionModel";
 import { getAllUbicaciones } from "../../controllers/UbicacionController";
-import {
-  getAllConsejoComunal,
-  getConsejoComunalById,
-} from "../../controllers/ConsejoComunalController";
+import { getAllConsejoComunal } from "../../controllers/ConsejoComunalController";
 import { DefaultOptionType } from "antd/es/select";
 import { getAllTipoVivienda } from "../../controllers/TipoViviendaController";
 import { TipoViviendaInterface } from "../../models/TipoViviendaModel";
@@ -42,12 +30,12 @@ import { TipoTechoInterface } from "../../models/TipoTechoModel";
 import { getAllTipoPared } from "../../controllers/TipoParedController";
 import { getAllTipoPiso } from "../../controllers/TipoPisoController";
 import { getAllSituacionVivienda } from "../../controllers/SituacionViviendaController";
-import { data } from "react-router";
 import { TipoOcupacionViviendaInterface } from "../../models/TipoOcupacionViviendaModel";
 import {
   createTipoOcupacionVivienda,
   updateTipoOcupacionVivienda,
 } from "../../controllers/TipoOcupacionVivienda";
+import { useAuth } from "../../components/AuthContext";
 
 const ViviendasContent: React.FC<{
   open: boolean;
@@ -68,6 +56,7 @@ const ViviendasContent: React.FC<{
   const [check, setCheckBox] = useState(true);
   const [checkboxint, setCheckBoxint] = useState(0);
   const [error, setError] = useState(false);
+  const { token } = useAuth();
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
@@ -86,14 +75,17 @@ const ViviendasContent: React.FC<{
             tipoOcupacionVivienda.respuesta_otro = "a";
           }
 
-          const data = await createTipoOcupacionVivienda(tipoOcupacionVivienda);
+          const data = await createTipoOcupacionVivienda(
+            tipoOcupacionVivienda,
+            token ? token : ""
+          );
           console.log(data.id_tipo_ocupacion);
 
           if (data.id_tipo_ocupacion !== undefined) {
             values.id_tipo_ocupacion_vivienda = data.id_tipo_ocupacion;
           }
 
-          const datav = await createVivienda(values);
+          const datav = await createVivienda(values, token ? token : "");
         } catch (error) {
           console.log(error);
         }
@@ -107,10 +99,15 @@ const ViviendasContent: React.FC<{
           ) {
             const datavivienda = await updateTipoOcupacionVivienda(
               tipoOcupacionVivienda.id_tipo_ocupacion,
-              tipoOcupacionVivienda
+              tipoOcupacionVivienda,
+              token ? token : ""
             );
 
-            const data = await updateVivienda(idVivienda, values);
+            const data = await updateVivienda(
+              idVivienda,
+              values,
+              token ? token : ""
+            );
           }
         } catch (error) {
           console.log(error);
@@ -129,7 +126,7 @@ const ViviendasContent: React.FC<{
     if (open) {
       const getUbicaciones = async () => {
         try {
-          const data = await getAllUbicaciones();
+          const data = await getAllUbicaciones(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element: UbicacionInterface) => {
             opt.push({
@@ -139,12 +136,12 @@ const ViviendasContent: React.FC<{
           });
           setUbicacion(opt);
         } catch (error) {
-          console.error("Fallo al encontrar Ámbitos Territoriales:", error);
+          openNotificationError("Error");
         }
       };
       const getTipoVivienda = async () => {
         try {
-          const data = await getAllTipoVivienda();
+          const data = await getAllTipoVivienda(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element: TipoViviendaInterface) => {
             opt.push({
@@ -154,12 +151,12 @@ const ViviendasContent: React.FC<{
           });
           setTipoVivienda(opt);
         } catch (error) {
-          console.error("Fallo al encontrar Ámbitos Territoriales:", error);
+          openNotificationError("Error");
         }
       };
       const getTipoTecho = async () => {
         try {
-          const data = await getAllTipoTecho();
+          const data = await getAllTipoTecho(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element: TipoTechoInterface) => {
             opt.push({
@@ -169,12 +166,12 @@ const ViviendasContent: React.FC<{
           });
           setTipoTecho(opt);
         } catch (error) {
-          console.error("Fallo al encontrar Ámbitos Territoriales:", error);
+          openNotificationError("Error");
         }
       };
       const getTipoPiso = async () => {
         try {
-          const data = await getAllTipoPiso();
+          const data = await getAllTipoPiso(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element) => {
             opt.push({
@@ -184,12 +181,12 @@ const ViviendasContent: React.FC<{
           });
           setTipoPiso(opt);
         } catch (error) {
-          console.error("Fallo al encontrar los Tipos de Piso:", error);
+          openNotificationError("Error");
         }
       };
       const getSituacionVivienda = async () => {
         try {
-          const data = await getAllSituacionVivienda();
+          const data = await getAllSituacionVivienda(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element) => {
             opt.push({
@@ -199,15 +196,12 @@ const ViviendasContent: React.FC<{
           });
           setSituacionVivienta(opt);
         } catch (error) {
-          console.error(
-            "Fallo al encontrar las Situaciones de Vivienda:",
-            error
-          );
+          openNotificationError("Error");
         }
       };
       const getConsejo = async () => {
         try {
-          const data = await getAllConsejoComunal();
+          const data = await getAllConsejoComunal(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element) => {
             opt.push({
@@ -217,12 +211,12 @@ const ViviendasContent: React.FC<{
           });
           setComunas(opt);
         } catch (error) {
-          console.error("Fallo al encontrar las Comunas:", error);
+          openNotificationError("Error");
         }
       };
       const getTipoPared = async () => {
         try {
-          const data = await getAllTipoPared();
+          const data = await getAllTipoPared(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element) => {
             opt.push({
@@ -232,16 +226,16 @@ const ViviendasContent: React.FC<{
           });
           setTipoPared(opt);
         } catch (error) {
-          console.error("Fallo al encontrar las Comunas:", error);
+          openNotificationError("Error");
         }
       };
       const getViviendabyId = async () => {
         if (isUpdated && idVivienda != null && open) {
           try {
-            const data = await getViviendaById(idVivienda);
+            const data = await getViviendaById(idVivienda, token ? token : "");
             form.setFieldsValue(data);
           } catch (error) {
-            console.log(error);
+            openNotificationError("error");
           }
         } else {
           form.resetFields();
@@ -517,15 +511,14 @@ const ViviendasContent: React.FC<{
                         onChange={(value) => setCheckBoxint(value)}
                       />
                     </Form.Item>
-                    {checkboxint == 0 ||
-                      (checkboxint != 5 && (
-                        <Form.Item
-                          name="tiene_documentacion"
-                          valuePropName="checked"
-                        >
-                          <Checkbox />
-                        </Form.Item>
-                      ))}
+                    {checkboxint != 5 && (
+                      <Form.Item
+                        name="tiene_documentacion"
+                        valuePropName="checked"
+                      >
+                        <Checkbox />
+                      </Form.Item>
+                    )}
                   </Flex>
                   <Form.Item name="respuesta_otro">
                     {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}

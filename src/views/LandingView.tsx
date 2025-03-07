@@ -12,7 +12,7 @@ import {
 import { JSX } from "react";
 import { useNavigate } from "react-router";
 import { UserOutlined } from "@ant-design/icons";
-import logocomuna from "../assets/logo.png";
+import logocomuna from "../assets/logo.webp";
 import image01 from "../assets/carousel-img/32r.jpg";
 import image02 from "../assets/carousel-img/cap223.jpg";
 import image03 from "../assets/carousel-img/espc4.jpg";

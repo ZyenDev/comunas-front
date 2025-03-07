@@ -88,14 +88,14 @@ const Dashboard: React.FC = () => {
           }}
         >
           <div>
-            <div
+            {/* <div
               style={{ padding: "16px", display: "flex", alignItems: "center" }}
             >
               <UserOutlined
                 style={{ fontSize: "24px", marginRight: "8px", color: "white" }}
               />
               <span style={{ color: "white" }}>Username</span>
-            </div>
+            </div> */}
             <div className="demo-logo-vertical" />
             <Menu
               theme="dark"

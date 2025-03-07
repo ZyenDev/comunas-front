@@ -113,7 +113,7 @@ function LoginView() {
                 { required: true, message: "Por favor, ingresa tu Correo!" },
               ]}
             >
-              <Input.Password placeholder="Ingresar Contraseña" />
+              <Input placeholder="Ingresar Contraseña" />
             </Form.Item>
           </Flex>
           <Flex

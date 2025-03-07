@@ -1,6 +1,5 @@
 import {
   Button,
-  Carousel,
   Flex,
   Layout,
   Row,
@@ -14,7 +13,6 @@ import { JSX } from "react";
 import { useNavigate } from "react-router";
 import { UserOutlined } from "@ant-design/icons";
 import logocomuna from "../assets/logo.webp";
-import image01 from "../assets/carousel-img/32r.jpg";
 import image02 from "../assets/carousel-img/cap223.jpg";
 import image03 from "../assets/carousel-img/espc4.jpg";
 import cardimg01 from "../assets/card-img/espc1.png";
@@ -25,14 +23,7 @@ import cajasimg from "../assets/cajas.jpg";
 const { Header, Footer, Content } = Layout;
 const { Title, Paragraph } = Typography;
 const { Meta } = Card;
-const styles = {
-  heading: {
-    fontSize: "2em", // Ajusta el tamaño según tus necesidades
-  },
-  paragraph: {
-    fontSize: "1.2em", // Ajusta el tamaño según tus necesidades
-  },
-};
+
 const headerStyle: React.CSSProperties = {
   textAlign: "center",
   color: "#fff",
@@ -53,7 +44,6 @@ const footerStyle: React.CSSProperties = {
   color: "#fff",
   backgroundColor: "#5c0011",
 };
-
 
 function Landing(): JSX.Element {
   let navigate = useNavigate();
@@ -133,7 +123,6 @@ function Landing(): JSX.Element {
               </Paragraph>
               <Button
                 type="primary"
-                shape="square"
                 size="large"
                 ghost
                 style={{
@@ -266,14 +255,14 @@ function Landing(): JSX.Element {
           >
             {/* Mapa de Google Maps */}
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3932.44733983676!2d-63.20357762589083!3d9.728121577655832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c33475f3ab547b7%3A0xb4028927879acce7!2sAv.%20Principal%20de%20Los%20Godos!5e0!3m2!1ses!2sve!4v1707193193663!5m2!1ses!2sve"
-                width="30%"
-                height="250px"
-                style={{ borderRadius: "10px", border: "none" }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3932.44733983676!2d-63.20357762589083!3d9.728121577655832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c33475f3ab547b7%3A0xb4028927879acce7!2sAv.%20Principal%20de%20Los%20Godos!5e0!3m2!1ses!2sve!4v1707193193663!5m2!1ses!2sve"
+              width="30%"
+              height="250px"
+              style={{ borderRadius: "10px", border: "none" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
             <div style={{ flex: 1 }}>
               <p>
                 Actualmente la comuna "Cacique Jose Miguel Guanaguanay" se

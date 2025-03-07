@@ -7,7 +7,6 @@ import {
   Divider,
   Form,
   Modal,
-  Select,
   Input,
   Popconfirm,
   InputNumber,
@@ -23,12 +22,10 @@ import {
 import { ComunaInterface } from "../../models/ComunaModel";
 import {
   createAmbito,
-  getAllAmbitos,
   getAmbito,
   updateAmbito,
 } from "../../controllers/AmbitoTerritorialController";
 import { DeleteFilled, EditOutlined } from "@ant-design/icons";
-import { DefaultOptionType } from "antd/es/select";
 import {
   MapContainer,
   TileLayer,
@@ -49,7 +46,7 @@ const ComunasHeadContent: React.FC<{
   idComuna?: number;
 }> = ({ open, setOpen, isUpdate, idComuna }) => {
   const [form] = Form.useForm<ComunaInterface>();
-  const [Ambito, setAmbito] = useState<DefaultOptionType[]>();
+  // const [Ambito, setAmbito] = useState<DefaultOptionType[]>();
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
   const { token } = useAuth();
@@ -88,7 +85,7 @@ const ComunasHeadContent: React.FC<{
 
           values.id_ambito_territorial = ambito.id_ambito_territorial;
 
-          const data = await createComuna(values, token ? token : "");
+          await createComuna(values, token ? token : "");
         } else if (idComuna != null) {
           const comuna = await getComunaByID(idComuna, token ? token : "");
           const ambito = await updateAmbito(
@@ -102,7 +99,7 @@ const ComunasHeadContent: React.FC<{
           );
 
           values.id_ambito_territorial = ambito.id_ambito_territorial;
-          const data = await updateComuna(idComuna, values, token ? token : "");
+          await updateComuna(idComuna, values, token ? token : "");
         } else {
           throw new Error("¡Fallo al obtener ID!");
         }
@@ -127,21 +124,21 @@ const ComunasHeadContent: React.FC<{
 
   useEffect(() => {
     if (open) {
-      const getAmbitos = async () => {
-        try {
-          const data = await getAllAmbitos(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_ambito_territorial,
-              label: "Y " + element.latitud + " X" + element.longitud,
-            });
-          });
-          setAmbito(opt);
-        } catch (error) {
-          console.error("Fallo al encontrar Ámbitos Territoriales:", error);
-        }
-      };
+      // const getAmbitos = async () => {
+      //   try {
+      //     const data = await getAllAmbitos(token ? token : "");
+      //     let opt: DefaultOptionType[] = [];
+      //     data.forEach((element) => {
+      //       opt.push({
+      //         value: element.id_ambito_territorial,
+      //         label: "Y " + element.latitud + " X" + element.longitud,
+      //       });
+      //     });
+      //     setAmbito(opt);
+      //   } catch (error) {
+      //     console.error("Fallo al encontrar Ámbitos Territoriales:", error);
+      //   }
+      // };
       const getComunalByid = async () => {
         if (isUpdate && idComuna != null && open) {
           try {
@@ -156,7 +153,7 @@ const ComunasHeadContent: React.FC<{
       };
       getComunalByid();
       setError(false);
-      getAmbitos();
+      // getAmbitos();
     }
   }, [open]);
 

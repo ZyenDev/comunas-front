@@ -60,7 +60,7 @@ const ViviendasContent: React.FC<{
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
-      console.log(values);
+      console.log(error);
       let tipoOcupacionVivienda: TipoOcupacionViviendaInterface = {
         id_tipo_ocupacion: values.id_tipo_ocupacion,
         subtipo_ocupacion: values.subtipo_ocupacion,
@@ -85,7 +85,7 @@ const ViviendasContent: React.FC<{
             values.id_tipo_ocupacion_vivienda = data.id_tipo_ocupacion;
           }
 
-          const datav = await createVivienda(values, token ? token : "");
+          await createVivienda(values, token ? token : "");
         } catch (error) {
           console.log(error);
         }
@@ -97,17 +97,13 @@ const ViviendasContent: React.FC<{
             idVivienda != null &&
             tipoOcupacionVivienda.id_tipo_ocupacion != null
           ) {
-            const datavivienda = await updateTipoOcupacionVivienda(
+            await updateTipoOcupacionVivienda(
               tipoOcupacionVivienda.id_tipo_ocupacion,
               tipoOcupacionVivienda,
               token ? token : ""
             );
 
-            const data = await updateVivienda(
-              idVivienda,
-              values,
-              token ? token : ""
-            );
+            await updateVivienda(idVivienda, values, token ? token : "");
           }
         } catch (error) {
           console.log(error);

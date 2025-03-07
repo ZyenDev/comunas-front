@@ -46,15 +46,12 @@ const HabitanteContent: React.FC<{
       try {
         if (!isUpdated) {
           values.id_vivienda = Number(id_habitantes);
-          const data = await createHabitante(values, token ? token : "");
+          await createHabitante(values, token ? token : "");
         } else if (id_habitante != null) {
           values.id_vivienda = Number(id_habitantes);
-          const data = await updateHabitante(
-            id_habitante,
-            values,
-            token ? token : ""
-          );
+          await updateHabitante(id_habitante, values, token ? token : "");
         } else {
+          console.log(error);
           //este error en teoria es imposible
           throw new Error("fallo a optener un id");
         }
@@ -250,7 +247,10 @@ const HabitanteContent: React.FC<{
                 <Form.Item name="id_pais_origen" label="País de Origen">
                   <Select
                     showSearch
-                    filterOption={(input, option) =>
+                    filterOption={(
+                      input: string,
+                      option?: { label?: string }
+                    ) =>
                       (option?.label ?? "")
                         .toLowerCase()
                         .includes(input.toLowerCase())

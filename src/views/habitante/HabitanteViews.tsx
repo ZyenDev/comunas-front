@@ -134,7 +134,6 @@ const Habitante: React.FC = () => {
           id_habitantes_par,
           token ? token : ""
         );
-        console.log(data);
         data.forEach((item: HabitanteInterface) => {
           item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
         });

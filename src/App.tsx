@@ -1,5 +1,5 @@
 import BasicRouter from "./router/BasicRouter";
-import { Button, ConfigProvider, Space } from "antd";
+import { ConfigProvider } from "antd";
 import React from "react";
 
 const App: React.FC = () => (

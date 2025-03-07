@@ -104,7 +104,7 @@ function SignIn() {
                 { required: true, message: "Por favor ingrese su contraseña!" },
               ]}
             >
-              <Input.Password placeholder="Contraseña" />
+              <Input placeholder="Contraseña" />
             </Form.Item>
             <Form.Item>
               <Button

@@ -26,7 +26,6 @@ import {
 import { ConsejoComunalInterface } from "../../models/ConsejoComunalModel";
 import {
   createAmbito,
-  getAllAmbitos,
   getAmbito,
   updateAmbito,
 } from "../../controllers/AmbitoTerritorialController";
@@ -51,7 +50,6 @@ const ConsejoComunalContent: React.FC<{
   id_consejo?: number;
 }> = ({ open, setOpen, isUpdated, id_consejo }) => {
   const [form] = Form.useForm<ConsejoComunalInterface>();
-  const [Ambito, setAmbito] = useState<DefaultOptionType[]>(); //used
   const [Comuna, setComunas] = useState<DefaultOptionType[]>();
   const [api, contextHolder] = notification.useNotification();
   const { token } = useAuth();
@@ -89,7 +87,7 @@ const ConsejoComunalContent: React.FC<{
             token ? token : ""
           );
           values.id_ambito_territorial = ambito.id_ambito_territorial;
-          const data = await createConsejoComunal(values, token ? token : "");
+          await createConsejoComunal(values, token ? token : "");
         } else if (id_consejo != null) {
           const comuna = await getComunaByID(id_consejo, token ? token : "");
           const ambito = await updateAmbito(
@@ -103,11 +101,7 @@ const ConsejoComunalContent: React.FC<{
           );
 
           values.id_ambito_territorial = ambito.id_ambito_territorial;
-          const data = await updateConsejoComuna(
-            id_consejo,
-            values,
-            token ? token : ""
-          );
+          await updateConsejoComuna(id_consejo, values, token ? token : "");
         } else {
           //este error en teoria es imposible
           throw new Error("fallo a optener un id");
@@ -133,21 +127,21 @@ const ConsejoComunalContent: React.FC<{
 
   useEffect(() => {
     if (open) {
-      const getAmbitos = async () => {
-        try {
-          const data = await getAllAmbitos(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_ambito_territorial,
-              label: "y " + element.latitud + " x" + element.longitud,
-            });
-          });
-          setAmbito(opt);
-        } catch (error) {
-          console.error("Fallo al encontrar Ámbitos Territoriales:", error);
-        }
-      };
+      // const getAmbitos = async () => {
+      //   try {
+      //     const data = await getAllAmbitos(token ? token : "");
+      //     let opt: DefaultOptionType[] = [];
+      //     data.forEach((element) => {
+      //       opt.push({
+      //         value: element.id_ambito_territorial,
+      //         label: "y " + element.latitud + " x" + element.longitud,
+      //       });
+      //     });
+      //     setAmbito(opt);
+      //   } catch (error) {
+      //     console.error("Fallo al encontrar Ámbitos Territoriales:", error);
+      //   }
+      // };
       const getComunas = async () => {
         try {
           const data = await getAllComunas(token ? token : "");
@@ -180,7 +174,7 @@ const ConsejoComunalContent: React.FC<{
       };
       getConsejoComunalbyid();
       getComunas();
-      getAmbitos();
+      // getAmbitos();
       setError(false);
     }
   }, [open]);

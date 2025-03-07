@@ -189,19 +189,42 @@ const ComunasHeadContent: React.FC<{
                 formatter={(value) => `${value}`}
               />
             </Form.Item>
-            <Form.Item
-              name="id_ambito_territorial"
-              label="Ambito Territorial"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, seleccione el Ámbito Territorial!",
-                },
-              ]}
-              validateStatus={error ? "error" : ""}
-            >
-              <Select options={Ambito} />
-            </Form.Item>
+            <Flex gap="small">
+              <Form.Item
+                name="longitud"
+                label="Longitud "
+                rules={[
+                  {
+                    required: true,
+                    message: "¡Por favor, seleccione el Ámbito Territorial!",
+                  },
+                ]}
+                validateStatus={error ? "error" : ""}
+              >
+                <InputNumber
+                  step={0.000001}
+                  stringMode
+                  placeholder="Ingrese la Latitud"
+                />
+              </Form.Item>
+              <Form.Item
+                name="latitud"
+                label="Latitud"
+                rules={[
+                  {
+                    required: true,
+                    message: "¡Por favor, ingrese la Latitud!",
+                  },
+                ]}
+                validateStatus={error ? "error" : ""}
+              >
+                <InputNumber
+                  step={0.000001}
+                  stringMode
+                  placeholder="Ingrese la Latitud"
+                />
+              </Form.Item>
+            </Flex>
           </Form>
         </Modal>
       </Flex>

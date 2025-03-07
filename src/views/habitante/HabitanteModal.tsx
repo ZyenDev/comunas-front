@@ -62,6 +62,7 @@ const HabitanteContent: React.FC<{
           values.id_vivienda = Number(id_habitantes);
           const data = await createHabitante(values);
         } else if (id_habitante != null) {
+          values.id_vivienda = Number(id_habitantes);
           const data = await updateHabitante(id_habitante, values);
         } else {
           //este error en teoria es imposible
@@ -97,7 +98,7 @@ const HabitanteContent: React.FC<{
           }));
           setPaisOrigen(parsedPaises);
         } catch (error) {
-          console.log(error);
+          openNotificationError("fallo al buscar paises origen");
         }
       };
       const getHabitanteById = async () => {
@@ -106,7 +107,7 @@ const HabitanteContent: React.FC<{
             const data = await getHabitanteByID(id_habitante);
             form.setFieldsValue(data);
           } catch (error) {
-            console.log(error);
+            openNotificationError("fallo al buscar habitantes");
           }
         } else {
           form.resetFields();
@@ -153,17 +154,7 @@ const HabitanteContent: React.FC<{
           >
             <Flex vertical>
               <Flex align="center">
-                <Form.Item
-                  name="id_nacionalidad"
-                  label=" "
-                  // rules={[
-                  //   {
-                  //     required: true,
-                  //     message: "Por favor ingrese la nacionalidad",
-                  //   },
-                  // ]}
-                  initialValue={2}
-                >
+                <Form.Item name="id_nacionalidad" label=" " initialValue={2}>
                   <Select
                     style={{ width: "50px" }}
                     defaultValue={2}

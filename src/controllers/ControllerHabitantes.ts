@@ -20,7 +20,7 @@ export const getAllHabitantes = async (): Promise<HabitanteInterface[]> => {
 };
 
 export const getHabitanteByViviendaID = async (id: number): Promise<HabitanteInterface[]> => {
-    const response = await axios.get<HabitanteInterface>(`${baseUrl}/${id}/`);
+    const response = await axios.get<HabitanteInterface[]>(`${apiUrl}/api/habitantes/habitantes/vivienda/${id}/`);
     return response.data;
 };
 

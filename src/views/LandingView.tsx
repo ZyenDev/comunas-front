@@ -13,7 +13,7 @@ import {
 import { JSX } from "react";
 import { useNavigate } from "react-router";
 import { UserOutlined } from "@ant-design/icons";
-import logocomuna from "../assets/logo.png";
+import logocomuna from "../assets/logo.webp";
 import image01 from "../assets/carousel-img/32r.jpg";
 import image02 from "../assets/carousel-img/cap223.jpg";
 import image03 from "../assets/carousel-img/espc4.jpg";
@@ -54,14 +54,6 @@ const footerStyle: React.CSSProperties = {
   backgroundColor: "#5c0011",
 };
 
-const ContentStyle: React.CSSProperties = {
-  margin: 0,
-  height: "660px",
-  color: "#fff",
-  lineHeight: "160px",
-  textAlign: "center",
-  background: "#364d79",
-};
 
 function Landing(): JSX.Element {
   let navigate = useNavigate();

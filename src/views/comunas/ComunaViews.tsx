@@ -22,11 +22,23 @@ import {
 } from "../../controllers/ComunaController";
 import { ComunaInterface } from "../../models/ComunaModel";
 import {
+  createAmbito,
   getAllAmbitos,
   getAmbito,
+  updateAmbito,
 } from "../../controllers/AmbitoTerritorialController";
 import { DeleteFilled, EditOutlined } from "@ant-design/icons";
 import { DefaultOptionType } from "antd/es/select";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvent,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { LatLngTuple } from "leaflet";
+import { useAuth } from "../../components/AuthContext";
 
 const { Content } = Layout;
 
@@ -40,14 +52,57 @@ const ComunasHeadContent: React.FC<{
   const [Ambito, setAmbito] = useState<DefaultOptionType[]>();
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
+  const { token } = useAuth();
+  const [markerPosition, setMarkerPosition] = useState<LatLngTuple | null>(
+    null
+  );
+
+  // Component to handle map click events
+  const MapClickHandler: React.FC = () => {
+    useMapEvent("click", (e) => {
+      setMarkerPosition([e.latlng.lat, e.latlng.lng]);
+    });
+    return null; // This component doesn't render anything
+  };
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
       try {
+        if (!markerPosition) {
+          openNotificationError(
+            "¡Por favor, seleccione una posición en el mapa!"
+          );
+          throw new Error("¡Por favor, seleccione una posición en el mapa!");
+        }
+        const formattedLat = parseFloat(markerPosition[0].toFixed(6));
+        const formattedLng = parseFloat(markerPosition[1].toFixed(6));
         if (!isUpdate) {
-          const data = await createComuna(values);
+          const ambito = await createAmbito(
+            {
+              id_ambito_territorial: 0, // Assuming the backend will generate this ID
+              latitud: formattedLat,
+              longitud: formattedLng,
+            },
+            token ? token : ""
+          );
+
+          values.id_ambito_territorial = ambito.id_ambito_territorial;
+
+          const data = await createComuna(values, token ? token : "");
         } else if (idComuna != null) {
-          const data = await updateComuna(idComuna, values);
+          const comuna = await getComunaByID(idComuna, token ? token : "");
+          const ambito = await updateAmbito(
+            comuna.id_ambito_territorial,
+            {
+              id_ambito_territorial: comuna.id_ambito_territorial, // Assuming the backend will generate this ID
+              latitud: formattedLat,
+              longitud: formattedLng,
+            },
+            token ? token : ""
+          );
+
+          values.id_ambito_territorial = ambito.id_ambito_territorial;
+          const data = await updateComuna(idComuna, values, token ? token : "");
         } else {
           throw new Error("¡Fallo al obtener ID!");
         }
@@ -74,7 +129,7 @@ const ComunasHeadContent: React.FC<{
     if (open) {
       const getAmbitos = async () => {
         try {
-          const data = await getAllAmbitos();
+          const data = await getAllAmbitos(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element) => {
             opt.push({
@@ -90,7 +145,7 @@ const ComunasHeadContent: React.FC<{
       const getComunalByid = async () => {
         if (isUpdate && idComuna != null && open) {
           try {
-            const data = await getComunaByID(idComuna);
+            const data = await getComunaByID(idComuna, token ? token : "");
             form.setFieldsValue(data);
           } catch (error) {
             console.log(error);
@@ -136,6 +191,7 @@ const ComunasHeadContent: React.FC<{
             layout="vertical"
             name="form_in_modal"
             initialValues={{ cantidad_consejo_comunal: 1 }}
+            style={{ width: "100%" }}
           >
             <Form.Item
               name="nombre"
@@ -189,19 +245,45 @@ const ComunasHeadContent: React.FC<{
                 formatter={(value) => `${value}`}
               />
             </Form.Item>
-            <Form.Item
-              name="id_ambito_territorial"
-              label="Ambito Territorial"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, seleccione el Ámbito Territorial!",
-                },
-              ]}
-              validateStatus={error ? "error" : ""}
-            >
-              <Select options={Ambito} />
-            </Form.Item>
+            <Flex gap="small" style={{ width: "100%" }}>
+              <Form.Item
+                style={{ width: "100%" }}
+                name="longitud"
+                label="Ambito territorial"
+                validateStatus={error ? "error" : ""}
+              >
+                <div
+                  style={{
+                    height: "400px",
+                    width: "100%",
+                    backgroundColor: "black",
+                  }}
+                >
+                  <MapContainer
+                    center={[9.74619, -63.18598]}
+                    zoom={14}
+                    style={{ height: "100%", width: "100%" }}
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {markerPosition && (
+                      <Marker position={markerPosition}>
+                        <Popup>
+                          Marker at <br />
+                          Lat: {markerPosition[0].toFixed(4)}, Lng:{" "}
+                          {markerPosition[1].toFixed(4)}
+                        </Popup>
+                      </Marker>
+                    )}
+
+                    {/* Add the MapClickHandler component to handle map clicks */}
+                    <MapClickHandler />
+                  </MapContainer>
+                </div>
+              </Form.Item>
+            </Flex>
           </Form>
         </Modal>
       </Flex>
@@ -215,6 +297,7 @@ const ComunaViews: React.FC = () => {
   const [update, setUpdate] = useState<boolean>(false);
   const [api, contextHolder] = notification.useNotification();
   const [idComuna, setUpdateID] = useState<number>();
+  const { token } = useAuth();
 
   const columns = [
     {
@@ -268,7 +351,7 @@ const ComunaViews: React.FC = () => {
             title="¿Deseas eliminar ésta Comuna?"
             onConfirm={async () => {
               try {
-                await deleteComuna(comuna.id_comuna);
+                await deleteComuna(comuna.id_comuna, token ? token : "");
                 openNotificationSuccess("¡Comuna eliminada con éxito!");
                 getComunas();
               } catch (error: any) {
@@ -287,11 +370,12 @@ const ComunaViews: React.FC = () => {
 
   const getComunas = async () => {
     try {
-      const data = await getAllComunas();
+      const data = await getAllComunas(token ? token : "");
       const mappedData = await Promise.all(
         data.map(async (item) => {
           const nombre_ambito_territorial = await getAmbito(
-            item.id_ambito_territorial
+            item.id_ambito_territorial,
+            token ? token : ""
           );
           return {
             ...item,
@@ -346,6 +430,7 @@ const ComunaViews: React.FC = () => {
           )}
           dataSource={comunas}
           columns={columns}
+          scroll={{ x: "max-content" }}
           pagination={{ pageSize: 5 }}
         />
         <ComunasHeadContent

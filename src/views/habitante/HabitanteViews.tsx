@@ -1,57 +1,33 @@
 //habitante
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  Layout,
-  Flex,
-  Button,
-  Divider,
-  Form,
-  Modal,
-  Select,
-  Input,
-  Popconfirm,
-  notification,
-} from "antd";
-import {
-  getAllComunas,
-  getComunaByID,
-} from "../../controllers/ComunaController";
-import {
-  createConsejoComunal,
-  deleteConsejoComunal,
-  getAllConsejoComunal,
-  getConsejoComunalById,
-  updateConsejoComuna,
-} from "../../controllers/ConsejoComunalController";
+import { Table, Layout, Flex, Button, Popconfirm, notification } from "antd";
 import { ConsejoComunalInterface } from "../../models/ConsejoComunalModel";
-import {
-  getAllAmbitos,
-  getAmbito,
-} from "../../controllers/AmbitoTerritorialController";
 import { DeleteFilled, EditOutlined } from "@ant-design/icons";
-import { DefaultOptionType } from "antd/es/select";
 import HabitanteModal from "./HabitanteModal";
 import {
   deleteHabitante,
-  getAllHabitantes,
   getHabitanteByViviendaID,
 } from "../../controllers/ControllerHabitantes";
 import { HabitanteInterface } from "../../models/HabitanteModel";
 import { useParams } from "react-router";
 import { ViviendaInterface } from "../../models/ViviendaModel";
 import { getViviendaById } from "../../controllers/ViviendaController";
+import { getAllPaisOrigen } from "../../controllers/PaisOrigenController";
+import { PaisOrigenInterface } from "../../models/PaisOrigenModel";
+import { useAuth } from "../../components/AuthContext";
 
 const { Content } = Layout;
 
 const Habitante: React.FC = () => {
   const [habitante, setHabitante] = useState<HabitanteInterface[]>();
   const [vivienda, setVivienda] = useState<ViviendaInterface>();
+  const [paisorigen, setpaisorigen] = useState<PaisOrigenInterface[]>();
   const [open, setOpen] = useState(false);
   const [update, setUpdate] = useState(false);
   const [api, contextHolder] = notification.useNotification();
-  const [id_consejo_update, setUpdateID] = useState<number>();
+  const [id_habitante, setUpdateID] = useState<number>();
   const { id_habitantes } = useParams();
+  const { token } = useAuth();
 
   const columns: any = [
     {
@@ -71,31 +47,6 @@ const Habitante: React.FC = () => {
       dataIndex: "nombre",
       key: "nombre",
     },
-    // {
-    //   title: "Primer Nombre",
-    //   dataIndex: "primer_nombre",
-    //   key: "primer_nombre",
-    // },
-    // {
-    //   title: "Segundo Nombre",
-    //   dataIndex: "segundo_nombre",
-    //   key: "segundo_nombre",
-    // },
-    // {
-    //   title: "Primer Apellido",
-    //   dataIndex: "primer_apellido",
-    //   key: "primer_apellido",
-    // },
-    // {
-    //   title: "Segundo Apellido",
-    //   dataIndex: "segundo_apellido",
-    //   key: "segundo_apellido",
-    // },
-    // {
-    //   title: "Fecha de Nacimiento",
-    //   dataIndex: "fecha_nacimiento",
-    //   key: "fecha_nacimiento",
-    // },
     {
       title: "Edad",
       dataIndex: "edad",
@@ -105,7 +56,7 @@ const Habitante: React.FC = () => {
       title: "Sexo",
       dataIndex: "sexo",
       key: "sexo",
-      render: (sexo: any) => (sexo === "1" ? "Masculino" : "Femenino"),
+      //render: (sexo: any) => console.log(sexo),
     },
     {
       title: "Discapacidad",
@@ -114,7 +65,7 @@ const Habitante: React.FC = () => {
       render: (discapacidad: any) => (discapacidad === 1 ? "Sí" : "No"),
     },
     {
-      title: "Pertenece a Etnia",
+      title: "Etnia",
       dataIndex: "pertenece_etnia",
       key: "pertenece_etnia",
       render: (pertenece_etnia: any) => (pertenece_etnia === 1 ? "Sí" : "No"),
@@ -123,17 +74,18 @@ const Habitante: React.FC = () => {
       title: "Nacionalidad",
       dataIndex: "id_nacionalidad",
       key: "id_nacionalidad",
+      render: (pertenece_etnia: any) =>
+        pertenece_etnia === 2 ? "Venezolano" : "Extrangero",
     },
     {
       title: "País de Origen",
       dataIndex: "id_pais_origen",
       key: "id_pais_origen",
+      render: (id_pais: any) => {
+        const pais = paisorigen?.find((p) => p.id_pais_origen === id_pais);
+        return pais ? pais.nombre : "Venezuela";
+      },
     },
-    // {
-    //   title: "Vivienda",
-    //   dataIndex: "id_vivienda",
-    //   key: "id_vivienda",
-    // },
     {
       title: "Acción",
       key: "action",
@@ -153,7 +105,10 @@ const Habitante: React.FC = () => {
             title="¿Desea eliminar éste Habitante?"
             onConfirm={async () => {
               try {
-                await deleteHabitante(habitante.id_habitante);
+                await deleteHabitante(
+                  habitante.id_habitante,
+                  token ? token : ""
+                );
                 openNotificationSuccess("¡Habitante eliminado con exito!");
                 gethabitante();
               } catch (error: any) {
@@ -175,13 +130,12 @@ const Habitante: React.FC = () => {
       if (id_habitantes != undefined) {
         let id_habitantes_par = parseInt(id_habitantes);
         //const data = await getHabitanteByViviendaID(id_habitantes_par);
-        const data = await getAllHabitantes();
+        const data = await getHabitanteByViviendaID(
+          id_habitantes_par,
+          token ? token : ""
+        );
+        console.log(data);
         data.forEach((item: HabitanteInterface) => {
-          if (item.sexo === "Masculino") {
-            item.sexo = "1";
-          } else {
-            item.sexo = "2";
-          }
           item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
         });
         setHabitante(data);
@@ -193,15 +147,27 @@ const Habitante: React.FC = () => {
   const getVivienda = async () => {
     try {
       if (id_habitantes != undefined) {
-        const data = await getViviendaById(parseInt(id_habitantes));
+        const data = await getViviendaById(
+          parseInt(id_habitantes),
+          token ? token : ""
+        );
         setVivienda(data);
       }
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
     }
   };
+  const getpaisOrigen = async () => {
+    try {
+      const data = await getAllPaisOrigen(token ? token : "");
+      setpaisorigen(data);
+    } catch (error: any) {
+      openNotificationError(error?.message || "Error desconocido.");
+    }
+  };
 
   useEffect(() => {
+    getpaisOrigen();
     getVivienda();
     gethabitante();
   }, []);
@@ -248,7 +214,7 @@ const Habitante: React.FC = () => {
           open={open}
           setOpen={setOpen}
           isUpdated={update}
-          id_habitante={id_consejo_update}
+          id_habitante={id_habitante}
         />
       </Content>
     </>

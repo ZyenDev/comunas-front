@@ -25,11 +25,22 @@ import {
 } from "../../controllers/ConsejoComunalController";
 import { ConsejoComunalInterface } from "../../models/ConsejoComunalModel";
 import {
+  createAmbito,
   getAllAmbitos,
   getAmbito,
+  updateAmbito,
 } from "../../controllers/AmbitoTerritorialController";
 import { DeleteFilled, EditOutlined } from "@ant-design/icons";
 import { DefaultOptionType } from "antd/es/select";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvent,
+} from "react-leaflet";
+import { LatLngTuple } from "leaflet";
+import { useAuth } from "../../components/AuthContext";
 
 const { Content } = Layout;
 
@@ -40,18 +51,63 @@ const ConsejoComunalContent: React.FC<{
   id_consejo?: number;
 }> = ({ open, setOpen, isUpdated, id_consejo }) => {
   const [form] = Form.useForm<ConsejoComunalInterface>();
-  const [Ambito, setAmbito] = useState<DefaultOptionType[]>();
+  const [Ambito, setAmbito] = useState<DefaultOptionType[]>(); //used
   const [Comuna, setComunas] = useState<DefaultOptionType[]>();
   const [api, contextHolder] = notification.useNotification();
+  const { token } = useAuth();
   const [error, setError] = useState(false);
+  const [markerPosition, setMarkerPosition] = useState<LatLngTuple | null>(
+    null
+  );
+
+  // Component to handle map click events
+  const MapClickHandler: React.FC = () => {
+    useMapEvent("click", (e) => {
+      setMarkerPosition([e.latlng.lat, e.latlng.lng]);
+    });
+    return null; // This component doesn't render anything
+  };
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
       try {
+        if (!markerPosition) {
+          openNotificationError(
+            "¡Por favor, seleccione una posición en el mapa!"
+          );
+          throw new Error("¡Por favor, seleccione una posición en el mapa!");
+        }
+        const formattedLat = parseFloat(markerPosition[0].toFixed(6));
+        const formattedLng = parseFloat(markerPosition[1].toFixed(6));
         if (!isUpdated) {
-          const data = await createConsejoComunal(values);
+          const ambito = await createAmbito(
+            {
+              id_ambito_territorial: 0, // Assuming the backend will generate this ID
+              latitud: formattedLat,
+              longitud: formattedLng,
+            },
+            token ? token : ""
+          );
+          values.id_ambito_territorial = ambito.id_ambito_territorial;
+          const data = await createConsejoComunal(values, token ? token : "");
         } else if (id_consejo != null) {
-          const data = await updateConsejoComuna(id_consejo, values);
+          const comuna = await getComunaByID(id_consejo, token ? token : "");
+          const ambito = await updateAmbito(
+            comuna.id_ambito_territorial,
+            {
+              id_ambito_territorial: comuna.id_ambito_territorial, // Assuming the backend will generate this ID
+              latitud: formattedLat,
+              longitud: formattedLng,
+            },
+            token ? token : ""
+          );
+
+          values.id_ambito_territorial = ambito.id_ambito_territorial;
+          const data = await updateConsejoComuna(
+            id_consejo,
+            values,
+            token ? token : ""
+          );
         } else {
           //este error en teoria es imposible
           throw new Error("fallo a optener un id");
@@ -79,7 +135,7 @@ const ConsejoComunalContent: React.FC<{
     if (open) {
       const getAmbitos = async () => {
         try {
-          const data = await getAllAmbitos();
+          const data = await getAllAmbitos(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element) => {
             opt.push({
@@ -94,7 +150,7 @@ const ConsejoComunalContent: React.FC<{
       };
       const getComunas = async () => {
         try {
-          const data = await getAllComunas();
+          const data = await getAllComunas(token ? token : "");
           let opt: DefaultOptionType[] = [];
           data.forEach((element) => {
             opt.push({
@@ -110,7 +166,10 @@ const ConsejoComunalContent: React.FC<{
       const getConsejoComunalbyid = async () => {
         if (isUpdated && id_consejo != null && open) {
           try {
-            const data = await getConsejoComunalById(id_consejo);
+            const data = await getConsejoComunalById(
+              id_consejo,
+              token ? token : ""
+            );
             form.setFieldsValue(data);
           } catch (error) {
             console.log(error);
@@ -192,17 +251,41 @@ const ConsejoComunalContent: React.FC<{
               <Input />
             </Form.Item>
             <Form.Item
-              name="id_ambito_territorial"
-              label="Ámbito Territorial"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, selecciona el Ámbito Territorial!",
-                },
-              ]}
+              style={{ width: "100%" }}
+              name="longitud"
+              label="Ambito territorial"
               validateStatus={error ? "error" : ""}
             >
-              <Select options={Ambito} />
+              <div
+                style={{
+                  height: "400px",
+                  width: "100%",
+                  backgroundColor: "black",
+                }}
+              >
+                <MapContainer
+                  center={[9.74619, -63.18598]}
+                  zoom={14}
+                  style={{ height: "100%", width: "100%" }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  {markerPosition && (
+                    <Marker position={markerPosition}>
+                      <Popup>
+                        Marker at <br />
+                        Lat: {markerPosition[0].toFixed(4)}, Lng:{" "}
+                        {markerPosition[1].toFixed(4)}
+                      </Popup>
+                    </Marker>
+                  )}
+
+                  {/* Add the MapClickHandler component to handle map clicks */}
+                  <MapClickHandler />
+                </MapContainer>
+              </div>
             </Form.Item>
             <Form.Item
               name="id_comuna"
@@ -230,6 +313,7 @@ const ConsejoComunal: React.FC = () => {
   const [update, setUpdate] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [id_consejo_update, setUpdateID] = useState<number>();
+  const { token } = useAuth();
 
   const columns = [
     {
@@ -283,7 +367,10 @@ const ConsejoComunal: React.FC = () => {
             title="¿Desea eliminar éste Consejo Comunal?"
             onConfirm={async () => {
               try {
-                await deleteConsejoComunal(consejo.id_consejo_comunal);
+                await deleteConsejoComunal(
+                  consejo.id_consejo_comunal,
+                  token ? token : ""
+                );
                 openNotificationSuccess("¡Comuna eliminada con exito!");
                 getConsejoComunal();
               } catch (error: any) {
@@ -302,12 +389,16 @@ const ConsejoComunal: React.FC = () => {
 
   const getConsejoComunal = async () => {
     try {
-      const data = await getAllConsejoComunal();
+      const data = await getAllConsejoComunal(token ? token : "");
       const mappedData = await Promise.all(
         data.map(async (item) => {
-          const nombre_comuna = await getComunaByID(item.id_comuna);
+          const nombre_comuna = await getComunaByID(
+            item.id_comuna,
+            token ? token : ""
+          );
           const nombre_ambito_territorial = await getAmbito(
-            item.id_ambito_territorial
+            item.id_ambito_territorial,
+            token ? token : ""
           );
           return {
             ...item,
@@ -363,6 +454,7 @@ const ConsejoComunal: React.FC = () => {
           )}
           dataSource={consejo}
           columns={columns}
+          scroll={{ x: "max-content" }}
           pagination={{ pageSize: 5 }}
         />
         <ConsejoComunalContent

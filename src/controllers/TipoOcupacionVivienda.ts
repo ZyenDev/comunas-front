@@ -4,23 +4,22 @@ import { TipoOcupacionViviendaInterface } from '../models/TipoOcupacionViviendaM
 const apiUrl = import.meta.env.VITE_API_URL;
 const baseUrl = apiUrl + "api/viviendas/tipoocupacionvivienda/";
 
-export const createTipoOcupacionVivienda = async (tipoOcupacionVivienda: TipoOcupacionViviendaInterface): Promise<TipoOcupacionViviendaInterface> => {
-    //esto tiene un int que no deberia estar alli debe ser bool
-    const response = await axios.post(baseUrl, tipoOcupacionVivienda);
+export const createTipoOcupacionVivienda = async (tipoOcupacionVivienda: TipoOcupacionViviendaInterface, token: string): Promise<TipoOcupacionViviendaInterface> => {
+    const response = await axios.post<TipoOcupacionViviendaInterface>(baseUrl, tipoOcupacionVivienda, { headers: { Authorization: `token ${token}` } });
     return response.data;
 };
 
-export const updateTipoOcupacionVivienda = async (id: number , tipoOcupacionVivienda: TipoOcupacionViviendaInterface): Promise<TipoOcupacionViviendaInterface> => {
-    const response = await axios.put(`${baseUrl}${id}`, tipoOcupacionVivienda);
+export const updateTipoOcupacionVivienda = async (id: number, tipoOcupacionVivienda: TipoOcupacionViviendaInterface, token: string): Promise<TipoOcupacionViviendaInterface> => {
+    const response = await axios.put<TipoOcupacionViviendaInterface>(`${baseUrl}${id}`, tipoOcupacionVivienda, { headers: { Authorization: `token ${token}` } });
     return response.data;
 };
 
-export const getAllTipoOcupacionViviendas = async (): Promise<TipoOcupacionViviendaInterface[]> => {
-    const response = await axios.get(baseUrl);
+export const getAllTipoOcupacionViviendas = async (token: string): Promise<TipoOcupacionViviendaInterface[]> => {
+    const response = await axios.get<TipoOcupacionViviendaInterface[]>(baseUrl, { headers: { Authorization: `token ${token}` } });
     return response.data;
 };
 
-export const getTipoOcupacionViviendaById = async (id: string): Promise<TipoOcupacionViviendaInterface> => {
-    const response = await axios.get(`${baseUrl}${id}`);
+export const getTipoOcupacionViviendaById = async (id: string, token: string): Promise<TipoOcupacionViviendaInterface> => {
+    const response = await axios.get<TipoOcupacionViviendaInterface>(`${baseUrl}${id}`, { headers: { Authorization: `token ${token}` } });
     return response.data;
 };

@@ -31,6 +31,7 @@ import { SituacionViviendaInterface } from "../../models/SituacionVivienda";
 import { getAllSituacionVivienda } from "../../controllers/SituacionViviendaController";
 import { TipoOcupacionViviendaInterface } from "../../models/TipoOcupacionViviendaModel";
 import { getAllTipoOcupacionViviendas } from "../../controllers/TipoOcupacionVivienda";
+import { useAuth } from "../../components/AuthContext";
 
 const { Content } = Layout;
 
@@ -50,6 +51,7 @@ const viviendas: React.FC = () => {
   const [TipoOcupacionVivienda, setOcupacionVivienda] =
     useState<TipoOcupacionViviendaInterface[]>();
   let navigate = useNavigate();
+  const { token } = useAuth();
 
   const columns = [
     {
@@ -197,7 +199,7 @@ const viviendas: React.FC = () => {
             title="¿Desea eliminar ésta vivienda?"
             onConfirm={async () => {
               try {
-                await deleteVivienda(vivienda.id_vivienda);
+                await deleteVivienda(vivienda.id_vivienda, token ? token : "");
                 openNotificationSuccess("vivienda eliminada con exito!");
                 getvivieda();
               } catch (error: any) {
@@ -216,23 +218,7 @@ const viviendas: React.FC = () => {
 
   const getvivieda = async () => {
     try {
-      const data = await getAllVivienda();
-      // const mappedData = await Promise.all(
-      //   data.map(async (item) => {
-      //     const nombre_comuna = await getComunaByID(item.id_comuna);
-      //     const nombre_ambito_territorial = await getAmbito(
-      //       item.id_ambito_territorial
-      //     );
-      //     return {
-      //       ...item,
-      //       nombre_ambito_territorial:
-      //         nombre_ambito_territorial.latitud +
-      //         " x " +
-      //         nombre_ambito_territorial.longitud,
-      //       nombre_comuna: nombre_comuna.nombre,
-      //     };
-      //   })
-      //  );
+      const data = await getAllVivienda(token ? token : "");
       setVivienda(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
@@ -240,7 +226,7 @@ const viviendas: React.FC = () => {
   };
   const getconsejos = async () => {
     try {
-      const data = await getAllConsejoComunal();
+      const data = await getAllConsejoComunal(token ? token : "");
       setConsejo(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
@@ -248,7 +234,7 @@ const viviendas: React.FC = () => {
   };
   const getTiposViviendas = async () => {
     try {
-      const data = await getAllTipoVivienda();
+      const data = await getAllTipoVivienda(token ? token : "");
       setTipoVivienda(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
@@ -256,7 +242,7 @@ const viviendas: React.FC = () => {
   };
   const getTiposTecho = async () => {
     try {
-      const data = await getAllTipoTecho();
+      const data = await getAllTipoTecho(token ? token : "");
       setTipoTecho(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
@@ -264,7 +250,7 @@ const viviendas: React.FC = () => {
   };
   const getTipoPareds = async () => {
     try {
-      const data = await getAllTipoPared();
+      const data = await getAllTipoPared(token ? token : "");
       setTipoPared(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
@@ -272,7 +258,7 @@ const viviendas: React.FC = () => {
   };
   const getTipoPiso = async () => {
     try {
-      const data = await getAllTipoPiso();
+      const data = await getAllTipoPiso(token ? token : "");
       setTipoPiso(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
@@ -280,7 +266,7 @@ const viviendas: React.FC = () => {
   };
   const getSituacionVivienda = async () => {
     try {
-      const data = await getAllSituacionVivienda();
+      const data = await getAllSituacionVivienda(token ? token : "");
       setSituacionVivienta(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
@@ -288,7 +274,7 @@ const viviendas: React.FC = () => {
   };
   const getTipoOcupacionVivienda = async () => {
     try {
-      const data = await getAllTipoOcupacionViviendas();
+      const data = await getAllTipoOcupacionViviendas(token ? token : "");
       setOcupacionVivienda(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");

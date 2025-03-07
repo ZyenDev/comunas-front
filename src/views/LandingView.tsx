@@ -42,17 +42,6 @@ const footerStyle: React.CSSProperties = {
   backgroundColor: "#5c0011",
 };
 
-const CcontentStyle: React.CSSProperties = {
-  margin: 0,
-  height: "660px",
-  color: "#fff",
-  lineHeight: "160px",
-  textAlign: "center",
-  background: "#364d79",
-  backgroundImage:
-    "url(https://cdn.pixabay.com/photo/2020/10/22/16/14/building-5676506_960_720.jpg)",
-};
-
 function Landing(): JSX.Element {
   let navigate = useNavigate();
 

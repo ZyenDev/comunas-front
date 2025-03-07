@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   UsergroupAddOutlined,
   HomeOutlined,
@@ -6,11 +6,12 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import type { MenuProps } from "antd";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu } from "antd";
 import { Outlet } from "react-router";
 import { Link } from "react-router";
+import { useAuth } from "../components/AuthContext";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -55,6 +56,8 @@ const items: MenuItem[] = [
 ];
 
 const Dashboard: React.FC = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const siderStyle: React.CSSProperties = {
     overflow: "auto",
     height: "100vh",
@@ -102,19 +105,20 @@ const Dashboard: React.FC = () => {
             />
           </div>
           <div style={{ marginTop: "auto" }}>
-            <Menu
-              theme="dark"
-              mode="inline"
-              items={[
-                getItem(
-                  <Link to="/logout">
-                    <UserOutlined />
-                    <span>Cerrar Sesión</span>
-                  </Link>,
-                  "logout"
-                ),
-              ]}
-            />
+            <Menu theme="dark" mode="inline">
+              <Menu.Item
+                key="logout"
+                icon={<UserOutlined />}
+                onClick={() => {
+                  logout();
+                  setTimeout(() => {
+                    navigate("/");
+                  }, 2000);
+                }}
+              >
+                Cerrar Sesión
+              </Menu.Item>
+            </Menu>
           </div>
         </div>
       </Sider>

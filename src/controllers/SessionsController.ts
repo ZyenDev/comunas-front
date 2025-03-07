@@ -6,7 +6,7 @@ const baseUrl = apiUrl + "api";
 
 
 export const Login = async (data: LoginInterface) => {
-        const response = await axios.post(`${baseUrl}/login/`, data);
+        const response = await axios.post(`${baseUrl}/login`, data);
         return response.data;
    
 };

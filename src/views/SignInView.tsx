@@ -1,26 +1,19 @@
-import React, { useState, useContext } from "react";
-import {
-  Button,
-  Flex,
-  Typography,
-  Carousel,
-  Image,
-  Form,
-  notification,
-} from "antd";
-import { UserOutlined, EyeOutlined, MailOutlined } from "@ant-design/icons";
-import Checkbox from "antd/es/checkbox/Checkbox";
+import { Button, Flex, Typography, Image, Form, notification } from "antd";
+import { UserOutlined, MailOutlined } from "@ant-design/icons";
 import Input from "antd/es/input/Input";
 import { Link } from "react-router";
 import logo from "../assets/logo.webp";
 import CarouselCompo from "../components/CarouselComponent";
 import { Register } from "../controllers/SessionsController";
 import { useNavigate } from "react-router";
-const { Title, Paragraph, Text } = Typography;
+import { useAuth } from "../components/AuthContext";
+const { Title, Text } = Typography;
 
 function SignIn() {
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
+  const { login } = useAuth();
+
   const navigate = useNavigate();
   const onFinish = (values: any) => {
     const registrar = async () => {
@@ -30,6 +23,7 @@ function SignIn() {
           message: "Registro exitoso",
           description: "Su Usuario ha sido creado exitosamente.",
         });
+        login(data.token);
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);

@@ -1,40 +1,11 @@
 //habitante
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  Layout,
-  Flex,
-  Button,
-  Divider,
-  Form,
-  Modal,
-  Select,
-  Input,
-  Popconfirm,
-  notification,
-} from "antd";
-import {
-  getAllComunas,
-  getComunaByID,
-} from "../../controllers/ComunaController";
-import {
-  createConsejoComunal,
-  deleteConsejoComunal,
-  getAllConsejoComunal,
-  getConsejoComunalById,
-  updateConsejoComuna,
-} from "../../controllers/ConsejoComunalController";
+import { Table, Layout, Flex, Button, Popconfirm, notification } from "antd";
 import { ConsejoComunalInterface } from "../../models/ConsejoComunalModel";
-import {
-  getAllAmbitos,
-  getAmbito,
-} from "../../controllers/AmbitoTerritorialController";
 import { DeleteFilled, EditOutlined } from "@ant-design/icons";
-import { DefaultOptionType } from "antd/es/select";
 import HabitanteModal from "./HabitanteModal";
 import {
   deleteHabitante,
-  getAllHabitantes,
   getHabitanteByViviendaID,
 } from "../../controllers/ControllerHabitantes";
 import { HabitanteInterface } from "../../models/HabitanteModel";
@@ -43,6 +14,7 @@ import { ViviendaInterface } from "../../models/ViviendaModel";
 import { getViviendaById } from "../../controllers/ViviendaController";
 import { getAllPaisOrigen } from "../../controllers/PaisOrigenController";
 import { PaisOrigenInterface } from "../../models/PaisOrigenModel";
+import { useAuth } from "../../components/AuthContext";
 
 const { Content } = Layout;
 
@@ -55,7 +27,7 @@ const Habitante: React.FC = () => {
   const [api, contextHolder] = notification.useNotification();
   const [id_habitante, setUpdateID] = useState<number>();
   const { id_habitantes } = useParams();
-  const [consejo, setConsejo] = useState<ConsejoComunalInterface[]>();
+  const { token } = useAuth();
 
   const columns: any = [
     {
@@ -133,7 +105,10 @@ const Habitante: React.FC = () => {
             title="¿Desea eliminar éste Habitante?"
             onConfirm={async () => {
               try {
-                await deleteHabitante(habitante.id_habitante);
+                await deleteHabitante(
+                  habitante.id_habitante,
+                  token ? token : ""
+                );
                 openNotificationSuccess("¡Habitante eliminado con exito!");
                 gethabitante();
               } catch (error: any) {
@@ -155,7 +130,10 @@ const Habitante: React.FC = () => {
       if (id_habitantes != undefined) {
         let id_habitantes_par = parseInt(id_habitantes);
         //const data = await getHabitanteByViviendaID(id_habitantes_par);
-        const data = await getHabitanteByViviendaID(id_habitantes_par);
+        const data = await getHabitanteByViviendaID(
+          id_habitantes_par,
+          token ? token : ""
+        );
         console.log(data);
         data.forEach((item: HabitanteInterface) => {
           item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
@@ -169,7 +147,10 @@ const Habitante: React.FC = () => {
   const getVivienda = async () => {
     try {
       if (id_habitantes != undefined) {
-        const data = await getViviendaById(parseInt(id_habitantes));
+        const data = await getViviendaById(
+          parseInt(id_habitantes),
+          token ? token : ""
+        );
         setVivienda(data);
       }
     } catch (error: any) {
@@ -178,7 +159,7 @@ const Habitante: React.FC = () => {
   };
   const getpaisOrigen = async () => {
     try {
-      const data = await getAllPaisOrigen();
+      const data = await getAllPaisOrigen(token ? token : "");
       setpaisorigen(data);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");

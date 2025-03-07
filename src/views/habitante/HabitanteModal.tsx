@@ -1,8 +1,6 @@
 //habitante
 import React, { useEffect, useState } from "react";
 import {
-  Table,
-  Layout,
   Flex,
   Button,
   Divider,
@@ -10,31 +8,18 @@ import {
   Modal,
   Select,
   Input,
-  Popconfirm,
   notification,
   Checkbox,
 } from "antd";
 import {
-  getAllComunas,
-  getComunaByID,
-} from "../../controllers/ComunaController";
-import {
   createHabitante,
-  deleteHabitante,
-  getAllHabitantes,
   getHabitanteByID,
   updateHabitante,
 } from "../../controllers/ControllerHabitantes";
 import { HabitanteInterface } from "../../models/HabitanteModel";
-import {
-  getAllAmbitos,
-  getAmbito,
-} from "../../controllers/AmbitoTerritorialController";
-import { DeleteFilled, EditOutlined } from "@ant-design/icons";
-import { DefaultOptionType } from "antd/es/select";
 import { useParams } from "react-router";
-import { PaisOrigenInterface } from "../../models/PaisOrigenModel";
 import { getAllPaisOrigen } from "../../controllers/PaisOrigenController";
+import { useAuth } from "../../components/AuthContext";
 
 const HabitanteContent: React.FC<{
   open: boolean;
@@ -46,6 +31,7 @@ const HabitanteContent: React.FC<{
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
   const [paisOrigen, setPaisOrigen] = useState<any>();
+  const { token } = useAuth();
   const [vene, setNAd] = useState<boolean>(false);
   const { id_habitantes } = useParams();
 
@@ -60,10 +46,14 @@ const HabitanteContent: React.FC<{
       try {
         if (!isUpdated) {
           values.id_vivienda = Number(id_habitantes);
-          const data = await createHabitante(values);
+          const data = await createHabitante(values, token ? token : "");
         } else if (id_habitante != null) {
           values.id_vivienda = Number(id_habitantes);
-          const data = await updateHabitante(id_habitante, values);
+          const data = await updateHabitante(
+            id_habitante,
+            values,
+            token ? token : ""
+          );
         } else {
           //este error en teoria es imposible
           throw new Error("fallo a optener un id");
@@ -91,7 +81,7 @@ const HabitanteContent: React.FC<{
     if (open) {
       const getPaises = async () => {
         try {
-          const paises = await getAllPaisOrigen();
+          const paises = await getAllPaisOrigen(token ? token : "");
           const parsedPaises = paises.map((pais) => ({
             label: pais.nombre,
             value: pais.id_pais_origen,
@@ -104,7 +94,10 @@ const HabitanteContent: React.FC<{
       const getHabitanteById = async () => {
         if (isUpdated && id_habitante != null && open) {
           try {
-            const data = await getHabitanteByID(id_habitante);
+            const data = await getHabitanteByID(
+              id_habitante,
+              token ? token : ""
+            );
             form.setFieldsValue(data);
           } catch (error) {
             openNotificationError("fallo al buscar habitantes");

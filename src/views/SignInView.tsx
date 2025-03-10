@@ -1,5 +1,10 @@
 import { Button, Flex, Typography, Image, Form, notification } from "antd";
-import { UserOutlined, MailOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  MailOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import Input from "antd/es/input/Input";
 import { Link } from "react-router";
 import logo from "../assets/logo.webp";
@@ -7,32 +12,35 @@ import CarouselCompo from "../components/CarouselComponent";
 import { Register } from "../controllers/SessionsController";
 import { useNavigate } from "react-router";
 import { useAuth } from "../components/AuthContext";
+import { useState } from "react";
 const { Title, Text } = Typography;
 
 function SignIn() {
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
+  const [loading, setLoading] = useState<boolean>(false);
   const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState(true);
 
   const navigate = useNavigate();
   const onFinish = (values: any) => {
     const registrar = async () => {
       try {
+        setLoading(true);
         const data = await Register(values);
         api.success({
-          message: "Registro exitoso",
-          description: "Su Usuario ha sido creado exitosamente.",
+          message: "¡Registro exitoso!",
+          description: "¡Su Usuario ha sido creado exitosamente!",
         });
         login(data.token);
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 2000);
+        navigate("/dashboard");
         form.resetFields();
       } catch (error) {
+        setLoading(false);
         api.error({
-          message: "Error en el registro",
+          message: "Error en el registro.",
           description:
-            "Hubo un problema al crear su Usuario. Por favor, intente nuevamente.",
+            "¡Hubo un problema al crear su Usuario. Por favor, intente nuevamente!",
         });
       }
     };
@@ -79,7 +87,7 @@ function SignIn() {
             <Form.Item
               name="username"
               rules={[
-                { required: true, message: "Por favor ingrese su usuario!" },
+                { required: true, message: "¡Por favor, ingrese su Usuario!" },
               ]}
             >
               <Input placeholder="Usuario" suffix={<UserOutlined />} />
@@ -89,7 +97,7 @@ function SignIn() {
               rules={[
                 {
                   required: true,
-                  message: "Por favor ingrese su correo electrónico!",
+                  message: "¡Por favor, ingrese su Correo Electrónico!",
                 },
               ]}
             >
@@ -101,13 +109,35 @@ function SignIn() {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: "Por favor ingrese su contraseña!" },
+                {
+                  required: true,
+                  message: "¡Por favor, ingrese su Contraseña!",
+                },
               ]}
             >
-              <Input placeholder="Contraseña" />
+              <div style={{ position: "relative" }}>
+                <Input
+                  type={showPassword ? "password" : "text"}
+                  placeholder="Ingresa tu Contraseña"
+                />
+                <Button
+                  type="text"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  style={{
+                    position: "absolute",
+                    right: 10,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
+                  icon={
+                    showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />
+                  }
+                />
+              </div>
             </Form.Item>
             <Form.Item>
               <Button
+                loading={loading}
                 type="primary"
                 htmlType="submit"
                 style={{ width: "100%" }}

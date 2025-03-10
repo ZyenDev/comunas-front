@@ -53,7 +53,7 @@ const HabitanteContent: React.FC<{
         } else {
           console.log(error);
           //este error en teoria es imposible
-          throw new Error("fallo a optener un id");
+          throw new Error("¡Fallo al obtener el ID!");
         }
         form.resetFields();
         setOpen(false);
@@ -97,7 +97,7 @@ const HabitanteContent: React.FC<{
             );
             form.setFieldsValue(data);
           } catch (error) {
-            openNotificationError("fallo al buscar habitantes");
+            openNotificationError("¡Fallo al obtener Habitantes!");
           }
         } else {
           form.resetFields();
@@ -164,7 +164,10 @@ const HabitanteContent: React.FC<{
                   name="cedula"
                   label="Cédula"
                   rules={[
-                    { required: true, message: "Por favor ingrese la cédula" },
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese la Cédula!",
+                    },
                   ]}
                 >
                   <Input />
@@ -176,7 +179,7 @@ const HabitanteContent: React.FC<{
                 rules={[
                   {
                     required: true,
-                    message: "Por favor ingrese el primer nombre",
+                    message: "¡Por favor, ingrese el Primer Nombre!",
                   },
                 ]}
               >
@@ -191,7 +194,7 @@ const HabitanteContent: React.FC<{
                 rules={[
                   {
                     required: true,
-                    message: "Por favor ingrese el primer apellido",
+                    message: "¡Por favor, ingrese el Primer Apellido!",
                   },
                 ]}
               >
@@ -206,7 +209,7 @@ const HabitanteContent: React.FC<{
                 rules={[
                   {
                     required: true,
-                    message: "Por favor ingrese la fecha de nacimiento",
+                    message: "¡Por favor, ingrese la Fecha de Nacimiento!",
                   },
                 ]}
               >
@@ -218,7 +221,10 @@ const HabitanteContent: React.FC<{
                 name="sexo"
                 label="Sexo"
                 rules={[
-                  { required: true, message: "Por favor seleccione el sexo" },
+                  {
+                    required: true,
+                    message: "¡Por favor, seleccione el Sexo!",
+                  },
                 ]}
               >
                 <Select>
@@ -236,7 +242,7 @@ const HabitanteContent: React.FC<{
               </Form.Item>
               <Form.Item
                 name="pertenece_etnia"
-                label="Pertenece a Etnia"
+                label="¿Pertenece a una Etnia?"
                 valuePropName="checked"
                 initialValue={false}
               >

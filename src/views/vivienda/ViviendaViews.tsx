@@ -46,6 +46,7 @@ const viviendas: React.FC = () => {
   const [tipoTecho, setTipoTecho] = useState<TipoTechoInterface[]>();
   const [tipoPared, setTipoPared] = useState<TipoParedInteface[]>();
   const [tipoPiso, setTipoPiso] = useState<TipoPisoInterface[]>();
+  const [loading, setLoading] = useState(true);
   const [situacionVivienda, setSituacionVivienta] =
     useState<SituacionViviendaInterface[]>();
   const [TipoOcupacionVivienda, setOcupacionVivienda] =
@@ -217,6 +218,7 @@ const viviendas: React.FC = () => {
   ];
 
   const getvivieda = async () => {
+    setLoading(true);
     try {
       const data = await getAllVivienda(token ? token : "");
       setVivienda(data);
@@ -290,9 +292,11 @@ const viviendas: React.FC = () => {
     getTiposViviendas();
     getconsejos();
     getvivieda();
+    setLoading(false);
   }, []);
   useEffect(() => {
     getvivieda();
+    setLoading(false);
   }, [open]);
 
   const showModal = () => {
@@ -326,6 +330,7 @@ const viviendas: React.FC = () => {
           )}
           dataSource={vienda}
           columns={columns}
+          loading={loading}
           pagination={{ pageSize: 5 }}
           scroll={{ x: "max-content" }}
         />

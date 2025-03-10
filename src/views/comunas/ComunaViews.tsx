@@ -48,6 +48,7 @@ const ComunasHeadContent: React.FC<{
   const [form] = Form.useForm<ComunaInterface>();
   // const [Ambito, setAmbito] = useState<DefaultOptionType[]>();
   const [api, contextHolder] = notification.useNotification();
+
   const [error, setError] = useState(false);
   const { token } = useAuth();
   const [markerPosition, setMarkerPosition] = useState<LatLngTuple | null>(
@@ -268,14 +269,13 @@ const ComunasHeadContent: React.FC<{
                     {markerPosition && (
                       <Marker position={markerPosition}>
                         <Popup>
-                          Marker at <br />
+                          Puntero en <br />
                           Lat: {markerPosition[0].toFixed(4)}, Lng:{" "}
                           {markerPosition[1].toFixed(4)}
                         </Popup>
                       </Marker>
                     )}
 
-                    {/* Add the MapClickHandler component to handle map clicks */}
                     <MapClickHandler />
                   </MapContainer>
                 </div>
@@ -294,6 +294,7 @@ const ComunaViews: React.FC = () => {
   const [update, setUpdate] = useState<boolean>(false);
   const [api, contextHolder] = notification.useNotification();
   const [idComuna, setUpdateID] = useState<number>();
+  const [loading, setLoading] = useState(true);
   const { token } = useAuth();
 
   const columns = [
@@ -384,7 +385,9 @@ const ComunaViews: React.FC = () => {
         })
       );
       setComunas(mappedData);
+      setLoading(false);
     } catch (error: any) {
+      setLoading(false);
       openNotificationError(error?.message || "Error desconocido.");
     }
   };
@@ -427,6 +430,7 @@ const ComunaViews: React.FC = () => {
           )}
           dataSource={comunas}
           columns={columns}
+          loading={loading}
           scroll={{ x: "max-content" }}
           pagination={{ pageSize: 5 }}
         />

@@ -7,7 +7,11 @@ import {
   Image,
   notification,
 } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import Input from "antd/es/input/Input";
 import { Link, useNavigate } from "react-router";
 import logo from "../assets/logo.webp";
@@ -15,6 +19,7 @@ import CarouselCompo from "../components/CarouselComponent";
 import { useAuth } from "../components/AuthContext";
 import { Login } from "../controllers/SessionsController";
 import { LoginInterface } from "../models/SessionsModel";
+import { useState } from "react";
 
 const { Title, Text } = Typography;
 
@@ -27,7 +32,9 @@ type FieldType = {
 function LoginView() {
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
+  const [loading, setLoading] = useState<boolean>(false);
   const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState(true);
 
   const navigate = useNavigate();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -38,21 +45,21 @@ function LoginView() {
           password: values.password ? values.password : "",
         };
 
+        setLoading(true);
         const data = await Login(loginData);
         api.success({
-          message: "Registro exitoso",
-          description: "Su Usuario ha sido creado exitosamente.",
+          message: "¡Registro exitoso!",
+          description: "¡Su Usuario ha sido creado exitosamente!",
         });
         login(data.token);
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 2000);
+        navigate("/dashboard");
         form.resetFields();
       } catch (error) {
+        setLoading(false);
         api.error({
-          message: "Error en el registro",
+          message: "Error al iniciar.",
           description:
-            "Hubo un problema al crear su Usuario. Por favor, intente nuevamente.",
+            "¡Hubo un problema al iniciar su Usuario. Por favor, intente nuevamente!",
         });
       }
     };
@@ -102,7 +109,10 @@ function LoginView() {
             <Form.Item<FieldType>
               name="email"
               rules={[
-                { required: true, message: "Por favor, ingresa tu Correo!" },
+                {
+                  required: true,
+                  message: "¡Por favor, ingresa tu Correo Electrónico!",
+                },
               ]}
             >
               <Input placeholder="Ingresar Correo" suffix={<UserOutlined />} />
@@ -110,10 +120,31 @@ function LoginView() {
             <Form.Item<FieldType>
               name="password"
               rules={[
-                { required: true, message: "Por favor, ingresa tu Correo!" },
+                {
+                  required: true,
+                  message: "¡Por favor, ingresa tu Contraseña!",
+                },
               ]}
             >
-              <Input placeholder="Ingresar Contraseña" />
+              <div style={{ position: "relative" }}>
+                <Input
+                  type={showPassword ? "password" : "text"}
+                  placeholder="Ingresa tu Contraseña"
+                />
+                <Button
+                  type="text"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  style={{
+                    position: "absolute",
+                    right: 10,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
+                  icon={
+                    showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />
+                  }
+                />
+              </div>
             </Form.Item>
           </Flex>
           <Flex
@@ -124,6 +155,7 @@ function LoginView() {
           >
             <Form.Item style={{ width: "80%" }}>
               <Button
+                loading={loading}
                 type="primary"
                 htmlType="submit"
                 style={{ width: "100%" }}

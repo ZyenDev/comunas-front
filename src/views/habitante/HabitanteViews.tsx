@@ -24,6 +24,7 @@ const Habitante: React.FC = () => {
   const [paisorigen, setpaisorigen] = useState<PaisOrigenInterface[]>();
   const [open, setOpen] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [api, contextHolder] = notification.useNotification();
   const [id_habitante, setUpdateID] = useState<number>();
   const { id_habitantes } = useParams();
@@ -138,8 +139,10 @@ const Habitante: React.FC = () => {
           item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
         });
         setHabitante(data);
+        setLoading(false);
       }
     } catch (error: any) {
+      setLoading(false);
       openNotificationError(error?.message || "Error desconocido.");
     }
   };
@@ -205,6 +208,7 @@ const Habitante: React.FC = () => {
             </Flex>
           )}
           dataSource={habitante}
+          loading={loading}
           columns={columns}
           pagination={{ pageSize: 5 }}
           scroll={{ x: "max-content" }}

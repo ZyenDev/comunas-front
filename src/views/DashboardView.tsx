@@ -111,9 +111,7 @@ const Dashboard: React.FC = () => {
                 icon={<UserOutlined />}
                 onClick={() => {
                   logout();
-                  setTimeout(() => {
-                    navigate("/");
-                  }, 2000);
+                  navigate("/");
                 }}
               >
                 Cerrar Sesión

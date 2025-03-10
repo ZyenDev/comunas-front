@@ -20,4 +20,7 @@ export interface ViviendaInterface {
     subtipo_ocupacion: string;
     tiene_documentacion: boolean;
     respuesta_otro?: string;
+    //solo para parse
+    id_estado: number;
+    direccion: string;
 }

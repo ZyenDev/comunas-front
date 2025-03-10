@@ -51,6 +51,7 @@ const ConsejoComunalContent: React.FC<{
 }> = ({ open, setOpen, isUpdated, id_consejo }) => {
   const [form] = Form.useForm<ConsejoComunalInterface>();
   const [Comuna, setComunas] = useState<DefaultOptionType[]>();
+
   const [api, contextHolder] = notification.useNotification();
   const { token } = useAuth();
   const [error, setError] = useState(false);
@@ -104,7 +105,7 @@ const ConsejoComunalContent: React.FC<{
           await updateConsejoComuna(id_consejo, values, token ? token : "");
         } else {
           //este error en teoria es imposible
-          throw new Error("fallo a optener un id");
+          throw new Error("¡Fallo al obtener ID!");
         }
         form.resetFields();
         setOpen(false);
@@ -305,6 +306,7 @@ const ConsejoComunal: React.FC = () => {
   const [consejo, setConsejoComunal] = useState<ConsejoComunalInterface[]>();
   const [open, setOpen] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [api, contextHolder] = notification.useNotification();
   const [id_consejo_update, setUpdateID] = useState<number>();
   const { token } = useAuth();
@@ -404,9 +406,11 @@ const ConsejoComunal: React.FC = () => {
           };
         })
       );
+      setLoading(false);
       setConsejoComunal(mappedData);
     } catch (error: any) {
       openNotificationError(error?.message || "Error desconocido.");
+      setLoading(false);
     }
   };
 
@@ -448,6 +452,7 @@ const ConsejoComunal: React.FC = () => {
           )}
           dataSource={consejo}
           columns={columns}
+          loading={loading}
           scroll={{ x: "max-content" }}
           pagination={{ pageSize: 5 }}
         />

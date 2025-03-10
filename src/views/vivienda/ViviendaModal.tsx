@@ -20,7 +20,7 @@ import {
 } from "../../controllers/ViviendaController";
 import { ViviendaInterface } from "../../models/ViviendaModel";
 import { UbicacionInterface } from "../../models/UbicacionModel";
-import { getAllUbicaciones } from "../../controllers/UbicacionController";
+import { createUbicacion } from "../../controllers/UbicacionController";
 import { getAllConsejoComunal } from "../../controllers/ConsejoComunalController";
 import { DefaultOptionType } from "antd/es/select";
 import { getAllTipoVivienda } from "../../controllers/TipoViviendaController";
@@ -36,6 +36,10 @@ import {
   updateTipoOcupacionVivienda,
 } from "../../controllers/TipoOcupacionVivienda";
 import { useAuth } from "../../components/AuthContext";
+// import { getAllEstados } from "../../controllers/EstadoController";
+import { getMunicipioByEstadosID } from "../../controllers/MunicipioController";
+import { getParroquiaByMunicipio } from "../../controllers/ParroquiaController";
+import { getSectorByParroquia } from "../../controllers/SectorController";
 
 const ViviendasContent: React.FC<{
   open: boolean;
@@ -44,8 +48,8 @@ const ViviendasContent: React.FC<{
   idVivienda?: number;
 }> = ({ open, setOpen, isUpdated, idVivienda: idVivienda }) => {
   const [form] = Form.useForm<ViviendaInterface>();
-  const [ubicacion, setUbicacion] = useState<DefaultOptionType[]>();
   const [Comuna, setComunas] = useState<DefaultOptionType[]>();
+
   const [tipoVivienda, setTipoVivienda] = useState<DefaultOptionType[]>();
   const [tipoTecho, setTipoTecho] = useState<DefaultOptionType[]>();
   const [tipoPared, setTipoPared] = useState<DefaultOptionType[]>();
@@ -58,9 +62,21 @@ const ViviendasContent: React.FC<{
   const [error, setError] = useState(false);
   const { token } = useAuth();
 
+  //ubicacion
+  // const [estadosOpt, setEstadosOpt] = useState<DefaultOptionType[]>();
+  // const [estadoSelect, setEstadoSelect] = useState<number>();
+
+  const [municipioOpt, setMunicipioOpt] = useState<DefaultOptionType[]>();
+  const [municipioSelect, setMunicipioSelect] = useState<number>();
+
+  const [parroquiaOpt, setparroquiaOpt] = useState<DefaultOptionType[]>();
+  const [parroquiaSelect, setParroquiaSelect] = useState<number>();
+
+  const [sectorOpt, setSectorOpt] = useState<DefaultOptionType[]>();
+  const [sectorSelect, setSectorSelect] = useState<number>();
+
   const handleOk = () => {
     form.validateFields().then(async (values) => {
-      console.log(error);
       let tipoOcupacionVivienda: TipoOcupacionViviendaInterface = {
         id_tipo_ocupacion: values.id_tipo_ocupacion,
         subtipo_ocupacion: values.subtipo_ocupacion,
@@ -68,29 +84,37 @@ const ViviendasContent: React.FC<{
         tiene_documentacion: values.tiene_documentacion,
         respuesta_otro: values.respuesta_otro,
       };
+      let ubicacion: UbicacionInterface = {
+        id_ubicacion: values.id_ubicacion,
+        id_parroquia: parroquiaSelect ? parroquiaSelect : 0,
+        id_sector: sectorSelect ? sectorSelect : 0,
+        direccion: values.direccion,
+      };
       if (!isUpdated) {
-        //TODO:finish
         try {
           if (tipoOcupacionVivienda.respuesta_otro !== null) {
             tipoOcupacionVivienda.respuesta_otro = "a";
           }
 
+          const ubica = await createUbicacion(ubicacion, token ? token : "");
+
+          values.id_ubicacion = ubica.id_ubicacion;
           const data = await createTipoOcupacionVivienda(
             tipoOcupacionVivienda,
             token ? token : ""
           );
-          console.log(data.id_tipo_ocupacion);
 
           if (data.id_tipo_ocupacion !== undefined) {
             values.id_tipo_ocupacion_vivienda = data.id_tipo_ocupacion;
           }
 
           await createVivienda(values, token ? token : "");
-        } catch (error) {
           console.log(error);
+        } catch (error) {
+          openNotificationError("¡Error al crear la Vivienda!");
         }
         setOpen(false);
-        openNotificationSuccess("se creo la vivienda");
+        openNotificationSuccess("¡Vivienda creada con exito!");
       } else {
         try {
           if (
@@ -106,7 +130,7 @@ const ViviendasContent: React.FC<{
             await updateVivienda(idVivienda, values, token ? token : "");
           }
         } catch (error) {
-          console.log(error);
+          openNotificationError("¡Error al actualizar la Vivienda!");
           return;
         }
       }
@@ -120,21 +144,6 @@ const ViviendasContent: React.FC<{
 
   useEffect(() => {
     if (open) {
-      const getUbicaciones = async () => {
-        try {
-          const data = await getAllUbicaciones(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element: UbicacionInterface) => {
-            opt.push({
-              value: element.id_ubicacion,
-              label: element.direccion,
-            });
-          });
-          setUbicacion(opt);
-        } catch (error) {
-          openNotificationError("Error");
-        }
-      };
       const getTipoVivienda = async () => {
         try {
           const data = await getAllTipoVivienda(token ? token : "");
@@ -147,7 +156,7 @@ const ViviendasContent: React.FC<{
           });
           setTipoVivienda(opt);
         } catch (error) {
-          openNotificationError("Error");
+          openNotificationError("Error.");
         }
       };
       const getTipoTecho = async () => {
@@ -162,7 +171,7 @@ const ViviendasContent: React.FC<{
           });
           setTipoTecho(opt);
         } catch (error) {
-          openNotificationError("Error");
+          openNotificationError("Error.");
         }
       };
       const getTipoPiso = async () => {
@@ -177,7 +186,7 @@ const ViviendasContent: React.FC<{
           });
           setTipoPiso(opt);
         } catch (error) {
-          openNotificationError("Error");
+          openNotificationError("Error.");
         }
       };
       const getSituacionVivienda = async () => {
@@ -192,7 +201,7 @@ const ViviendasContent: React.FC<{
           });
           setSituacionVivienta(opt);
         } catch (error) {
-          openNotificationError("Error");
+          openNotificationError("Error.");
         }
       };
       const getConsejo = async () => {
@@ -207,7 +216,7 @@ const ViviendasContent: React.FC<{
           });
           setComunas(opt);
         } catch (error) {
-          openNotificationError("Error");
+          openNotificationError("Error.");
         }
       };
       const getTipoPared = async () => {
@@ -222,7 +231,7 @@ const ViviendasContent: React.FC<{
           });
           setTipoPared(opt);
         } catch (error) {
-          openNotificationError("Error");
+          openNotificationError("Error.");
         }
       };
       const getViviendabyId = async () => {
@@ -231,27 +240,112 @@ const ViviendasContent: React.FC<{
             const data = await getViviendaById(idVivienda, token ? token : "");
             form.setFieldsValue(data);
           } catch (error) {
-            openNotificationError("error");
+            openNotificationError("Error.");
           }
         } else {
           form.resetFields();
         }
       };
+      const getMunicipio = async () => {
+        try {
+          const data = await getMunicipioByEstadosID(token ? token : "");
+          let opt: DefaultOptionType[] = [];
+          data.forEach((element) => {
+            opt.push({
+              value: element.id_municipio,
+              label: element.nombre,
+            });
+          });
+          setMunicipioOpt(opt);
+        } catch (error) {
+          openNotificationError("Error.");
+        }
+      };
+
+      getMunicipio();
+
+      /* para empeazar por estado
+      const getEstados = async () => {
+        try {
+          const data = await getAllEstados(token ? token : "");
+          let opt: DefaultOptionType[] = [];
+          data.forEach((element) => {
+            opt.push({
+              value: element.id_estado,
+              label: element.nombre,
+            });
+          });
+          setEstadosOpt(opt);
+        } catch (error) {
+          openNotificationError("Error");
+        }
+      };
+      */
       //llamar par el edit
       getViviendabyId();
 
       //selects
+      // getEstados(); //para tener el estado
       getSituacionVivienda();
       getTipoPiso();
       getTipoPared();
       getTipoTecho();
       getTipoVivienda();
       getConsejo();
-      getUbicaciones();
       //errors
       setError(false);
     }
   }, [open]);
+
+  useEffect(() => {
+    const getParroquia = async () => {
+      try {
+        if (municipioSelect === undefined) {
+          return;
+        }
+        const data = await getParroquiaByMunicipio(
+          municipioSelect,
+          token ? token : ""
+        );
+        let opt: DefaultOptionType[] = [];
+        data.forEach((element) => {
+          opt.push({
+            value: element.id_municipio,
+            label: element.nombre,
+          });
+        });
+        setparroquiaOpt(opt);
+      } catch (error) {
+        openNotificationError("Error.");
+      }
+    };
+    getParroquia();
+  }, [municipioSelect]);
+
+  useEffect(() => {
+    const getSector = async () => {
+      try {
+        if (parroquiaSelect === undefined) {
+          return;
+        }
+        const data = await getSectorByParroquia(
+          parroquiaSelect,
+          token ? token : ""
+        );
+        let opt: DefaultOptionType[] = [];
+        data.forEach((element) => {
+          opt.push({
+            value: element.id_parroquia,
+            label: element.nombre,
+          });
+        });
+        setSectorOpt(opt);
+      } catch (error) {
+        openNotificationError("Error.");
+      }
+    };
+    getSector();
+  }, [parroquiaSelect]);
 
   const openNotificationError = (msg: string) => {
     api.error({
@@ -274,7 +368,6 @@ const ViviendasContent: React.FC<{
   ];
 
   function haddleCheckId_tipo_ocupacion_vivienda() {
-    console.log(check);
     setCheckBox(!check);
   }
 
@@ -390,18 +483,67 @@ const ViviendasContent: React.FC<{
                 >
                   <InputNumber min={0} />
                 </Form.Item>
-                {/* ID Ubicación */}
+
                 <Form.Item
-                  label="Ubicación"
-                  name="id_ubicacion"
+                  label="Municipio"
+                  name="id_municipio"
                   rules={[
                     {
                       required: true,
-                      message: "¡Por favor, ingrese la Ubicación!",
+                      message: "¡Por favor, ingrese el Consejo Comunal!",
                     },
                   ]}
                 >
-                  <Select options={ubicacion} />
+                  <Select
+                    options={municipioOpt}
+                    value={municipioSelect}
+                    onChange={(values) => {
+                      setMunicipioSelect(values);
+                    }}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="Parroquia"
+                  name="id_parroquia"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Consejo Comunal!",
+                    },
+                  ]}
+                >
+                  <Select
+                    options={parroquiaOpt}
+                    value={parroquiaSelect}
+                    onChange={(values) => {
+                      setParroquiaSelect(values);
+                    }}
+                  />
+                </Form.Item>
+
+                <Form.Item label="Sector" name="id_sector">
+                  <Select
+                    options={sectorOpt}
+                    value={sectorSelect}
+                    onChange={(values) => {
+                      setSectorSelect(values);
+                    }}
+                  />
+                </Form.Item>
+
+                {/* Direccion */}
+                <Form.Item
+                  label="Dirección"
+                  name="direccion"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Consejo Comunal!",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Dirección" />
                 </Form.Item>
 
                 {/* ID Consejo Comunal */}
@@ -503,7 +645,7 @@ const ViviendasContent: React.FC<{
                         defaultValue={
                           check ? optOcupada[0].value : optDesocupada[0].value
                         }
-                        options={check ? optOcupada : optDesocupada}
+                        options={check ? optDesocupada : optOcupada}
                         onChange={(value) => setCheckBoxint(value)}
                       />
                     </Form.Item>
@@ -511,6 +653,7 @@ const ViviendasContent: React.FC<{
                       <Form.Item
                         name="tiene_documentacion"
                         valuePropName="checked"
+                        initialValue={false}
                       >
                         <Checkbox />
                       </Form.Item>

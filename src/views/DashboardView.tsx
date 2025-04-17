@@ -3,10 +3,13 @@ import {
   UsergroupAddOutlined,
   HomeOutlined,
   UserOutlined,
+  BookOutlined,
+  EditOutlined,
+  PicLeftOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import type { MenuProps } from "antd";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Typography } from "antd";
 import { Outlet } from "react-router";
 import { Link } from "react-router";
 import { useAuth } from "../components/AuthContext";
@@ -29,28 +32,74 @@ function getItem(
   } as MenuItem;
 }
 
+/*admin
+Registrar Comuna.
+Registrar C.comunal
+Registrar parlamentario
+Reporte 
+ */
+
+/*Parlamentario
+Registar Vocero
+Reporte
+*/
+
+/*Vocero
+Registar vivienda
+Registrar Habitantes
+Reportes
+*/
+
+/*habitante
+ni idea
+*/
+
 const items: MenuItem[] = [
   getItem(
-    "Consejos Comunales",
+    "Incio",
+    "usuario",
+    <Link to="/dashboard/usuario">
+      {" "}
+      <HomeOutlined />{" "}
+    </Link>
+  ),
+  getItem(
+    "Registrar Comuna",
     "Consejos Comunales",
     <Link to="/dashboard/consejocomunal">
       <UsergroupAddOutlined />
     </Link>
   ),
   getItem(
-    "Comunas",
+    "Registrar C.comunal",
     "Comunas",
     <Link to="/dashboard/comuna">
       {" "}
-      <HomeOutlined />{" "}
+      <PicLeftOutlined />{" "}
+    </Link>
+  ),
+  // getItem(
+  //   "Vivienda",
+  //   "Viviendas",
+  //   <Link to="/dashboard/viviendas">
+  //     {" "}
+  //     <HomeOutlined />{" "}
+  //   </Link>
+  // ),
+  getItem(
+    "Registrar parlamentario",
+    "Registrar parlamentario",
+    <Link to="/dashboard/registrar">
+      {" "}
+      <EditOutlined />{" "}
     </Link>
   ),
   getItem(
-    "Vivienda",
-    "Viviendas",
-    <Link to="/dashboard/viviendas">
+    "Reportes",
+    "Reportes",
+    <Link to="/dashboard/reporte">
       {" "}
-      <HomeOutlined />{" "}
+      <BookOutlined />{" "}
     </Link>
   ),
 ];
@@ -88,14 +137,14 @@ const Dashboard: React.FC = () => {
           }}
         >
           <div>
-            {/* <div
+            <div
               style={{ padding: "16px", display: "flex", alignItems: "center" }}
             >
               <UserOutlined
                 style={{ fontSize: "24px", marginRight: "8px", color: "white" }}
               />
               <span style={{ color: "white" }}>Username</span>
-            </div> */}
+            </div>
             <div className="demo-logo-vertical" />
             <Menu
               theme="dark"
@@ -121,6 +170,10 @@ const Dashboard: React.FC = () => {
         </div>
       </Sider>
       <Layout>
+        <div style={{ height: "32px", backgroundColor: "red" }}>
+          <Typography>Admin</Typography>
+        </div>
+
         <Content style={{ margin: "0 16px" }}>
           <Outlet />
         </Content>

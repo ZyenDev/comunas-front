@@ -39,3 +39,7 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export const allowRoutesAndDashboard = () => {
+  return;
+};

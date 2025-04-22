@@ -68,6 +68,10 @@ const routeConfig: RouteConfig[] = [
       { path: "viviendas", element: <ViviendasViews /> },
       { path: "usuario", element: <Usuarios /> },
       {
+        path: "viviendas/habitantes/",
+        element: <Habitante />,
+      },
+      {
         path: "viviendas/habitantes/:id_habitantes",
         element: <Habitante />,
       },

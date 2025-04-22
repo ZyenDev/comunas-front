@@ -69,6 +69,13 @@ const menuItems = [
     roles: ["Vocero"],
   },
   {
+    key: "habitantes",
+    label: "Habitantes",
+    icon: <SettingOutlined />,
+    path: "viviendas/habitantes/0",
+    roles: ["Administrador", "Parlamentario", "Vocero"],
+  },
+  {
     key: "Reportes",
     label: "Reportes",
     icon: <SettingOutlined />,

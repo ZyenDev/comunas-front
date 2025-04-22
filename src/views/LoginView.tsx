@@ -55,7 +55,7 @@ function LoginView() {
         });
         console.log(data);
         //todo: pq email c# get a fucking grip mate
-        login(data.token, data.email.username, data.group);
+        login(data.token, data.email.username, data.email.group);
         navigate("/dashboard/usuario");
         form.resetFields();
       } catch (error) {

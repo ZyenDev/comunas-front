@@ -20,7 +20,7 @@ import {
 import Input from "antd/es/input/Input";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../components/AuthContext";
-import { Register } from "../../controllers/SessionsController";
+import { Register, getUserByRole } from "../../controllers/SessionsController";
 
 const columns = [
   {
@@ -80,15 +80,35 @@ const dataSource = [
 const { Title } = Typography;
 const registrar: React.FC = () => {
   //const [role, setRole] = useState<string>();
-  const [allow, canCreate] = useState<string>("Parlamentario");
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
+  const [datasource, setDataSource] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(true);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const { login, role, token } = useAuth();
-  const navigate = useNavigate();
+  const [allow, canCreate] = useState<string>("");
+
+  const fetchUsers = async () => {
+    try {
+      const users = await getUserByRole(role, token ? token : "");
+      const formattedData = users.map((user: any, index: number) => ({
+        key: index,
+        id: user.id,
+        usuario: user.username,
+        email: user.email,
+      }));
+      setDataSource(formattedData);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching users:", error);
+    }
+  };
 
   useEffect(() => {
+    setLoading(true);
+
     switch (role) {
       case "Administrador":
         canCreate("Parlamentario");
@@ -103,9 +123,15 @@ const registrar: React.FC = () => {
         canCreate("N/A");
         break;
     }
+
+    if (role) {
+      fetchUsers();
+    }
   }, []);
 
-  useEffect(() => {}, [role]);
+  useEffect(() => {
+    fetchUsers();
+  }, [modalVisible]);
 
   const onFinish = (values: any) => {
     const registrar = async () => {
@@ -113,7 +139,7 @@ const registrar: React.FC = () => {
         setLoading(true);
         const data = await Register(
           values,
-          allow.toLowerCase(),
+          allow ? allow?.toLowerCase() : "",
           token ? token : ""
         );
         api.success({
@@ -138,8 +164,6 @@ const registrar: React.FC = () => {
     console.log("Failed:", errorInfo);
   };
 
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-
   return (
     <>
       <Row>
@@ -155,7 +179,7 @@ const registrar: React.FC = () => {
           }}
         >
           <Modal
-            title={`Crear ${allow.toLowerCase()}`}
+            title={`Crear ${allow ? allow?.toLowerCase() : ""}`}
             visible={modalVisible}
             onCancel={() => setModalVisible(false)}
             footer={null}
@@ -259,10 +283,10 @@ const registrar: React.FC = () => {
           >
             <Title level={4}>Registrar {allow}</Title>
             <Button type="primary" onClick={() => setModalVisible(true)}>
-              Crear {allow.toLowerCase()}
+              Crear {allow ? allow?.toLowerCase() : ""}
             </Button>
           </Flex>
-          <Table dataSource={dataSource} columns={columns} />;
+          <Table dataSource={datasource} columns={columns} loading={loading} />
         </Col>
       </Row>
     </>
@@ -270,3 +294,7 @@ const registrar: React.FC = () => {
 };
 
 export default registrar;
+
+/*
+path('api/groups/<str:group_name>/users/', views.get_users_by_group)
+ */

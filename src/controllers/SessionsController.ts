@@ -7,6 +7,7 @@ const baseUrl = apiUrl + "api";
 
 export const Login = async (data: LoginInterface) => {
         const response = await axios.post(`${baseUrl}/login`, data);
+
         return response.data;
 };
 
@@ -18,5 +19,31 @@ export const Register = async (data: RegisterLoginInterface, role:string, token:
 
 export const Logout = async () => {
         const response = await axios.post(`${baseUrl}/logout/`);
+        return response.data;
+};
+
+export const getUserByRole = async (role:string|null, token: string) => {
+        var group
+        if(role==""){
+                return
+        }
+
+        switch (role) {
+                case "Administrador":
+                  group="Parlamentario"
+                  break;
+                case "Parlamentario":
+                  group="Vocero"
+                  break;
+                case "Vocero":
+                  group="Habitante"
+                  break;
+                default:
+                  group="N/A"
+                  return
+                  break;
+        }
+
+        const response = await axios.get(`${baseUrl}/groups/${group.toLowerCase()}/users/`,{ headers: { Authorization: `token ${token}` } });
         return response.data;
 };

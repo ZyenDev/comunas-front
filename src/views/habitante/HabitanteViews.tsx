@@ -7,6 +7,7 @@ import HabitanteModal from "./HabitanteModal";
 import {
   deleteHabitante,
   getHabitanteByViviendaID,
+  getAllHabitantes,
 } from "../../controllers/HabitantesController";
 import { HabitanteInterface } from "../../models/HabitanteModel";
 import { useParams } from "react-router";
@@ -129,17 +130,27 @@ const Habitante: React.FC = () => {
   const gethabitante = async () => {
     try {
       if (id_habitantes != undefined) {
-        let id_habitantes_par = parseInt(id_habitantes);
-        //const data = await getHabitanteByViviendaID(id_habitantes_par);
-        const data = await getHabitanteByViviendaID(
-          id_habitantes_par,
-          token ? token : ""
-        );
-        data.forEach((item: HabitanteInterface) => {
-          item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
-        });
-        setHabitante(data);
-        setLoading(false);
+        if (!id_habitantes) {
+          const data = await getAllHabitantes(token ? token : "");
+
+          data.forEach((item: HabitanteInterface) => {
+            item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
+          });
+          setHabitante(data);
+          setLoading(false);
+        } else {
+          let id_habitantes_par = parseInt(id_habitantes);
+          const data = await getHabitanteByViviendaID(
+            id_habitantes_par,
+            token ? token : ""
+          );
+
+          data.forEach((item: HabitanteInterface) => {
+            item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
+          });
+          setHabitante(data);
+          setLoading(false);
+        }
       }
     } catch (error: any) {
       setLoading(false);
@@ -173,6 +184,7 @@ const Habitante: React.FC = () => {
     getVivienda();
     gethabitante();
   }, []);
+
   useEffect(() => {
     gethabitante();
   }, [open]);

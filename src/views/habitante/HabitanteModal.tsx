@@ -15,7 +15,7 @@ import {
   createHabitante,
   getHabitanteByID,
   updateHabitante,
-} from "../../controllers/ControllerHabitantes";
+} from "../../controllers/HabitantesController";
 import { HabitanteInterface } from "../../models/HabitanteModel";
 import { useParams } from "react-router";
 import { getAllPaisOrigen } from "../../controllers/PaisOrigenController";
@@ -115,12 +115,13 @@ const HabitanteContent: React.FC<{
     });
   };
 
+  //codigo repetitivo
   const customFooter = [
     <Button key="back" onClick={handleCancel}>
       Cancelar
     </Button>,
     <Button key="submit" type="primary" onClick={handleOk}>
-      Entregar
+      Registrar
     </Button>,
   ];
 

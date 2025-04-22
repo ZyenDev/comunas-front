@@ -7,7 +7,7 @@ import HabitanteModal from "./HabitanteModal";
 import {
   deleteHabitante,
   getHabitanteByViviendaID,
-} from "../../controllers/ControllerHabitantes";
+} from "../../controllers/HabitantesController";
 import { HabitanteInterface } from "../../models/HabitanteModel";
 import { useParams } from "react-router";
 import { ViviendaInterface } from "../../models/ViviendaModel";

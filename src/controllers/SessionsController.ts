@@ -8,11 +8,11 @@ const baseUrl = apiUrl + "api";
 export const Login = async (data: LoginInterface) => {
         const response = await axios.post(`${baseUrl}/login`, data);
         return response.data;
-   
 };
 
-export const Register = async (data: RegisterLoginInterface) => {
-        const response = await axios.post(`${baseUrl}/register`, data);
+export const Register = async (data: RegisterLoginInterface, role:string, token: string) => {
+        //const response = await axios.post(`${baseUrl}/register`, data);
+        const response = await axios.post(`${baseUrl}/register/${role.toLowerCase()}`, data,  { headers: { Authorization: `token ${token}` } });
         return response.data;
 };
 

@@ -10,7 +10,7 @@ import Usuarios from "../views/Usuario/UsuarioView";
 import Habitante from "../views/habitante/HabitanteViews";
 import NotFound from "../views/NotFound";
 import ProtectedRoute from "../components/ProtectedRoute";
-import RegistroView from "../views/Registros/RegistrosViews";
+import RegistroView from "../views/registros/RegistrosViews";
 import Reportes from "../views/Reporte/ReporteView";
 import { AuthProvider } from "../components/AuthContext";
 import React from "react";

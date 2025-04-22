@@ -169,7 +169,7 @@ const ComunasHeadContent: React.FC<{
       Cancelar
     </Button>,
     <Button key="submit" type="primary" onClick={handleOk}>
-      Entregar
+      Registrar
     </Button>,
   ];
 

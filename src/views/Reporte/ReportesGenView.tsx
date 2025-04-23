@@ -31,3 +31,4 @@ const ReporteView: React.FC = () => {
 };
 
 export default ReporteView;
+//TOOD:QUITAR LOS ID DE LAS TABLAS

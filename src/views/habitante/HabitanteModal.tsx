@@ -300,6 +300,8 @@ const HabitanteContent: React.FC<{
                   />
                 </Form.Item>
               )}
+
+              <Divider />
             </Flex>
           </Form>
         </Modal>

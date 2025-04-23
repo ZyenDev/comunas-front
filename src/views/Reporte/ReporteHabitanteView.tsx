@@ -114,3 +114,7 @@ const ReporteView: React.FC = () => {
 };
 
 export default ReporteView;
+//TODO: añadir que los reporte traigan la info
+/*
+
+ */

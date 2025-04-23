@@ -48,32 +48,10 @@ const columns = [
           type="primary"
           icon={<EditOutlined />}
           size="middle"
-          onClick={() => {
-            // setUpdate(true);
-            // setOpen(true);
-            // setUpdateID(habitante.id_habitante);
-          }}
+          onClick={() => {}}
         />
       </Flex>
     ),
-  },
-];
-
-const dataSource = [
-  {
-    id: "1",
-    usuario: "johndoe",
-    email: "johndoe@example.com",
-  },
-  {
-    id: "2",
-    usuario: "janedoe",
-    email: "janedoe@example.com",
-  },
-  {
-    id: "3",
-    usuario: "adminuser",
-    email: "admin@example.com",
   },
 ];
 

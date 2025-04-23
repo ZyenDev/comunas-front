@@ -19,8 +19,9 @@ import {
 import { HabitanteInterface } from "../../models/HabitanteModel";
 import { useParams } from "react-router";
 import { getAllPaisOrigen } from "../../controllers/PaisOrigenController";
+import { getAllVivienda } from "../../controllers/ViviendaController";
 import { useAuth } from "../../components/AuthContext";
-
+//getAllVivienda
 const HabitanteContent: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,6 +32,7 @@ const HabitanteContent: React.FC<{
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
   const [paisOrigen, setPaisOrigen] = useState<any>();
+  const [vivienda, setVivienda] = useState<any>();
   const { token } = useAuth();
   const [vene, setNAd] = useState<boolean>(false);
   const { id_habitantes } = useParams();
@@ -103,6 +105,21 @@ const HabitanteContent: React.FC<{
           form.resetFields();
         }
       };
+      const getAllViviendasss = async () => {
+        if (id_habitante == undefined) {
+          try {
+            const data = await getAllVivienda(token ? token : "");
+            const viviendasParse = data.map((pais) => ({
+              label: pais.id_vivienda,
+              value: pais.direccion,
+            }));
+            setVivienda(viviendasParse);
+          } catch (error) {
+            openNotificationError("¡Fallo al obtener Viviendas!");
+          }
+        }
+      };
+      getAllViviendasss();
       getPaises();
       getHabitanteById();
       setError(false);
@@ -252,6 +269,23 @@ const HabitanteContent: React.FC<{
 
               {vene && (
                 <Form.Item name="id_pais_origen" label="País de Origen">
+                  <Select
+                    showSearch
+                    filterOption={(
+                      input: string,
+                      option?: { label?: string }
+                    ) =>
+                      (option?.label ?? "")
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
+                    options={paisOrigen}
+                  />
+                </Form.Item>
+              )}
+
+              {id_habitante === undefined && (
+                <Form.Item name="vivenda" label="Vivienda">
                   <Select
                     showSearch
                     filterOption={(

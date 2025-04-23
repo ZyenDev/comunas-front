@@ -8,8 +8,8 @@ const App: React.FC = () => (
       token: {
         // Seed Token
         //colorPrimary: "#",
-        colorPrimary: "#ec222c",
-        colorInfo: "#ec222c",
+        colorPrimary: "#ad1a14",
+        colorInfo: "#ad1a14",
         // colorBgBase: "#f5f5f5",
 
         // Alias Token
@@ -30,7 +30,7 @@ const App: React.FC = () => (
           itemBg: "#5c0011",
           itemHoverBg: "rgba(0, 0, 0, 0.23)",
           itemSelectedColor: "#fff", // text color
-          itemSelectedBg: "#ec222c",
+          itemSelectedBg: "#ad1a14",
         },
       },
     }}

@@ -11,7 +11,8 @@ import Habitante from "../views/habitante/HabitanteViews";
 import NotFound from "../views/NotFound";
 import ProtectedRoute from "../components/ProtectedRoute";
 import RegistroView from "../views/registros/RegistrosViews";
-import Reportes from "../views/Reporte/ReporteView";
+import Reportes from "../views/Reporte/ReporteHabitanteView";
+import Reportesgen from "../views/Reporte/ReportesGenView";
 import { AuthProvider } from "../components/AuthContext";
 import React from "react";
 
@@ -76,6 +77,7 @@ const routeConfig: RouteConfig[] = [
         element: <Habitante />,
       },
       { path: "reporte", element: <Reportes /> },
+      { path: "reportegen", element: <Reportesgen /> },
     ],
   },
   { path: "*", element: <NotFound /> },

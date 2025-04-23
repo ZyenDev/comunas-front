@@ -129,30 +129,32 @@ const Habitante: React.FC = () => {
 
   const gethabitante = async () => {
     try {
+      console.log(id_habitantes);
       if (id_habitantes != undefined) {
-        if (!id_habitantes) {
-          const data = await getAllHabitantes(token ? token : "");
+        let id_habitantes_par = parseInt(id_habitantes);
+        const data = await getHabitanteByViviendaID(
+          id_habitantes_par,
+          token ? token : ""
+        );
 
-          data.forEach((item: HabitanteInterface) => {
-            item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
-          });
-          setHabitante(data);
-          setLoading(false);
-        } else {
-          let id_habitantes_par = parseInt(id_habitantes);
-          const data = await getHabitanteByViviendaID(
-            id_habitantes_par,
-            token ? token : ""
-          );
+        data.forEach((item: HabitanteInterface) => {
+          item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
+        });
+        setHabitante(data);
+        setLoading(false);
+      } else {
+        const data = await getAllHabitantes(token ? token : "");
 
-          data.forEach((item: HabitanteInterface) => {
-            item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
-          });
-          setHabitante(data);
-          setLoading(false);
-        }
+        console.log(data);
+
+        data.forEach((item: HabitanteInterface) => {
+          item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
+        });
+        setHabitante(data);
+        setLoading(false);
       }
     } catch (error: any) {
+      console.log(error);
       setLoading(false);
       openNotificationError(error?.message || "Error desconocido.");
     }

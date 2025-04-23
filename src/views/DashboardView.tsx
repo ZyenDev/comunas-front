@@ -72,7 +72,7 @@ const menuItems = [
     key: "habitantes",
     label: "Habitantes",
     icon: <SettingOutlined />,
-    path: "viviendas/habitantes/0",
+    path: "viviendas/habitantes/",
     roles: ["Administrador", "Parlamentario", "Vocero"],
   },
   {
@@ -80,6 +80,13 @@ const menuItems = [
     label: "Reportes",
     icon: <SettingOutlined />,
     path: "/dashboard/reporte",
+    roles: ["Habitante"],
+  },
+  {
+    key: "Reportes",
+    label: "Reportes",
+    icon: <SettingOutlined />,
+    path: "/dashboard/reportegen",
     roles: ["Administrador", "Parlamentario", "Vocero"],
   },
 ];

@@ -13,7 +13,7 @@ import { useAuth } from "../components/AuthContext";
 import { JSX } from "react/jsx-runtime";
 
 const { Content, Sider } = Layout;
-// const currentUserRole = "admin";
+//const currentUserRole = "admin";
 //const currentUserRole = "parlamentario";
 //const currentUserRole = "vocero";
 
@@ -21,42 +21,42 @@ const { Content, Sider } = Layout;
 const menuItems = [
   {
     key: "users",
-    label: "Usuario",
+    label: "Inicio",
     icon: <UserOutlined />,
-    path: "/dashboard/usuario",
-    roles: ["Administrador"],
+    path: "/dashboard/reportegen",
+    roles: ["Administrador","Parlamentario", "Vocero", "Habitante"],
   },
   {
     key: "regicomuna",
-    label: "Registar comunal",
+    label: "Comunas",
     icon: <DashboardOutlined />,
     path: "/dashboard/comuna",
     roles: ["Administrador", "editor", "viewer"],
   },
   {
     key: "regiconcomuna",
-    label: "Registrar c.comunal",
+    label: "Consejos Comunales",
     icon: <SettingOutlined />,
     path: "/dashboard/consejocomunal",
     roles: ["Administrador", "editor"],
   },
   {
     key: "Registrar parlamentario",
-    label: "Registrar parlamentario",
+    label: "Parlamentarios",
     icon: <SettingOutlined />,
     path: "/dashboard/registrar",
     roles: ["Administrador", "editor"],
   },
   {
     key: "Registrar Vocero",
-    label: "Registrar Vocero",
+    label: "Voceros",
     icon: <SettingOutlined />,
     path: "/dashboard/registrar",
     roles: ["Parlamentario"],
   },
   {
     key: "Registrar vivienda",
-    label: "Registrar vivienda",
+    label: "Viviendas",
     icon: <SettingOutlined />,
     path: "/dashboard/viviendas",
     roles: ["Vocero"],
@@ -73,7 +73,7 @@ const menuItems = [
     label: "Habitantes",
     icon: <SettingOutlined />,
     path: "viviendas/habitantes/",
-    roles: ["Administrador", "Parlamentario", "Vocero"],
+    roles: ["Parlamentario", "Vocero"],
   },
   {
     key: "Reportes",
@@ -82,13 +82,13 @@ const menuItems = [
     path: "/dashboard/reporte",
     roles: ["Habitante"],
   },
-  {
-    key: "Reportes",
-    label: "Reportes",
-    icon: <SettingOutlined />,
-    path: "/dashboard/reportegen",
-    roles: ["Administrador", "Parlamentario", "Vocero"],
-  },
+  // {
+  //   key: "Reportes",
+  //   label: "Reportes",
+  //   icon: <SettingOutlined />,
+  //   path: "/dashboard/reportegen",
+  //   roles: ["Administrador", "Parlamentario", "Vocero"],
+  // },
 ];
 
 const Dashboard: React.FC = () => {

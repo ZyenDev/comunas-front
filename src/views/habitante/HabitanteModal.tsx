@@ -195,7 +195,19 @@ const HabitanteContent: React.FC<{
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+  //TODO: falta grado de intrusion
+  /*
+Ninguno
+Preescolar
+Primaria
+Secundaria
+Formación profesional
+Educación universitaria (diplomatura, grado, licenciatura)
+Post grado (Maestría, doctorado)
+Otro
+No sabe/No contesta
 
+*/
   return (
     <>
       <Flex vertical>
@@ -206,7 +218,7 @@ const HabitanteContent: React.FC<{
           open={open}
           onCancel={handleCancel}
           footer={customFooter}
-          width={800} // Adjust the width as needed
+          width={600} // Adjust the width as needed
         >
           <Row>
             <Form
@@ -356,6 +368,36 @@ const HabitanteContent: React.FC<{
                     />
                   </Form.Item>
                 )}
+
+                <Form.Item
+                  name="grado_intrusion"
+                  label="Grado de Instrucción"
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        "¡Por favor, seleccione el Grado de Instrucción!",
+                    },
+                  ]}
+                >
+                  <Select>
+                    <Select.Option value={1}>Ninguno</Select.Option>
+                    <Select.Option value={2}>Preescolar</Select.Option>
+                    <Select.Option value={3}>Primaria</Select.Option>
+                    <Select.Option value={4}>Secundaria</Select.Option>
+                    <Select.Option value={5}>
+                      Formación profesional
+                    </Select.Option>
+                    <Select.Option value={6}>
+                      Educación universitaria (diplomatura, grado, licenciatura)
+                    </Select.Option>
+                    <Select.Option value={7}>
+                      Post grado (Maestría, doctorado)
+                    </Select.Option>
+                    <Select.Option value={8}>Otro</Select.Option>
+                    <Select.Option value={9}>No sabe/No contesta</Select.Option>
+                  </Select>
+                </Form.Item>
 
                 <Divider />
                 <Typography.Title level={5}>Datos de Usuario</Typography.Title>

@@ -9,6 +9,7 @@ import {
   Row,
   Table,
   Modal,
+  Switch,
 } from "antd";
 import {
   UserOutlined,
@@ -20,40 +21,11 @@ import {
 import Input from "antd/es/input/Input";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../components/AuthContext";
-import { Register, getUserByRole } from "../../controllers/SessionsController";
-
-const columns = [
-  {
-    title: "id",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "usuario",
-    dataIndex: "usuario",
-    key: "usuario",
-  },
-  {
-    title: "email",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "desactivar",
-    dataIndex: "desactivar",
-    key: "desactivar",
-    render: (habitante: any) => (
-      <Flex vertical={false} gap="8px">
-        <Button
-          type="primary"
-          icon={<EditOutlined />}
-          size="middle"
-          onClick={() => {}}
-        />
-      </Flex>
-    ),
-  },
-];
+import {
+  Register,
+  getUserByRole,
+  toggleUser,
+} from "../../controllers/SessionsController";
 
 const { Title } = Typography;
 const registrar: React.FC = () => {
@@ -67,6 +39,60 @@ const registrar: React.FC = () => {
   const { login, role, token } = useAuth();
   const [allow, canCreate] = useState<string>("");
 
+  const columns = [
+    {
+      title: "id",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "usuario",
+      dataIndex: "usuario",
+      key: "usuario",
+    },
+    {
+      title: "email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "desactivar",
+      dataIndex: "is_active",
+      key: "is_active",
+      render: (_: any, record: any) => (
+        <Switch
+          defaultChecked={record.is_active}
+          onChange={(checked) => {
+            console.log("Switch toggled:", checked);
+            console.log("User ID:", record.id);
+
+            const disableUser = async () => {
+              try {
+                await toggleUser(record.id, checked, token ? token : "");
+                notification.success({
+                  message: "Estado actualizado",
+                  description: `El usuario ha sido ${
+                    checked ? "activado" : "desactivado"
+                  } exitosamente.`,
+                });
+                fetchUsers(); // Refresh the user list
+              } catch (error) {
+                console.error("Error toggling user:", error);
+                notification.error({
+                  message: "Error al actualizar",
+                  description:
+                    "Hubo un problema al cambiar el estado del usuario.",
+                });
+              }
+            };
+
+            disableUser();
+          }}
+        />
+      ),
+    },
+  ];
+
   const fetchUsers = async () => {
     try {
       const users = await getUserByRole(role, token ? token : "");
@@ -75,7 +101,9 @@ const registrar: React.FC = () => {
         id: user.id,
         usuario: user.username,
         email: user.email,
+        is_active: user.is_active,
       }));
+      console.log("Users:", formattedData);
       setDataSource(formattedData);
       setLoading(false);
     } catch (error) {

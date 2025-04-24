@@ -7,6 +7,6 @@ const baseUrl = apiUrl + "api/reportes";
 
 
 export const getReporteGen = async (token: string): Promise<ReportesModelo> => {
-    const response = await axios.get<ReportesModelo>(baseUrl, { headers: { Authorization: `token ${token}` } });
+    const response = await axios.get<ReportesModelo>(apiUrl+"api/dashboard", { headers: { Authorization: `token ${token}` } });
     return response.data;
 };

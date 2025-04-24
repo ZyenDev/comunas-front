@@ -284,6 +284,10 @@ const viviendas: React.FC = () => {
   };
 
   useEffect(() => {
+    getvivieda();
+    setLoading(false);
+  }, []);
+  useEffect(() => {
     getTipoOcupacionVivienda();
     getSituacionVivienda();
     getTipoPiso();
@@ -291,10 +295,6 @@ const viviendas: React.FC = () => {
     getTiposTecho();
     getTiposViviendas();
     getconsejos();
-    getvivieda();
-    setLoading(false);
-  }, []);
-  useEffect(() => {
     getvivieda();
     setLoading(false);
   }, [open]);

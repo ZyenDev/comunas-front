@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { LoginInterface, RegisterLoginInterface } from '../models/SessionsModel';
+import { error } from 'console';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const baseUrl = apiUrl + "api";
@@ -12,7 +13,6 @@ export const Login = async (data: LoginInterface) => {
 };
 
 export const Register = async (data: RegisterLoginInterface, role:string, token: string) => {
-        //const response = await axios.post(`${baseUrl}/register`, data);
         const response = await axios.post(`${baseUrl}/register/${role.toLowerCase()}`, data,  { headers: { Authorization: `token ${token}` } });
         return response.data;
 };
@@ -25,7 +25,7 @@ export const Logout = async () => {
 export const getUserByRole = async (role:string|null, token: string) => {
         var group
         if(role==""){
-                return
+                return console.error("No se ha definido el rol del usuario")    
         }
 
         switch (role) {
@@ -47,3 +47,9 @@ export const getUserByRole = async (role:string|null, token: string) => {
         const response = await axios.get(`${baseUrl}/groups/${group.toLowerCase()}/users/`,{ headers: { Authorization: `token ${token}` } });
         return response.data;
 };
+
+
+export const toggleUser = async (user_id:string,is_active:boolean, token: string) => {
+        const response = await axios.post(`${apiUrl}api/toggle_user`, { user_id, is_active }, { headers: { Authorization: `token ${token}` } });
+        return response.data;
+}

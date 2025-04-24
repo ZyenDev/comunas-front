@@ -15,12 +15,12 @@ export const getHabitanteByID = async (id: number, token: string): Promise<Habit
 };
 
 export const getAllHabitantes = async (token: string): Promise<HabitanteInterface[]> => {
-    const response = await axios.get<HabitanteInterface[]>(apiUrl+"/api/habitantes/habitante/", { headers: { Authorization: `token ${token}` } });
+    const response = await axios.get<HabitanteInterface[]>(apiUrl+"api/habitantes/habitante/", { headers: { Authorization: `token ${token}` } });
     return response.data;
 };
 
 export const getHabitanteByViviendaID = async (id: number, token: string): Promise<HabitanteInterface[]> => {
-    const response = await axios.get<HabitanteInterface[]>(`${apiUrl}/api/habitantes/habitantes/vivienda/${id}/`, { headers: { Authorization: `token ${token}` } });
+    const response = await axios.get<HabitanteInterface[]>(`${apiUrl}api/habitantes/habitantes/vivienda/${id}/`, { headers: { Authorization: `token ${token}` } });
     return response.data;
 };
 

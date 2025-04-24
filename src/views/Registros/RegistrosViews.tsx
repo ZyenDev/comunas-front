@@ -63,9 +63,6 @@ const registrar: React.FC = () => {
         <Switch
           defaultChecked={record.is_active}
           onChange={(checked) => {
-            console.log("Switch toggled:", checked);
-            console.log("User ID:", record.id);
-
             const disableUser = async () => {
               try {
                 await toggleUser(record.id, checked, token ? token : "");
@@ -103,7 +100,6 @@ const registrar: React.FC = () => {
         email: user.email,
         is_active: user.is_active,
       }));
-      console.log("Users:", formattedData);
       setDataSource(formattedData);
       setLoading(false);
     } catch (error) {
@@ -145,7 +141,7 @@ const registrar: React.FC = () => {
         setLoading(true);
         const data = await Register(
           values,
-          allow ? allow?.toLowerCase() : "",
+          role ? role : "",
           token ? token : ""
         );
         api.success({
@@ -287,10 +283,17 @@ const registrar: React.FC = () => {
             align="center"
             style={{ marginBottom: "16px" }}
           >
-            <Title level={4}>Registrar {allow}</Title>
-            <Button type="primary" onClick={() => setModalVisible(true)}>
-              Crear {allow ? allow?.toLowerCase() : ""}
-            </Button>
+            {allow === "Habitante" ? (
+              <Title level={4}>Listado de Habitantes con Usuario</Title>
+            ) : (
+              <Title level={4}>Registrar {allow}</Title>
+            )}
+
+            {allow !== "Habitante" && (
+              <Button type="primary" onClick={() => setModalVisible(true)}>
+                Crear {allow ? allow?.toLowerCase() : ""}
+              </Button>
+            )}
           </Flex>
           <Table dataSource={datasource} columns={columns} loading={loading} />
         </Col>

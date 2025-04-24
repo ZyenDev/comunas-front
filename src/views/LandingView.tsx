@@ -30,7 +30,7 @@ const headerStyle: React.CSSProperties = {
   height: 64,
   paddingInline: 48,
   lineHeight: "64px",
-  backgroundColor: "#5c0011",
+  backgroundColor: "#ad1a14",
   justifyContent: "center",
 };
 
@@ -42,7 +42,7 @@ const layoutStyle = {
 const footerStyle: React.CSSProperties = {
   textAlign: "center",
   color: "#fff",
-  backgroundColor: "#5c0011",
+  backgroundColor: "#ad1a14",
 };
 
 function Landing(): JSX.Element {
@@ -62,9 +62,13 @@ function Landing(): JSX.Element {
             <h1>GUANAGUANAY</h1>
             <Button
               type="primary"
-              shape="round"
+              shape="default"
               icon={<UserOutlined />}
               size="large"
+              // style={{
+              //   backgroundColor: "#8B0000", // Dark red color
+              //   borderColor: "#8B0000", // Match border with background
+              // }}
               onClick={() => {
                 navigate("/login");
               }}

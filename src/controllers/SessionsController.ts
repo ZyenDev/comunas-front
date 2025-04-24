@@ -13,7 +13,29 @@ export const Login = async (data: LoginInterface) => {
 };
 
 export const Register = async (data: RegisterLoginInterface, role:string, token: string) => {
-        const response = await axios.post(`${baseUrl}/register/${role.toLowerCase()}`, data,  { headers: { Authorization: `token ${token}` } });
+        var group
+        if(role==""){
+                return console.error("No se ha definido el rol del usuario")    
+        }
+
+        switch (role) {
+                case "Administrador":
+                  group="Parlamentario"
+                  break;
+                case "Parlamentario":
+                  group="Vocero"
+                  break;
+                case "Vocero":
+                  group="Habitante"
+                  break;
+                default:
+                  group="N/A"
+                  return
+                  break;
+        }
+
+
+        const response = await axios.post(`${baseUrl}/register/${group.toLowerCase()}`, data,  { headers: { Authorization: `token ${token}` } });
         return response.data;
 };
 

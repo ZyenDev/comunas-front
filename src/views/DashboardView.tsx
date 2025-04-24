@@ -24,7 +24,7 @@ const menuItems = [
     label: "Inicio",
     icon: <UserOutlined />,
     path: "/dashboard/reportegen",
-    roles: ["Administrador","Parlamentario", "Vocero", "Habitante"],
+    roles: ["Administrador", "Parlamentario", "Vocero", "Habitante"],
   },
   {
     key: "regicomuna",
@@ -63,7 +63,7 @@ const menuItems = [
   },
   {
     key: "Registrar habitantes",
-    label: "Registrar habitantes",
+    label: "Cuentas Habitantes",
     icon: <SettingOutlined />,
     path: "/dashboard/registrar",
     roles: ["Vocero"],

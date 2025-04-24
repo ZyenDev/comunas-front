@@ -133,7 +133,6 @@ const Habitante: React.FC = () => {
 
   const gethabitante = async () => {
     try {
-      console.log(id_habitantes);
       if (id_habitantes != undefined) {
         let id_habitantes_par = parseInt(id_habitantes);
         const data = await getHabitanteByViviendaID(
@@ -148,8 +147,6 @@ const Habitante: React.FC = () => {
         setLoading(false);
       } else {
         const data = await getAllHabitantes(token ? token : "");
-
-        console.log(data);
 
         data.forEach((item: HabitanteInterface) => {
           item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
@@ -215,7 +212,9 @@ const Habitante: React.FC = () => {
     <>
       {contextHolder}
       <Content style={{ padding: "24px", width: "100%" }}>
-        <h1>Nro. Casa: {vivienda?.numero_vivienda}</h1>
+        {vivienda?.numero_vivienda && (
+          <h1>Nro. Casa: {vivienda.numero_vivienda}</h1>
+        )}
         <Table
           title={() => (
             <Flex vertical={false} justify="space-between" align="center">

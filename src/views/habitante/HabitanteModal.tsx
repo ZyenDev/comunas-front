@@ -48,6 +48,7 @@ const HabitanteContent: React.FC<{
   const { login, role, token } = useAuth();
   const [vene, setNAd] = useState<boolean>(false);
   const { id_habitantes } = useParams();
+  const [id_vivienda_local, setVin] = useState<number>();
   const [showPassword, setShowPassword] = useState(true);
 
   const handleOk = () => {
@@ -60,13 +61,14 @@ const HabitanteContent: React.FC<{
         new Date(values.fecha_nacimiento).getFullYear();
       try {
         if (!isUpdated) {
-          values.id_vivienda = Number(id_habitantes);
+          values.id_vivienda = Number(
+            id_habitantes ? id_habitantes : id_vivienda_local
+          );
           await createHabitante(values, token ? token : "");
         } else if (id_habitante != null) {
           values.id_vivienda = Number(id_habitantes);
           await updateHabitante(id_habitante, values, token ? token : "");
         } else {
-          console.log(error);
           //este error en teoria es imposible
           throw new Error("¡Fallo al obtener el ID!");
         }
@@ -77,13 +79,8 @@ const HabitanteContent: React.FC<{
           password: values.password,
         };
 
-        const udata = await Register(
-          userData,
-          role ? role : "",
-          token ? token : ""
-        );
+        Register(userData, role ? role : "", token ? token : "");
 
-        login(udata.token, udata.email.username, udata.group);
         form.resetFields();
         setOpen(false);
         setError(false);
@@ -137,8 +134,8 @@ const HabitanteContent: React.FC<{
           try {
             const data = await getAllVivienda(token ? token : "");
             const viviendasParse = data.map((pais) => ({
-              label: pais.id_vivienda,
-              value: pais.direccion,
+              value: pais.id_vivienda,
+              label: pais.numero_vivienda,
             }));
             setVivienda(viviendasParse);
           } catch (error) {
@@ -355,16 +352,12 @@ No sabe/No contesta
                 {id_habitante === undefined && (
                   <Form.Item name="vivenda" label="Vivienda">
                     <Select
-                      showSearch
-                      filterOption={(
-                        input: string,
-                        option?: { label?: string }
-                      ) =>
-                        (option?.label ?? "")
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
-                      }
                       options={vivienda}
+                      value={form.getFieldValue("vivenda")}
+                      onChange={(value) => {
+                        setVin(value);
+                        form.setFieldsValue({ vivenda: value });
+                      }}
                     />
                   </Form.Item>
                 )}

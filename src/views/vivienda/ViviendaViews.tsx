@@ -177,7 +177,6 @@ const viviendas: React.FC = () => {
               icon={<EditOutlined />}
               size="middle"
               onClick={() => {
-                console.log(vivienda);
                 setUpdate(true);
                 setOpen(true);
                 setUpdateID(vivienda.id_vivienda);

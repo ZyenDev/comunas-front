@@ -560,7 +560,7 @@ const ViviendasContent: React.FC<{
                   <Select options={Comuna} />
                 </Form.Item>
               </Flex>
-              <Flex vertical style={{ width: "50%" }}>
+              <Flex vertical style={{ width: "50%", marginLeft: "15px" }}>
                 {/* ID Tipo de Vivienda */}
                 <Form.Item
                   label="Tipo de Vivienda"
@@ -632,37 +632,34 @@ const ViviendasContent: React.FC<{
                   <Select options={situacionVivienda} />
                 </Form.Item>
 
-                <Flex vertical gap="small">
-                  {/* vivienda opcupada */}
-                  <Form.Item name="vivienda_ocupada" valuePropName="checked">
-                    <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
-                      ¿Vivienda ocupada?
-                    </Checkbox>
+                {/* vivienda opcupada */}
+                <Form.Item name="vivienda_ocupada" valuePropName="checked">
+                  <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
+                    ¿Vivienda ocupada?
+                  </Checkbox>
+                </Form.Item>
+                <Form.Item name="subtipo_ocupacion">
+                  <Select
+                    defaultValue={
+                      check ? optOcupada[0].value : optDesocupada[0].value
+                    }
+                    options={check ? optDesocupada : optOcupada}
+                    onChange={(value) => setCheckBoxint(value)}
+                  />
+                </Form.Item>
+                {checkboxint != 5 && (
+                  <Form.Item
+                    label="Tiene documentacion?"
+                    name="tiene_documentacion"
+                    valuePropName="checked"
+                    initialValue={false}
+                  >
+                    <Checkbox />
                   </Form.Item>
-                  <Flex>
-                    <Form.Item name="subtipo_ocupacion">
-                      <Select
-                        defaultValue={
-                          check ? optOcupada[0].value : optDesocupada[0].value
-                        }
-                        options={check ? optDesocupada : optOcupada}
-                        onChange={(value) => setCheckBoxint(value)}
-                      />
-                    </Form.Item>
-                    {checkboxint != 5 && (
-                      <Form.Item
-                        name="tiene_documentacion"
-                        valuePropName="checked"
-                        initialValue={false}
-                      >
-                        <Checkbox />
-                      </Form.Item>
-                    )}
-                  </Flex>
-                  <Form.Item name="respuesta_otro">
-                    {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}
-                  </Form.Item>
-                </Flex>
+                )}
+                <Form.Item name="respuesta_otro">
+                  {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}
+                </Form.Item>
               </Flex>
             </Flex>
           </Form>

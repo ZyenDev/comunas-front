@@ -53,7 +53,6 @@ function LoginView() {
           message: "¡Registro exitoso!",
           description: "¡Su Usuario ha sido creado exitosamente!",
         });
-        console.log(data);
         //todo: pq email c# get a fucking grip mate
         login(data.token, data.email.username, data.email.group);
         navigate("/dashboard/reportegen");

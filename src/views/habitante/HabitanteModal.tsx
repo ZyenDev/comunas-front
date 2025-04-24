@@ -11,14 +11,12 @@ import {
   notification,
   Checkbox,
   Row,
-  Col,
 } from "antd";
 import {
   createHabitante,
   getHabitanteByID,
   updateHabitante,
 } from "../../controllers/HabitantesController";
-import { HabitanteInterface } from "../../models/HabitanteModel";
 import { useParams } from "react-router";
 import { getAllPaisOrigen } from "../../controllers/PaisOrigenController";
 import { getAllVivienda } from "../../controllers/ViviendaController";
@@ -43,9 +41,9 @@ const HabitanteContent: React.FC<{
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
   const [paisOrigen, setPaisOrigen] = useState<any>();
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const [vivienda, setVivienda] = useState<any>();
-  const { login, role, token } = useAuth();
+  const { role, token } = useAuth();
   const [vene, setNAd] = useState<boolean>(false);
   const { id_habitantes } = useParams();
   const [id_vivienda_local, setVin] = useState<number>();
@@ -69,6 +67,7 @@ const HabitanteContent: React.FC<{
           values.id_vivienda = Number(id_habitantes);
           await updateHabitante(id_habitante, values, token ? token : "");
         } else {
+          console.log(error);
           //este error en teoria es imposible
           throw new Error("¡Fallo al obtener el ID!");
         }
@@ -166,32 +165,32 @@ const HabitanteContent: React.FC<{
     </Button>,
   ];
 
-  const onFinish = (values: any) => {
-    const registrar = async () => {
-      try {
-        setLoading(true);
-        // const data = await Register("Habitante", ,token ? token : "");
-        api.success({
-          message: "¡Registro exitoso!",
-          description: "¡Su Usuario ha sido creado exitosamente!",
-        });
-        // login(data.token, data.email.username, data.group);
-        form.resetFields();
-      } catch (error) {
-        setLoading(false);
-        api.error({
-          message: "Error en el registro.",
-          description:
-            "¡Hubo un problema al crear su Usuario. Por favor, intente nuevamente!",
-        });
-      }
-    };
-    registrar();
-  };
+  // const onFinish = (values: any) => {
+  //   const registrar = async () => {
+  //     try {
+  //       setLoading(true);
+  //       // const data = await Register("Habitante", ,token ? token : "");
+  //       api.success({
+  //         message: "¡Registro exitoso!",
+  //         description: "¡Su Usuario ha sido creado exitosamente!",
+  //       });
+  //       // login(data.token, data.email.username, data.group);
+  //       form.resetFields();
+  //     } catch (error) {
+  //       setLoading(false);
+  //       api.error({
+  //         message: "Error en el registro.",
+  //         description:
+  //           "¡Hubo un problema al crear su Usuario. Por favor, intente nuevamente!",
+  //       });
+  //     }
+  //   };
+  //   registrar();
+  // };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo: any) => {
+  //   console.log("Failed:", errorInfo);
+  // };
   //TODO: falta grado de intrusion
   /*
 Ninguno
@@ -229,6 +228,7 @@ No sabe/No contesta
                 <Flex align="center">
                   <Form.Item name="id_nacionalidad" label=" " initialValue={2}>
                     <Select
+                      // loading={loading}
                       style={{ width: "50px" }}
                       defaultValue={2}
                       onChange={(value) => {

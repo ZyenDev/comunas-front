@@ -15,7 +15,7 @@ import {
   EyeOutlined,
 } from "@ant-design/icons";
 import Input from "antd/es/input/Input";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import logo from "../assets/logo.webp";
 import CarouselCompo from "../components/CarouselComponent";
 import { useAuth } from "../components/AuthContext";
@@ -23,7 +23,7 @@ import { Login } from "../controllers/SessionsController";
 import { LoginInterface } from "../models/SessionsModel";
 import { useState } from "react";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 type FieldType = {
   email?: string;

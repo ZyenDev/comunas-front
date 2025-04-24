@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { LoginInterface, RegisterLoginInterface } from '../models/SessionsModel';
-import { error } from 'console';
+
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const baseUrl = apiUrl + "api";

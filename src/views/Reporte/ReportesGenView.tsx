@@ -3,7 +3,6 @@ import { Card, Typography, Row, Col } from "antd";
 import { getReporteGen } from "../../controllers/ReportesController";
 import { useAuth } from "../../components/AuthContext";
 import { ReportesModelo } from "../../models/ReportesModelo";
-import { report } from "process";
 
 const ReporteView: React.FC = () => {
   const [reporte, setReporte] = React.useState<ReportesModelo>();

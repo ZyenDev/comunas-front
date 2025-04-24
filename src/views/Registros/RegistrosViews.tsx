@@ -16,10 +16,8 @@ import {
   MailOutlined,
   EyeInvisibleOutlined,
   EyeOutlined,
-  EditOutlined,
 } from "@ant-design/icons";
 import Input from "antd/es/input/Input";
-import { useNavigate } from "react-router";
 import { useAuth } from "../../components/AuthContext";
 import {
   Register,
@@ -168,6 +166,7 @@ const registrar: React.FC = () => {
 
   return (
     <>
+      {contextHolder}
       <Row>
         <Col
           sm={12}

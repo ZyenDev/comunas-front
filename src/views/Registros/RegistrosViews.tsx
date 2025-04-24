@@ -26,7 +26,7 @@ import {
 } from "../../controllers/SessionsController";
 
 const { Title } = Typography;
-const registrar: React.FC = () => {
+const Registrar: React.FC = () => {
   //const [role, setRole] = useState<string>();
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
@@ -301,7 +301,7 @@ const registrar: React.FC = () => {
   );
 };
 
-export default registrar;
+export default Registrar;
 
 /*
 path('api/groups/<str:group_name>/users/', views.get_users_by_group)

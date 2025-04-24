@@ -10,7 +10,7 @@ import Usuarios from "../views/Usuario/UsuarioView";
 import Habitante from "../views/habitante/HabitanteViews";
 import NotFound from "../views/NotFound";
 import ProtectedRoute from "../components/ProtectedRoute";
-import RegistroView from "../views/registros/RegistrosViews";
+import RegistroViewsGen from "../views/registros/RegistrosViews";
 import Reportes from "../views/Reporte/ReporteHabitanteView";
 import Reportesgen from "../views/Reporte/ReportesGenView";
 import { AuthProvider } from "../components/AuthContext";
@@ -65,7 +65,7 @@ const routeConfig: RouteConfig[] = [
     children: [
       { path: "comuna", element: <ComunaViews /> },
       { path: "consejocomunal", element: <Consejoscomunales /> },
-      { path: "registrar", element: <RegistroView /> },
+      { path: "registrar", element: <RegistroViewsGen /> },
       { path: "viviendas", element: <ViviendasViews /> },
       { path: "usuario", element: <Usuarios /> },
       {

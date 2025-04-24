@@ -33,6 +33,11 @@ const Habitante: React.FC = () => {
 
   const columns: any = [
     {
+      title: "N°",
+      key: "index",
+      render: (_: any, __: any, index: number) => index + 1,
+    },
+    {
       title: "ID",
       dataIndex: "id_habitante",
       key: "id_habitante",
@@ -58,7 +63,6 @@ const Habitante: React.FC = () => {
       title: "Sexo",
       dataIndex: "sexo",
       key: "sexo",
-      //render: (sexo: any) => console.log(sexo),
     },
     {
       title: "Discapacidad",
@@ -77,7 +81,7 @@ const Habitante: React.FC = () => {
       dataIndex: "id_nacionalidad",
       key: "id_nacionalidad",
       render: (pertenece_etnia: any) =>
-        pertenece_etnia === 2 ? "Venezolano" : "Extrangero",
+        pertenece_etnia === 2 ? "Venezolano" : "Extranjero",
     },
     {
       title: "País de Origen",
@@ -111,13 +115,13 @@ const Habitante: React.FC = () => {
                   habitante.id_habitante,
                   token ? token : ""
                 );
-                openNotificationSuccess("¡Habitante eliminado con exito!");
+                openNotificationSuccess("¡Habitante eliminado con éxito!");
                 gethabitante();
               } catch (error: any) {
                 openNotificationError(error?.message || "Error desconocido.");
               }
             }}
-            okText="Si"
+            okText="Sí"
             cancelText="No"
           >
             <Button type="primary" danger icon={<DeleteFilled />} />
@@ -210,7 +214,7 @@ const Habitante: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <Content style={{ padding: "24px", background: "#fff", width: "100%" }}>
+      <Content style={{ padding: "24px", width: "100%" }}>
         <h1>Nro. Casa: {vivienda?.numero_vivienda}</h1>
         <Table
           title={() => (

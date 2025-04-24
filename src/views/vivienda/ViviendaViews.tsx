@@ -318,7 +318,7 @@ const viviendas: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <Content style={{ padding: "24px", background: "#fff", width: "100%" }}>
+      <Content style={{ padding: "24px", width: "100%" }}>
         <Table
           title={() => (
             <Flex vertical={false} justify="space-between" align="center">

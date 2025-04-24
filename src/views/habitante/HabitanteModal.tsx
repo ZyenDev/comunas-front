@@ -10,6 +10,8 @@ import {
   Input,
   notification,
   Checkbox,
+  Row,
+  Col,
 } from "antd";
 import {
   createHabitante,
@@ -21,6 +23,15 @@ import { useParams } from "react-router";
 import { getAllPaisOrigen } from "../../controllers/PaisOrigenController";
 import { getAllVivienda } from "../../controllers/ViviendaController";
 import { useAuth } from "../../components/AuthContext";
+import { Register } from "../../controllers/SessionsController";
+import {
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  MailOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { Typography } from "antd";
+import { RegisterLoginInterface } from "../../models/SessionsModel";
 //getAllVivienda
 const HabitanteContent: React.FC<{
   open: boolean;
@@ -28,14 +39,16 @@ const HabitanteContent: React.FC<{
   isUpdated: boolean;
   id_habitante?: number;
 }> = ({ open, setOpen, isUpdated, id_habitante }) => {
-  const [form] = Form.useForm<HabitanteInterface>();
+  const [form] = Form.useForm<any>();
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
   const [paisOrigen, setPaisOrigen] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
   const [vivienda, setVivienda] = useState<any>();
-  const { token } = useAuth();
+  const { login, role, token } = useAuth();
   const [vene, setNAd] = useState<boolean>(false);
   const { id_habitantes } = useParams();
+  const [showPassword, setShowPassword] = useState(true);
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
@@ -57,6 +70,20 @@ const HabitanteContent: React.FC<{
           //este error en teoria es imposible
           throw new Error("¡Fallo al obtener el ID!");
         }
+
+        var userData: RegisterLoginInterface = {
+          email: values.email,
+          username: values.username,
+          password: values.password,
+        };
+
+        const udata = await Register(
+          userData,
+          role ? role : "",
+          token ? token : ""
+        );
+
+        login(udata.token, udata.email.username, udata.group);
         form.resetFields();
         setOpen(false);
         setError(false);
@@ -142,6 +169,33 @@ const HabitanteContent: React.FC<{
     </Button>,
   ];
 
+  const onFinish = (values: any) => {
+    const registrar = async () => {
+      try {
+        setLoading(true);
+        // const data = await Register("Habitante", ,token ? token : "");
+        api.success({
+          message: "¡Registro exitoso!",
+          description: "¡Su Usuario ha sido creado exitosamente!",
+        });
+        // login(data.token, data.email.username, data.group);
+        form.resetFields();
+      } catch (error) {
+        setLoading(false);
+        api.error({
+          message: "Error en el registro.",
+          description:
+            "¡Hubo un problema al crear su Usuario. Por favor, intente nuevamente!",
+        });
+      }
+    };
+    registrar();
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
     <>
       <Flex vertical>
@@ -152,158 +206,222 @@ const HabitanteContent: React.FC<{
           open={open}
           onCancel={handleCancel}
           footer={customFooter}
+          width={800} // Adjust the width as needed
         >
-          <Form
-            form={form}
-            layout="vertical"
-            name="form_in_modal"
-            initialValues={{ cantidad_habitante: 1 }}
-            style={{ display: "flex", gap: "20px" }}
-          >
-            <Flex vertical>
-              <Flex align="center">
-                <Form.Item name="id_nacionalidad" label=" " initialValue={2}>
-                  <Select
-                    style={{ width: "50px" }}
-                    defaultValue={2}
-                    onChange={(value) => {
-                      if (value === 2) {
-                        setNAd(false);
-                      } else {
-                        setNAd(true);
-                      }
-                    }}
+          <Row>
+            <Form
+              form={form}
+              layout="vertical"
+              name="form_in_modal"
+              initialValues={{ cantidad_habitante: 1 }}
+              style={{ display: "flex", gap: "20px" }}
+            >
+              <Flex vertical>
+                <Flex align="center">
+                  <Form.Item name="id_nacionalidad" label=" " initialValue={2}>
+                    <Select
+                      style={{ width: "50px" }}
+                      defaultValue={2}
+                      onChange={(value) => {
+                        if (value === 2) {
+                          setNAd(false);
+                        } else {
+                          setNAd(true);
+                        }
+                      }}
+                    >
+                      <Select.Option value={1}>E</Select.Option>
+                      <Select.Option value={2}>V</Select.Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    name="cedula"
+                    label="Cédula"
+                    rules={[
+                      {
+                        required: true,
+                        message: "¡Por favor, ingrese la Cédula!",
+                      },
+                    ]}
                   >
-                    <Select.Option value={1}>E</Select.Option>
-                    <Select.Option value={2}>V</Select.Option>
-                  </Select>
-                </Form.Item>
+                    <Input />
+                  </Form.Item>
+                </Flex>
                 <Form.Item
-                  name="cedula"
-                  label="Cédula"
+                  name="primer_nombre"
+                  label="Primer Nombre"
                   rules={[
                     {
                       required: true,
-                      message: "¡Por favor, ingrese la Cédula!",
+                      message: "¡Por favor, ingrese el Primer Nombre!",
                     },
                   ]}
                 >
                   <Input />
                 </Form.Item>
+                <Form.Item name="segundo_nombre" label="Segundo Nombre">
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  name="primer_apellido"
+                  label="Primer Apellido"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Primer Apellido!",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item name="segundo_apellido" label="Segundo Apellido">
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  name="fecha_nacimiento"
+                  label="Fecha de Nacimiento"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese la Fecha de Nacimiento!",
+                    },
+                  ]}
+                >
+                  <Input type="date" />
+                </Form.Item>
               </Flex>
-              <Form.Item
-                name="primer_nombre"
-                label="Primer Nombre"
-                rules={[
-                  {
-                    required: true,
-                    message: "¡Por favor, ingrese el Primer Nombre!",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item name="segundo_nombre" label="Segundo Nombre">
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name="primer_apellido"
-                label="Primer Apellido"
-                rules={[
-                  {
-                    required: true,
-                    message: "¡Por favor, ingrese el Primer Apellido!",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item name="segundo_apellido" label="Segundo Apellido">
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name="fecha_nacimiento"
-                label="Fecha de Nacimiento"
-                rules={[
-                  {
-                    required: true,
-                    message: "¡Por favor, ingrese la Fecha de Nacimiento!",
-                  },
-                ]}
-              >
-                <Input type="date" />
-              </Form.Item>
-            </Flex>
-            <Flex vertical>
-              <Form.Item
-                name="sexo"
-                label="Sexo"
-                rules={[
-                  {
-                    required: true,
-                    message: "¡Por favor, seleccione el Sexo!",
-                  },
-                ]}
-              >
-                <Select>
-                  <Select.Option value={1}>Masculino</Select.Option>
-                  <Select.Option value={2}>Femenino</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                name="discapacidad"
-                label="Discapacidad"
-                valuePropName="checked"
-                initialValue={false}
-              >
-                <Checkbox />
-              </Form.Item>
-              <Form.Item
-                name="pertenece_etnia"
-                label="¿Pertenece a una Etnia?"
-                valuePropName="checked"
-                initialValue={false}
-              >
-                <Checkbox />
-              </Form.Item>
-
-              {vene && (
-                <Form.Item name="id_pais_origen" label="País de Origen">
-                  <Select
-                    showSearch
-                    filterOption={(
-                      input: string,
-                      option?: { label?: string }
-                    ) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                    options={paisOrigen}
-                  />
+              <Flex vertical>
+                <Form.Item
+                  name="sexo"
+                  label="Sexo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, seleccione el Sexo!",
+                    },
+                  ]}
+                >
+                  <Select>
+                    <Select.Option value={1}>Masculino</Select.Option>
+                    <Select.Option value={2}>Femenino</Select.Option>
+                  </Select>
                 </Form.Item>
-              )}
-
-              {id_habitante === undefined && (
-                <Form.Item name="vivenda" label="Vivienda">
-                  <Select
-                    showSearch
-                    filterOption={(
-                      input: string,
-                      option?: { label?: string }
-                    ) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                    options={paisOrigen}
-                  />
+                <Form.Item
+                  name="discapacidad"
+                  label="Discapacidad"
+                  valuePropName="checked"
+                  initialValue={false}
+                >
+                  <Checkbox />
                 </Form.Item>
-              )}
+                <Form.Item
+                  name="pertenece_etnia"
+                  label="¿Pertenece a una Etnia?"
+                  valuePropName="checked"
+                  initialValue={false}
+                >
+                  <Checkbox />
+                </Form.Item>
 
-              <Divider />
-            </Flex>
-          </Form>
+                {vene && (
+                  <Form.Item name="id_pais_origen" label="País de Origen">
+                    <Select
+                      showSearch
+                      filterOption={(
+                        input: string,
+                        option?: { label?: string }
+                      ) =>
+                        (option?.label ?? "")
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
+                      }
+                      options={paisOrigen}
+                    />
+                  </Form.Item>
+                )}
+
+                {id_habitante === undefined && (
+                  <Form.Item name="vivenda" label="Vivienda">
+                    <Select
+                      showSearch
+                      filterOption={(
+                        input: string,
+                        option?: { label?: string }
+                      ) =>
+                        (option?.label ?? "")
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
+                      }
+                      options={vivienda}
+                    />
+                  </Form.Item>
+                )}
+
+                <Divider />
+                <Typography.Title level={5}>Datos de Usuario</Typography.Title>
+                <Flex vertical style={{ width: "80%" }}>
+                  <Form.Item
+                    name="username"
+                    rules={[
+                      {
+                        required: true,
+                        message: "¡Por favor, ingrese su Usuario!",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="Usuario" suffix={<UserOutlined />} />
+                  </Form.Item>
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "¡Por favor, ingrese su Correo Electrónico!",
+                      },
+                    ]}
+                  >
+                    <Input
+                      placeholder="Correo Electrónico"
+                      suffix={<MailOutlined />}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "¡Por favor, ingrese su Contraseña!",
+                      },
+                    ]}
+                  >
+                    <div style={{ position: "relative" }}>
+                      <Input
+                        type={showPassword ? "password" : "text"}
+                        placeholder="Ingresa tu Contraseña"
+                      />
+                      <Button
+                        type="text"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        style={{
+                          position: "absolute",
+                          right: 10,
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                        }}
+                        icon={
+                          showPassword ? (
+                            <EyeInvisibleOutlined />
+                          ) : (
+                            <EyeOutlined />
+                          )
+                        }
+                      />
+                    </div>
+                  </Form.Item>
+                </Flex>
+              </Flex>
+            </Form>
+          </Row>
         </Modal>
       </Flex>
     </>

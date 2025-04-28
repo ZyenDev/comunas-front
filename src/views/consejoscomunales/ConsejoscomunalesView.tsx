@@ -440,10 +440,15 @@ const ConsejoComunal: React.FC = () => {
   return (
     <div>
       {contextHolder}
-      <Content style={{ padding: "24px", background: "#fff" }}>
+      <Content style={{ padding: "24px" }}>
         <Table
           title={() => (
-            <Flex vertical={false} justify="space-between" align="center">
+            <Flex
+              vertical={false}
+              justify="space-between"
+              align="center"
+              style={{ flexWrap: "wrap" }}
+            >
               <h1>Listado de Consejos Comunales</h1>
               <Button type="primary" onClick={showModal}>
                 Añadir Consejo Comunal

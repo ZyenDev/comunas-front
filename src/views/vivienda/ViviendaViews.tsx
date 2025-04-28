@@ -320,7 +320,12 @@ const viviendas: React.FC = () => {
       <Content style={{ padding: "24px", width: "100%" }}>
         <Table
           title={() => (
-            <Flex vertical={false} justify="space-between" align="center">
+            <Flex
+              vertical={false}
+              justify="space-between"
+              align="center"
+              style={{ flexWrap: "wrap" }}
+            >
               <h1>Listado de Viviendas</h1>
               <Button type="primary" onClick={showModal}>
                 Añadir Vivienda

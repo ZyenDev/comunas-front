@@ -11,6 +11,7 @@ import { Outlet } from "react-router";
 import { Link } from "react-router";
 import { useAuth } from "../components/AuthContext";
 import { JSX } from "react/jsx-runtime";
+import { isMobile } from "react-device-detect";
 
 const { Content, Sider } = Layout;
 //const currentUserRole = "admin";
@@ -127,12 +128,15 @@ const Dashboard: React.FC = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
+        collapsed={isMobile}
         style={{
           ...siderStyle,
           zIndex: 1000,
           display: "flex",
           flexDirection: "column",
         }}
+        collapsedWidth={80} // Width when collapsed
+        width={200} // Width when expanded
       >
         <div
           style={{
@@ -144,14 +148,25 @@ const Dashboard: React.FC = () => {
         >
           <div>
             <div
-              style={{ padding: "16px", display: "flex", alignItems: "center" }}
+              style={{
+                padding: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: isMobile ? "center" : "flex-start",
+              }}
             >
               <UserOutlined
-                style={{ fontSize: "24px", marginRight: "8px", color: "white" }}
+                style={{
+                  fontSize: "24px",
+                  marginRight: isMobile ? 0 : "8px",
+                  color: "white",
+                }}
               />
-              <span style={{ color: "white" }}>{username}</span>
+              {!isMobile && <span style={{ color: "white" }}>{username}</span>}
             </div>
+
             <div className="demo-logo-vertical" />
+
             <Menu
               theme="dark"
               mode="inline"
@@ -159,6 +174,7 @@ const Dashboard: React.FC = () => {
               items={filterMenuItemsByRole(menuItems, role ? role : "")}
             />
           </div>
+
           <div style={{ marginTop: "auto" }}>
             <Menu theme="dark" mode="inline">
               <Menu.Item
@@ -169,7 +185,7 @@ const Dashboard: React.FC = () => {
                   navigate("/");
                 }}
               >
-                Cerrar Sesión
+                {!isMobile && "Cerrar Sesión"}
               </Menu.Item>
             </Menu>
           </div>

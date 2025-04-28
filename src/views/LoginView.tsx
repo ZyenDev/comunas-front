@@ -22,6 +22,7 @@ import { useAuth } from "../components/AuthContext";
 import { Login } from "../controllers/SessionsController";
 import { LoginInterface } from "../models/SessionsModel";
 import { useState } from "react";
+import { isMobile } from "react-device-detect";
 
 const { Title } = Typography;
 
@@ -32,6 +33,7 @@ type FieldType = {
 };
 
 function LoginView() {
+  const isPhone = isMobile;
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState<boolean>(false);
@@ -79,14 +81,20 @@ function LoginView() {
     <>
       {contextHolder}
       <Row>
-        <Col style={{ width: "50%", height: "100vh" }} sm={0} md={12}>
-          <CarouselCompo />
-        </Col>
+        {!isPhone && (
+          <Col style={{ width: "50%", height: "100vh" }} sm={0} md={12}>
+            <CarouselCompo />
+          </Col>
+        )}
         <Col
           sm={24}
-          md={12}
+          md={isPhone ? 24 : 12}
           style={{
             display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100vh",
           }}
         >
           <Form

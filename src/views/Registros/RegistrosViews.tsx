@@ -280,7 +280,7 @@ const Registrar: React.FC = () => {
           <Flex
             justify="space-between"
             align="center"
-            style={{ marginBottom: "16px" }}
+            style={{ marginBottom: "16px", flexWrap: "wrap" }}
           >
             {allow === "Habitante" ? (
               <Title level={4}>Listado de Habitantes con Usuario</Title>
@@ -294,7 +294,12 @@ const Registrar: React.FC = () => {
               </Button>
             )}
           </Flex>
-          <Table dataSource={datasource} columns={columns} loading={loading} />
+          <Table
+            dataSource={datasource}
+            columns={columns}
+            loading={loading}
+            scroll={{ x: "max-content" }}
+          />
         </Col>
       </Row>
     </>

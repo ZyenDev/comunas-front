@@ -16,6 +16,7 @@
     "axios": "^1.7.9",
     "leaflet": "^1.9.4",
     "react": "^19.0.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
     "react-leaflet": "^5.0.0-rc.2",
     "react-router": "^7.1.5"

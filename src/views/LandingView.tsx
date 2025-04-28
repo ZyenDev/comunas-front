@@ -20,6 +20,10 @@ import cardimg02 from "../assets/card-img/espc2.png";
 import cardimg03 from "../assets/card-img/espc3.jpg";
 import cajasimg from "../assets/cajas.jpg";
 
+/*half -shite
+ is a hl game 
+ */
+
 const { Header, Footer, Content } = Layout;
 const { Title, Paragraph } = Typography;
 const { Meta } = Card;
@@ -65,10 +69,6 @@ function Landing(): JSX.Element {
               shape="default"
               icon={<UserOutlined />}
               size="large"
-              // style={{
-              //   backgroundColor: "#8B0000", // Dark red color
-              //   borderColor: "#8B0000", // Match border with background
-              // }}
               onClick={() => {
                 navigate("/login");
               }}
@@ -82,7 +82,7 @@ function Landing(): JSX.Element {
           <div
             style={{
               position: "relative",
-              height: "700px",
+              height: "50vh", // Adjust height to be responsive
               overflow: "hidden",
             }}
           >
@@ -102,6 +102,8 @@ function Landing(): JSX.Element {
               width="100%"
               src={image02}
               style={{
+                height: "100%", // Ensure the image covers the container
+                objectFit: "cover", // Maintain aspect ratio and cover the area
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.5)", // Sombra correctamente aplicada
               }}
             />
@@ -111,18 +113,34 @@ function Landing(): JSX.Element {
               style={{
                 position: "absolute",
                 top: "50%",
-                left: "20%",
+                left: "50%",
                 transform: "translate(-50%, -50%)",
                 color: "#fff",
                 padding: "20px",
                 borderRadius: "10px",
                 zIndex: 2, // Asegura que el texto quede encima de la capa oscura
+                textAlign: "center", // Center text for smaller screens
+                width: "90%", // Adjust width for responsiveness
+                maxWidth: "500px", // Limit maximum width
               }}
             >
-              <Title level={2} style={{ color: "#fff", margin: 0 }}>
+              <Title
+                level={2}
+                style={{
+                  color: "#fff",
+                  margin: 0,
+                  fontSize: "clamp(1.5rem, 4vw, 2rem)", // Responsive font size
+                }}
+              >
                 Bienvenido a Guanaguanay
               </Title>
-              <Paragraph style={{ color: "#fff", margin: 0 }}>
+              <Paragraph
+                style={{
+                  color: "#fff",
+                  margin: 0,
+                  fontSize: "clamp(1rem, 3vw, 1.25rem)", // Responsive font size
+                }}
+              >
                 Descubre nuestra comunidad y participa en su desarrollo.
               </Paragraph>
               <Button
@@ -147,7 +165,11 @@ function Landing(): JSX.Element {
           <Flex
             align="center"
             gap="small"
-            style={{ width: "100vw", height: "300px", padding: "20px" }}
+            style={{
+              width: "100%",
+              padding: "45px",
+              flexWrap: "wrap", // Allow wrapping if content is too big
+            }}
           >
             <Image
               preview={false}
@@ -157,9 +179,10 @@ function Landing(): JSX.Element {
                 width: "350px",
                 height: "250px",
                 borderRadius: "20px",
+                flexShrink: 0, // Prevent image from shrinking
               }}
             />
-            <div>
+            <div style={{ flex: 1, minWidth: "300px" }}>
               <h1>Comuna Jose Miguel Guanaguanay:</h1>
               <p>
                 La comuna Cacique Guanaguanay, la cual cuenta con una cantidad
@@ -178,11 +201,11 @@ function Landing(): JSX.Element {
 
           <Flex align="center" vertical style={{ padding: "25px" }}>
             <h1>Nuestra comunidad</h1>
-            <Row gutter={16} justify="space-between">
-              <Col span={8}>
+            <Row gutter={[16, 16]} justify="center">
+              <Col xs={24} sm={12} md={8}>
                 <Card
                   hoverable
-                  style={{ width: 240 }}
+                  style={{ width: "100%" }}
                   cover={<img alt="example" src={cardimg01} />}
                 >
                   <Meta
@@ -191,10 +214,10 @@ function Landing(): JSX.Element {
                   />
                 </Card>
               </Col>
-              <Col span={8}>
+              <Col xs={24} sm={12} md={8}>
                 <Card
                   hoverable
-                  style={{ width: 240 }}
+                  style={{ width: "100%" }}
                   cover={<img alt="example" src={cardimg02} />}
                 >
                   <Meta
@@ -203,10 +226,10 @@ function Landing(): JSX.Element {
                   />
                 </Card>
               </Col>
-              <Col span={8}>
+              <Col xs={24} sm={12} md={8}>
                 <Card
                   hoverable
-                  style={{ width: 240 }}
+                  style={{ width: "100%" }}
                   cover={<img alt="example" src={cardimg03} />}
                 >
                   <Meta
@@ -223,9 +246,13 @@ function Landing(): JSX.Element {
           <Flex
             align="center"
             gap="small"
-            style={{ width: "100vw", height: "300px", padding: "45px" }}
+            style={{
+              width: "100%",
+              padding: "45px",
+              flexWrap: "wrap", // Allow wrapping if content is too big
+            }}
           >
-            <div>
+            <div style={{ flex: 1, minWidth: "300px" }}>
               <h1>Objetivos de los consejos comunales:</h1>
               <p>
                 Los consejos comunales son organizaciones de base popular en
@@ -246,6 +273,7 @@ function Landing(): JSX.Element {
                 width: "350px",
                 height: "250px",
                 borderRadius: "20px",
+                flexShrink: 0, // Prevent image from shrinking
               }}
             />
           </Flex>
@@ -255,7 +283,7 @@ function Landing(): JSX.Element {
           <Flex
             align="center"
             gap="small"
-            style={{ width: "100vw", height: "300px", padding: "25px" }}
+            style={{ width: "100vw", height: "300px", padding: "20px" }}
           >
             {/* Mapa de Google Maps */}
             <iframe
@@ -266,8 +294,8 @@ function Landing(): JSX.Element {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-            <div style={{ flex: 1 }}>
+            />
+            <div>
               <p>
                 Actualmente la comuna "Cacique Jose Miguel Guanaguanay" se
                 encuentra ubicada en el sector Los Godos, detrás del Estadio Los
@@ -275,9 +303,10 @@ function Landing(): JSX.Element {
               </p>
             </div>
           </Flex>
-
-          <Divider />
         </Content>
+
+        <Divider />
+
         <Footer style={footerStyle}>
           Desarrollado por Universidad Bolivariana de Venezuela. Maturín, Estado
           Monagas.

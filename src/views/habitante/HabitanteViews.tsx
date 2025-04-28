@@ -217,7 +217,12 @@ const Habitante: React.FC = () => {
         )}
         <Table
           title={() => (
-            <Flex vertical={false} justify="space-between" align="center">
+            <Flex
+              vertical={false}
+              justify="space-between"
+              align="center"
+              style={{ flexWrap: "wrap" }}
+            >
               <h1>Listado de Habitantes</h1>
               <Button type="primary" onClick={showModal}>
                 Añadir Habitante

@@ -49,6 +49,7 @@ const ViviendasContent: React.FC<{
 }> = ({ open, setOpen, isUpdated, idVivienda: idVivienda }) => {
   const [form] = Form.useForm<ViviendaInterface>();
   const [Comuna, setComunas] = useState<DefaultOptionType[]>();
+  const [loading, setLoading] = useState(false);
 
   const [tipoVivienda, setTipoVivienda] = useState<DefaultOptionType[]>();
   const [tipoTecho, setTipoTecho] = useState<DefaultOptionType[]>();
@@ -144,6 +145,7 @@ const ViviendasContent: React.FC<{
 
   useEffect(() => {
     if (open) {
+      setLoading(true);
       const getTipoVivienda = async () => {
         try {
           const data = await getAllTipoVivienda(token ? token : "");
@@ -294,6 +296,7 @@ const ViviendasContent: React.FC<{
       getConsejo();
       //errors
       setError(false);
+      setLoading(false);
     }
   }, [open]);
 
@@ -406,6 +409,7 @@ const ViviendasContent: React.FC<{
           open={open}
           onCancel={handleCancel}
           footer={customFooter}
+          loading={loading}
         >
           <Form
             form={form}

@@ -51,6 +51,7 @@ const ConsejoComunalContent: React.FC<{
 }> = ({ open, setOpen, isUpdated, id_consejo }) => {
   const [form] = Form.useForm<ConsejoComunalInterface>();
   const [Comuna, setComunas] = useState<DefaultOptionType[]>();
+  const [loading, setLoading] = useState(false);
 
   const [api, contextHolder] = notification.useNotification();
   const { token } = useAuth();
@@ -128,21 +129,7 @@ const ConsejoComunalContent: React.FC<{
 
   useEffect(() => {
     if (open) {
-      // const getAmbitos = async () => {
-      //   try {
-      //     const data = await getAllAmbitos(token ? token : "");
-      //     let opt: DefaultOptionType[] = [];
-      //     data.forEach((element) => {
-      //       opt.push({
-      //         value: element.id_ambito_territorial,
-      //         label: "y " + element.latitud + " x" + element.longitud,
-      //       });
-      //     });
-      //     setAmbito(opt);
-      //   } catch (error) {
-      //     console.error("Fallo al encontrar Ámbitos Territoriales:", error);
-      //   }
-      // };
+      setLoading(true);
       const getComunas = async () => {
         try {
           const data = await getAllComunas(token ? token : "");
@@ -176,6 +163,7 @@ const ConsejoComunalContent: React.FC<{
       getConsejoComunalbyid();
       getComunas();
       // getAmbitos();
+      setLoading(false);
       setError(false);
     }
   }, [open]);
@@ -205,6 +193,7 @@ const ConsejoComunalContent: React.FC<{
           open={open}
           onCancel={handleCancel}
           footer={customFooter}
+          loading={loading}
         >
           <Form
             form={form}

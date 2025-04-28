@@ -184,6 +184,7 @@ const Registrar: React.FC = () => {
             visible={modalVisible}
             onCancel={() => setModalVisible(false)}
             footer={null}
+            loading={loading}
           >
             <Form
               form={form}

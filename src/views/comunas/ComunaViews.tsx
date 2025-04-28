@@ -47,6 +47,7 @@ const ComunasHeadContent: React.FC<{
 }> = ({ open, setOpen, isUpdate, idComuna }) => {
   const [form] = Form.useForm<ComunaInterface>();
   // const [Ambito, setAmbito] = useState<DefaultOptionType[]>();
+  const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
   const [error, setError] = useState(false);
@@ -125,6 +126,7 @@ const ComunasHeadContent: React.FC<{
 
   useEffect(() => {
     if (open) {
+      setLoading(true);
       // const getAmbitos = async () => {
       //   try {
       //     const data = await getAllAmbitos(token ? token : "");
@@ -155,6 +157,7 @@ const ComunasHeadContent: React.FC<{
       getComunalByid();
       setError(false);
       // getAmbitos();
+      setLoading(false);
     }
   }, [open]);
 
@@ -183,6 +186,7 @@ const ComunasHeadContent: React.FC<{
           open={open}
           onCancel={handleCancel}
           footer={customFooter}
+          loading={loading}
         >
           <Form
             form={form}

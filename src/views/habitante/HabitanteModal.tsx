@@ -41,7 +41,7 @@ const HabitanteContent: React.FC<{
   const [api, contextHolder] = notification.useNotification();
   const [error, setError] = useState(false);
   const [paisOrigen, setPaisOrigen] = useState<any>();
-  // const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [vivienda, setVivienda] = useState<any>();
   const { role, token } = useAuth();
   const [vene, setNAd] = useState<boolean>(false);
@@ -101,6 +101,7 @@ const HabitanteContent: React.FC<{
 
   useEffect(() => {
     if (open) {
+      setLoading(true);
       const getPaises = async () => {
         try {
           const paises = await getAllPaisOrigen(token ? token : "");
@@ -146,6 +147,7 @@ const HabitanteContent: React.FC<{
       getPaises();
       getHabitanteById();
       setError(false);
+      setLoading(false);
     }
   }, [open]);
 
@@ -165,45 +167,6 @@ const HabitanteContent: React.FC<{
     </Button>,
   ];
 
-  // const onFinish = (values: any) => {
-  //   const registrar = async () => {
-  //     try {
-  //       setLoading(true);
-  //       // const data = await Register("Habitante", ,token ? token : "");
-  //       api.success({
-  //         message: "¡Registro exitoso!",
-  //         description: "¡Su Usuario ha sido creado exitosamente!",
-  //       });
-  //       // login(data.token, data.email.username, data.group);
-  //       form.resetFields();
-  //     } catch (error) {
-  //       setLoading(false);
-  //       api.error({
-  //         message: "Error en el registro.",
-  //         description:
-  //           "¡Hubo un problema al crear su Usuario. Por favor, intente nuevamente!",
-  //       });
-  //     }
-  //   };
-  //   registrar();
-  // };
-
-  // const onFinishFailed = (errorInfo: any) => {
-  //   console.log("Failed:", errorInfo);
-  // };
-  //TODO: falta grado de intrusion
-  /*
-Ninguno
-Preescolar
-Primaria
-Secundaria
-Formación profesional
-Educación universitaria (diplomatura, grado, licenciatura)
-Post grado (Maestría, doctorado)
-Otro
-No sabe/No contesta
-
-*/
   return (
     <>
       <Flex vertical>
@@ -215,6 +178,7 @@ No sabe/No contesta
           onCancel={handleCancel}
           footer={customFooter}
           width={600} // Adjust the width as needed
+          loading={loading}
         >
           <Row>
             <Form

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   UserOutlined,
   DashboardOutlined,
   SettingOutlined,
+  HomeOutlined,
+  UserAddOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import type { MenuProps } from "antd";
@@ -23,7 +26,7 @@ const menuItems = [
   {
     key: "users",
     label: "Inicio",
-    icon: <UserOutlined />,
+    icon: <HomeOutlined />,
     path: "/dashboard/reportegen",
     roles: ["Administrador", "Parlamentario", "Vocero", "Habitante"],
   },
@@ -44,35 +47,35 @@ const menuItems = [
   {
     key: "Registrar parlamentario",
     label: "Parlamentarios",
-    icon: <SettingOutlined />,
+    icon: <UserAddOutlined />,
     path: "/dashboard/registrar",
     roles: ["Administrador", "editor"],
   },
   {
     key: "Registrar Vocero",
     label: "Voceros",
-    icon: <SettingOutlined />,
+    icon: <UserAddOutlined />,
     path: "/dashboard/registrar",
     roles: ["Parlamentario"],
   },
   {
     key: "Registrar vivienda",
     label: "Viviendas",
-    icon: <SettingOutlined />,
+    icon: <UserAddOutlined />,
     path: "/dashboard/viviendas",
     roles: ["Vocero"],
   },
   {
     key: "Registrar habitantes",
     label: "Cuentas Habitantes",
-    icon: <SettingOutlined />,
+    icon: <UserAddOutlined />,
     path: "/dashboard/registrar",
     roles: ["Vocero"],
   },
   {
     key: "habitantes",
     label: "Habitantes",
-    icon: <SettingOutlined />,
+    icon: <TeamOutlined />,
     path: "viviendas/habitantes/",
     roles: ["Parlamentario", "Vocero"],
   },
@@ -95,6 +98,7 @@ const menuItems = [
 const Dashboard: React.FC = () => {
   const { logout, username, role } = useAuth();
   const navigate = useNavigate();
+  const [isColapseMovile, setIsColapse] = useState(false);
   const siderStyle: React.CSSProperties = {
     overflow: "auto",
     height: "100vh",
@@ -105,6 +109,10 @@ const Dashboard: React.FC = () => {
     scrollbarWidth: "thin",
     scrollbarGutter: "stable",
   };
+
+  useEffect(() => {
+    setIsColapse(isMobile);
+  }, []);
 
   function filterMenuItemsByRole(
     menuItems: {
@@ -128,7 +136,7 @@ const Dashboard: React.FC = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
-        collapsed={isMobile}
+        collapsed={isColapseMovile}
         style={{
           ...siderStyle,
           zIndex: 1000,
@@ -152,17 +160,28 @@ const Dashboard: React.FC = () => {
                 padding: "16px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: isMobile ? "center" : "flex-start",
+                justifyContent: isColapseMovile ? "center" : "flex-start",
               }}
             >
-              <UserOutlined
+              <button
+                onClick={() => setIsColapse(!isColapseMovile)}
                 style={{
-                  fontSize: "24px",
-                  marginRight: isMobile ? 0 : "8px",
+                  background: "none",
+                  border: "none",
                   color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
                 }}
-              />
-              {!isMobile && <span style={{ color: "white" }}>{username}</span>}
+              >
+                <UserOutlined
+                  style={{
+                    fontSize: "24px",
+                    marginRight: isColapseMovile ? 0 : "8px",
+                  }}
+                />
+                {!isColapseMovile && <span>{username}</span>}
+              </button>
             </div>
 
             <div className="demo-logo-vertical" />
@@ -196,6 +215,9 @@ const Dashboard: React.FC = () => {
           style={{
             minHeight: "50px",
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Col

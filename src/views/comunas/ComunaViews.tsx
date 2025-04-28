@@ -126,23 +126,8 @@ const ComunasHeadContent: React.FC<{
 
   useEffect(() => {
     if (open) {
-      setLoading(true);
-      // const getAmbitos = async () => {
-      //   try {
-      //     const data = await getAllAmbitos(token ? token : "");
-      //     let opt: DefaultOptionType[] = [];
-      //     data.forEach((element) => {
-      //       opt.push({
-      //         value: element.id_ambito_territorial,
-      //         label: "Y " + element.latitud + " X" + element.longitud,
-      //       });
-      //     });
-      //     setAmbito(opt);
-      //   } catch (error) {
-      //     console.error("Fallo al encontrar Ámbitos Territoriales:", error);
-      //   }
-      // };
       const getComunalByid = async () => {
+        setLoading(true);
         if (isUpdate && idComuna != null && open) {
           try {
             const data = await getComunaByID(idComuna, token ? token : "");
@@ -153,11 +138,10 @@ const ComunasHeadContent: React.FC<{
         } else {
           form.resetFields();
         }
+        setLoading(false);
       };
       getComunalByid();
       setError(false);
-      // getAmbitos();
-      setLoading(false);
     }
   }, [open]);
 

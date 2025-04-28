@@ -145,8 +145,8 @@ const ViviendasContent: React.FC<{
 
   useEffect(() => {
     if (open) {
-      setLoading(true);
       const getTipoVivienda = async () => {
+        setLoading(true);
         try {
           const data = await getAllTipoVivienda(token ? token : "");
           let opt: DefaultOptionType[] = [];
@@ -160,8 +160,10 @@ const ViviendasContent: React.FC<{
         } catch (error) {
           openNotificationError("Error.");
         }
+        setLoading(false);
       };
       const getTipoTecho = async () => {
+        setLoading(true);
         try {
           const data = await getAllTipoTecho(token ? token : "");
           let opt: DefaultOptionType[] = [];
@@ -175,8 +177,10 @@ const ViviendasContent: React.FC<{
         } catch (error) {
           openNotificationError("Error.");
         }
+        setLoading(false);
       };
       const getTipoPiso = async () => {
+        setLoading(true);
         try {
           const data = await getAllTipoPiso(token ? token : "");
           let opt: DefaultOptionType[] = [];
@@ -190,8 +194,10 @@ const ViviendasContent: React.FC<{
         } catch (error) {
           openNotificationError("Error.");
         }
+        setLoading(false);
       };
       const getSituacionVivienda = async () => {
+        setLoading(true);
         try {
           const data = await getAllSituacionVivienda(token ? token : "");
           let opt: DefaultOptionType[] = [];
@@ -205,8 +211,10 @@ const ViviendasContent: React.FC<{
         } catch (error) {
           openNotificationError("Error.");
         }
+        setLoading(false);
       };
       const getConsejo = async () => {
+        setLoading(true);
         try {
           const data = await getAllConsejoComunal(token ? token : "");
           let opt: DefaultOptionType[] = [];
@@ -220,8 +228,10 @@ const ViviendasContent: React.FC<{
         } catch (error) {
           openNotificationError("Error.");
         }
+        setLoading(false);
       };
       const getTipoPared = async () => {
+        setLoading(true);
         try {
           const data = await getAllTipoPared(token ? token : "");
           let opt: DefaultOptionType[] = [];
@@ -235,9 +245,11 @@ const ViviendasContent: React.FC<{
         } catch (error) {
           openNotificationError("Error.");
         }
+        setLoading(false);
       };
       const getViviendabyId = async () => {
         if (isUpdated && idVivienda != null && open) {
+          setLoading(true);
           try {
             const data = await getViviendaById(idVivienda, token ? token : "");
             form.setFieldsValue(data);
@@ -247,8 +259,10 @@ const ViviendasContent: React.FC<{
         } else {
           form.resetFields();
         }
+        setLoading(false);
       };
       const getMunicipio = async () => {
+        setLoading(true);
         try {
           const data = await getMunicipioByEstadosID(token ? token : "");
           let opt: DefaultOptionType[] = [];
@@ -262,6 +276,7 @@ const ViviendasContent: React.FC<{
         } catch (error) {
           openNotificationError("Error.");
         }
+        setLoading(false);
       };
 
       getMunicipio();
@@ -296,7 +311,6 @@ const ViviendasContent: React.FC<{
       getConsejo();
       //errors
       setError(false);
-      setLoading(false);
     }
   }, [open]);
 

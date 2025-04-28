@@ -101,8 +101,8 @@ const HabitanteContent: React.FC<{
 
   useEffect(() => {
     if (open) {
-      setLoading(true);
       const getPaises = async () => {
+        setLoading(true);
         try {
           const paises = await getAllPaisOrigen(token ? token : "");
           const parsedPaises = paises.map((pais) => ({
@@ -115,6 +115,7 @@ const HabitanteContent: React.FC<{
         }
       };
       const getHabitanteById = async () => {
+        setLoading(true);
         if (isUpdated && id_habitante != null && open) {
           try {
             const data = await getHabitanteByID(
@@ -128,8 +129,10 @@ const HabitanteContent: React.FC<{
         } else {
           form.resetFields();
         }
+        setLoading(false);
       };
       const getAllViviendasss = async () => {
+        setLoading(true);
         if (id_habitante == undefined) {
           try {
             const data = await getAllVivienda(token ? token : "");
@@ -142,12 +145,12 @@ const HabitanteContent: React.FC<{
             openNotificationError("¡Fallo al obtener Viviendas!");
           }
         }
+        setLoading(false);
       };
       getAllViviendasss();
       getPaises();
       getHabitanteById();
       setError(false);
-      setLoading(false);
     }
   }, [open]);
 

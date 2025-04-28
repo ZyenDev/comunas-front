@@ -89,6 +89,7 @@ const Registrar: React.FC = () => {
   ];
 
   const fetchUsers = async () => {
+    setLoading(true);
     try {
       const users = await getUserByRole(role, token ? token : "");
       const formattedData = users.map((user: any, index: number) => ({
@@ -104,6 +105,7 @@ const Registrar: React.FC = () => {
       setLoading(false);
       console.error("Error fetching users:", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {

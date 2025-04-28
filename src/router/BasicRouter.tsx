@@ -16,32 +16,10 @@ import Reportesgen from "../views/Reporte/ReportesGenView";
 import { AuthProvider } from "../components/AuthContext";
 import React from "react";
 
-/*admin
-Registrar Comuna.
-Registrar C.comunal
-Registrar parlamentario
-Reporte 
- */
-
-/*Parlamentario
-Registar Vocero
-Reporte
-*/
-
-/*Vocero
-Registar vivienda
-Registrar Habitantes
-Reportes
-*/
-
-/*habitante
-ni idea
-*/
-
 //mover a model
 interface RouteConfig {
   path: string;
-  element: React.FC<{}> | any; // bad any here
+  element: React.FC<{}> | any; //TODO: FIX this bad any here
   children?: child[];
   protected?: boolean;
   role?: number;

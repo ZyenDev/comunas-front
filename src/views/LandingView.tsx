@@ -20,10 +20,6 @@ import cardimg02 from "../assets/card-img/espc2.png";
 import cardimg03 from "../assets/card-img/espc3.jpg";
 import cajasimg from "../assets/cajas.jpg";
 
-/*half -shite
- is a hl game 
- */
-
 const { Header, Footer, Content } = Layout;
 const { Title, Paragraph } = Typography;
 const { Meta } = Card;
@@ -143,7 +139,7 @@ function Landing(): JSX.Element {
               >
                 Descubre nuestra comunidad y participa en su desarrollo.
               </Paragraph>
-              <Button
+              {/* <Button
                 type="primary"
                 size="large"
                 ghost
@@ -156,7 +152,7 @@ function Landing(): JSX.Element {
                 }}
               >
                 Historia
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -171,30 +167,35 @@ function Landing(): JSX.Element {
               flexWrap: "wrap", // Allow wrapping if content is too big
             }}
           >
-            <Image
-              preview={false}
-              src={image03}
-              style={{
-                overflow: "hidden",
-                width: "350px",
-                height: "250px",
-                borderRadius: "20px",
-                flexShrink: 0, // Prevent image from shrinking
-              }}
-            />
-            <div style={{ flex: 1, minWidth: "300px" }}>
-              <h1>Comuna Jose Miguel Guanaguanay:</h1>
-              <p>
-                La comuna Cacique Guanaguanay, la cual cuenta con una cantidad
-                de habitantes aproximada de 8.208, representa un centro de
-                funcionabilidades diversas para el sector los "Godos" que sin
-                lugar a dudas implica la responsabilidad de cubrir internamente
-                variados departamentos y a su vez es encargada de gestionar las
-                actividades de distintos consejos comunales con el objetivo de
-                un desarrollo social eficiente y un sistema ciudadano
-                participativo y lleno de respeto.
-              </p>
-            </div>
+            <Row gutter={[16, 16]} justify="center">
+              <Col xs={24} sm={24} md={8}>
+                <Image
+                  preview={false}
+                  src={image03}
+                  style={{
+                    overflow: "hidden",
+                    width: "100%",
+                    borderRadius: "20px",
+                    flexShrink: 0, // Prevent image from shrinking
+                  }}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={16}>
+                <div style={{ flex: 1, width: "100%" }}>
+                  <h1>Comuna Jose Miguel Guanaguanay:</h1>
+                  <p>
+                    La comuna Cacique Guanaguanay, la cual cuenta con una
+                    cantidad de habitantes aproximada de 8.208, representa un
+                    centro de funcionabilidades diversas para el sector los
+                    "Godos" que sin lugar a dudas implica la responsabilidad de
+                    cubrir internamente variados departamentos y a su vez es
+                    encargada de gestionar las actividades de distintos consejos
+                    comunales con el objetivo de un desarrollo social eficiente
+                    y un sistema ciudadano participativo y lleno de respeto.
+                  </p>
+                </div>
+              </Col>
+            </Row>
           </Flex>
 
           <Divider />
@@ -252,30 +253,36 @@ function Landing(): JSX.Element {
               flexWrap: "wrap", // Allow wrapping if content is too big
             }}
           >
-            <div style={{ flex: 1, minWidth: "300px" }}>
-              <h1>Objetivos de los consejos comunales:</h1>
-              <p>
-                Los consejos comunales son organizaciones de base popular en
-                Venezuela que tienen como objetivo la participación ciudadana en
-                la gestión de políticas públicas y el desarrollo comunitario. la
-                importancia de los Consejos Comunales está dirigida a buscar
-                soluciones y a ejecutar acciones tendentes a mejorar las
-                situaciones que afecten a las comunidades, entendiendo éstas
-                como el ámbito operativo más adecuado para detectar las
-                necesidades y problemas que se manifiesten.
-              </p>
-            </div>
-            <Image
-              preview={false}
-              src={cajasimg}
-              style={{
-                overflow: "hidden",
-                width: "350px",
-                height: "250px",
-                borderRadius: "20px",
-                flexShrink: 0, // Prevent image from shrinking
-              }}
-            />
+            <Row gutter={[16, 16]} justify="center">
+              <Col xs={24} sm={24} md={16}>
+                <div style={{ flex: 1, width: "100%" }}>
+                  <h1>Objetivos de los consejos comunales:</h1>
+                  <p>
+                    Los consejos comunales son organizaciones de base popular en
+                    Venezuela que tienen como objetivo la participación
+                    ciudadana en la gestión de políticas públicas y el
+                    desarrollo comunitario. la importancia de los Consejos
+                    Comunales está dirigida a buscar soluciones y a ejecutar
+                    acciones tendentes a mejorar las situaciones que afecten a
+                    las comunidades, entendiendo éstas como el ámbito operativo
+                    más adecuado para detectar las necesidades y problemas que
+                    se manifiesten.
+                  </p>
+                </div>
+              </Col>
+              <Col xs={24} sm={12} md={8}>
+                <Image
+                  preview={false}
+                  src={cajasimg}
+                  style={{
+                    overflow: "hidden",
+                    width: "100%",
+                    borderRadius: "20px",
+                    flexShrink: 0, // Prevent image from shrinking
+                  }}
+                />
+              </Col>
+            </Row>
           </Flex>
 
           <Divider />

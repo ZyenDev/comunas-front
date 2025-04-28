@@ -129,8 +129,8 @@ const ConsejoComunalContent: React.FC<{
 
   useEffect(() => {
     if (open) {
-      setLoading(true);
       const getComunas = async () => {
+        setLoading(true);
         try {
           const data = await getAllComunas(token ? token : "");
           let opt: DefaultOptionType[] = [];
@@ -146,6 +146,7 @@ const ConsejoComunalContent: React.FC<{
         }
       };
       const getConsejoComunalbyid = async () => {
+        setLoading(true);
         if (isUpdated && id_consejo != null && open) {
           try {
             const data = await getConsejoComunalById(

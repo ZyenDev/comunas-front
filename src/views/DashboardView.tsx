@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   UserOutlined,
-  DashboardOutlined,
-  SettingOutlined,
   HomeOutlined,
   UserAddOutlined,
   TeamOutlined,
@@ -15,13 +13,14 @@ import { Link } from "react-router";
 import { useAuth } from "../components/AuthContext";
 import { JSX } from "react/jsx-runtime";
 import { isMobile } from "react-device-detect";
+import {
+  ComunaIcon,
+  ConsejoComunalIcon,
+  ConstanciaResidenciaIcon,
+  ViviendaIcon,
+} from "../components/CustomIcon";
 
 const { Content, Sider } = Layout;
-//const currentUserRole = "admin";
-//const currentUserRole = "parlamentario";
-//const currentUserRole = "vocero";
-
-//new menu items
 const menuItems = [
   {
     key: "users",
@@ -33,14 +32,14 @@ const menuItems = [
   {
     key: "regicomuna",
     label: "Comunas",
-    icon: <DashboardOutlined />,
+    icon: <ComunaIcon />,
     path: "/dashboard/comuna",
     roles: ["Administrador", "editor", "viewer"],
   },
   {
     key: "regiconcomuna",
     label: "Consejos Comunales",
-    icon: <SettingOutlined />,
+    icon: <ConsejoComunalIcon />,
     path: "/dashboard/consejocomunal",
     roles: ["Administrador", "editor"],
   },
@@ -61,7 +60,7 @@ const menuItems = [
   {
     key: "Registrar vivienda",
     label: "Viviendas",
-    icon: <UserAddOutlined />,
+    icon: <ViviendaIcon />,
     path: "/dashboard/viviendas",
     roles: ["Vocero"],
   },
@@ -82,17 +81,10 @@ const menuItems = [
   {
     key: "Reportes",
     label: "Reportes",
-    icon: <SettingOutlined />,
+    icon: <ConstanciaResidenciaIcon />,
     path: "/dashboard/reporte",
     roles: ["Habitante"],
   },
-  // {
-  //   key: "Reportes",
-  //   label: "Reportes",
-  //   icon: <SettingOutlined />,
-  //   path: "/dashboard/reportegen",
-  //   roles: ["Administrador", "Parlamentario", "Vocero"],
-  // },
 ];
 
 const Dashboard: React.FC = () => {

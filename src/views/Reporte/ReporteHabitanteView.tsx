@@ -1,120 +1,62 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Typography, Button, Space, Divider } from "antd";
+import { Typography, Button, Space, Divider, Row, Col, Select } from "antd";
 import { PrinterOutlined } from "@ant-design/icons";
+import pdf1 from "../../assets/pdf-comunas/Constancia de Residencia Los Godos.pdf";
 
 const { Title, Paragraph, Text } = Typography;
 
 const ReporteView: React.FC = () => {
-  const [date, setToday] = useState<Date>(new Date());
-  const printRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const today = new Date();
-    setToday(today);
-  }, []);
+  useEffect(() => {}, []);
 
   return (
-    <div style={{ padding: 24 }}>
-      <Space style={{ marginBottom: 24 }}>
-        <Button type="primary" icon={<PrinterOutlined />}>
-          Imprimir / Guardar como PDF
-        </Button>
-      </Space>
-
-      <div ref={printRef} style={{ background: "#fff", padding: 32 }}>
-        <Typography style={{ fontFamily: "serif", color: "#000" }}>
-          <Title
-            level={4}
-            style={{ textAlign: "center", textTransform: "uppercase" }}
-          >
-            República Bolivariana de Venezuela
-          </Title>
-          <Paragraph style={{ textAlign: "center" }}>
-            M.P.P. para las Comunas y Mov. Sociales
-            <br />
-            <strong>Consejo Comunal "Comunales en Victoria"</strong>
-            <br />
-            Maturín, Estado Monagas
-            <br />
-            RIF: C-501521883
-          </Paragraph>
-
-          <Title
-            level={3}
-            style={{ textAlign: "center", textDecoration: "underline" }}
-          >
-            Constancia de Residencia
-          </Title>
-
-          <Paragraph style={{ textAlign: "justify" }}>
-            Nosotros los abajo firmantes, hacemos constar por medio de la
-            presente que el (la) ciudadano (a){" "}
-            <Text underline>_________________________________</Text>,
-            venezolano, portador de la cédula de identidad No V-
-            <Text underline>________________</Text>, tiene su residencia en el
-            ámbito geográfico de nuestro Consejo Comunal “Comunales en
-            Victoria”, y habita de forma permanente con dirección:{" "}
-            <Text underline>
-              _____________________________________________________
-            </Text>
-            , Parroquia Altos de los Godos, Maturín, Estado Monagas, desde
-            aproximadamente: <Text underline>______</Text> años.
-          </Paragraph>
-
-          <Paragraph style={{ textAlign: "center", width: "100%" }}>
-            Constancia que se emite en Maturín, el <Text>{date.getDate()}</Text>{" "}
-            días del mes de{" "}
-            <Text>
-              {date.toLocaleString("es-ES", { month: "long" })} de{" "}
-              {date.getFullYear()}
-            </Text>
-          </Paragraph>
-
-          <Divider />
-
-          <Paragraph style={{ textAlign: "center" }}>
-            <strong>ATENTAMENTE</strong>
-            <br />
-            Por el Consejo Comunal "Comunales en Victoria"
-          </Paragraph>
-
-          <Divider />
-
-          <div
-            style={{
-              textAlign: "center",
-              marginTop: 48,
-              display: "flex",
-              alignContent: "center",
-              justifyContent: "space-around",
-            }}
-          >
-            <Paragraph>
-              <Text underline>__________________________</Text>
-              <br />
-              COMITÉ DE COMISIÓN ELECTORAL
-            </Paragraph>
-
-            <Paragraph>
-              <Text underline>__________________________</Text>
-              <br />
-              UNIDAD DE CONTRALORÍA SOCIAL
-            </Paragraph>
-
-            <Paragraph>
-              <Text underline>______________________________</Text>
-              <br />
-              UNIDAD ADMINISTRATIVA Y FINANCIERA
-            </Paragraph>
-          </div>
-        </Typography>
-      </div>
-    </div>
+    <>
+      <Row gutter={[16, 16]} justify="space-between" align="middle">
+        <Col span={24}>
+          <Title level={2}>Reporte de Habitantes</Title>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <Select
+            placeholder="Seleccione una comuna"
+            options={[
+              { value: "1", label: "Comuna 1" },
+              { value: "2", label: "Comuna 2" },
+              { value: "3", label: "Comuna 3" },
+            ]}
+          />
+          <Button type="primary">Imprimir</Button>
+        </Col>
+      </Row>
+      <Row gutter={[16, 16]} justify="space-between" align="middle">
+        <Col span={24}>
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <iframe
+              src={pdf1}
+              width="100%"
+              height="500px"
+              style={{ border: "none", display: "none" }}
+              title="PDF Preview"
+              onLoad={(e) => {
+                const iframe = e.target as HTMLIFrameElement;
+                iframe.style.display = "block";
+                const loadingElement =
+                  document.getElementById("loading-indicator");
+                if (loadingElement) {
+                  loadingElement.style.display = "none";
+                }
+              }}
+            />
+            <div id="loading-indicator" style={{ textAlign: "center" }}>
+              <Button type="primary" loading>
+                Cargando reporte...
+              </Button>
+            </div>
+          </Space>
+        </Col>
+      </Row>
+    </>
   );
 };
 
 export default ReporteView;
-//TODO: añadir que los reporte traigan la info
-/*
-
- */

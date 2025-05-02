@@ -39,7 +39,7 @@ const routeConfig: RouteConfig[] = [
   {
     path: "/dashboard",
     element: <Dashboard />,
-    protected: true,
+    protected: false,
     children: [
       { path: "comuna", element: <ComunaViews /> },
       { path: "consejocomunal", element: <Consejoscomunales /> },

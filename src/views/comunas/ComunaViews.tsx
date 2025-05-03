@@ -66,6 +66,7 @@ const ComunasHeadContent: React.FC<{
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
+      setLoading(true);
       try {
         if (!markerPosition) {
           openNotificationError(
@@ -106,9 +107,11 @@ const ComunasHeadContent: React.FC<{
           throw new Error("¡Fallo al obtener ID!");
         }
         setOpen(false);
+        setLoading(false);
         setError(false);
         form.resetFields();
       } catch (error: any) {
+        setLoading(false);
         let responceArray = error?.response.data;
         for (const key in responceArray) {
           if (responceArray.hasOwnProperty(key)) {
@@ -166,7 +169,7 @@ const ComunasHeadContent: React.FC<{
         {contextHolder}
         <Divider />
         <Modal
-          title="Listado de Comunas"
+          title="Listado Comunas"
           open={open}
           onCancel={handleCancel}
           footer={customFooter}

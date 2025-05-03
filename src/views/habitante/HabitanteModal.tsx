@@ -51,6 +51,7 @@ const HabitanteContent: React.FC<{
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
+      setLoading(true);
       if (id_habitante !== undefined) {
         values.id_vivienda = id_habitante;
       }
@@ -83,7 +84,9 @@ const HabitanteContent: React.FC<{
         form.resetFields();
         setOpen(false);
         setError(false);
+        setLoading(false);
       } catch (error: any) {
+        setLoading(false);
         let responceArray = error?.response.data;
         for (const key in responceArray) {
           if (responceArray.hasOwnProperty(key)) {
@@ -176,7 +179,7 @@ const HabitanteContent: React.FC<{
         {contextHolder}
         <Divider />
         <Modal
-          title="Habitante: "
+          title="Añadir Habitante: "
           open={open}
           onCancel={handleCancel}
           footer={customFooter}

@@ -85,6 +85,13 @@ const menuItems = [
     path: "/dashboard/reporte",
     roles: ["Habitante"],
   },
+  {
+    key: "Reportes",
+    label: "Reportes",
+    icon: <ConstanciaResidenciaIcon />,
+    path: "/dashboard/reporte/parlamentario",
+    roles: ["Parlamentario"],
+  },
 ];
 
 const Dashboard: React.FC = () => {

@@ -71,6 +71,7 @@ const ConsejoComunalContent: React.FC<{
   const handleOk = () => {
     form.validateFields().then(async (values) => {
       try {
+        setLoading(true);
         if (!markerPosition) {
           openNotificationError(
             "¡Por favor, seleccione una posición en el mapa!"
@@ -111,7 +112,9 @@ const ConsejoComunalContent: React.FC<{
         form.resetFields();
         setOpen(false);
         setError(false);
+        setLoading(false);
       } catch (error: any) {
+        setLoading(false);
         let responceArray = error?.response.data;
         for (const key in responceArray) {
           if (responceArray.hasOwnProperty(key)) {
@@ -180,7 +183,7 @@ const ConsejoComunalContent: React.FC<{
       Cancelar
     </Button>,
     <Button key="submit" type="primary" onClick={handleOk}>
-      Entregar
+      Registrar
     </Button>,
   ];
 

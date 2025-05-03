@@ -53,6 +53,11 @@ const Registrar: React.FC = () => {
       dataIndex: "email",
       key: "email",
     },
+    // {
+    //   title: "Consejo Coumunal",
+    //   dataIndex: "ccomunal",
+    //   key: "ccomunal",
+    // },
     {
       title: "desactivar",
       dataIndex: "is_active",
@@ -97,6 +102,20 @@ const Registrar: React.FC = () => {
         id: user.id,
         usuario: user.username,
         email: user.email,
+        // ccomunal: (
+        //   <Select
+        //     defaultValue={user.ccomunal ? user.ccomunal : "Asignar Comuna"}
+        //     style={{ width: "100%" }}
+        //     options={[
+        //       { value: "Consejo 1", label: "Consejo 1" },
+        //       { value: "Consejo 2", label: "Consejo 2" },
+        //       { value: "Consejo 3", label: "Consejo 3" },
+        //     ]}
+        //     onChange={(value) => {
+        //       console.log(`Updated ccomunal for user ${user.id}:`, value);
+        //     }}
+        //   />
+        // ),
         is_active: user.is_active,
       }));
       setDataSource(formattedData);
@@ -137,6 +156,7 @@ const Registrar: React.FC = () => {
 
   const onFinish = (values: any) => {
     const registrar = async () => {
+      setLoading(true);
       try {
         setLoading(true);
         const data = await Register(
@@ -150,6 +170,7 @@ const Registrar: React.FC = () => {
         });
         login(data.token, data.email.username, data.group);
         form.resetFields();
+        setLoading(false);
       } catch (error) {
         setLoading(false);
         api.error({

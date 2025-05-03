@@ -11,8 +11,9 @@ import Habitante from "../views/habitante/HabitanteViews";
 import NotFound from "../views/NotFound";
 import RegistroViewsGen from "../views/Registros/RegistrosViews.tsx";
 import ProtectedRoute from "../components/ProtectedRoute";
-import Reportes from "../views/Reporte/ReporteHabitanteView";
+import ReportesHabitante from "../views/Reporte/ReporteHabitanteView";
 import Reportesgen from "../views/Reporte/ReportesGenView";
+import ReporteParlamentario from "../views/Reporte/ReportePalamentario.tsx";
 import { AuthProvider } from "../components/AuthContext";
 import React from "react";
 
@@ -54,8 +55,9 @@ const routeConfig: RouteConfig[] = [
         path: "viviendas/habitantes/:id_habitantes",
         element: <Habitante />,
       },
-      { path: "reporte", element: <Reportes /> },
+      { path: "reporte", element: <ReportesHabitante /> },
       { path: "reportegen", element: <Reportesgen /> },
+      { path: "reporte/parlamentario", element: <ReporteParlamentario /> },
     ],
   },
   { path: "*", element: <NotFound /> },

@@ -78,6 +78,7 @@ const ViviendasContent: React.FC<{
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
+      setLoading(true);
       let tipoOcupacionVivienda: TipoOcupacionViviendaInterface = {
         id_tipo_ocupacion: values.id_tipo_ocupacion,
         subtipo_ocupacion: values.subtipo_ocupacion,
@@ -112,9 +113,11 @@ const ViviendasContent: React.FC<{
           await createVivienda(values, token ? token : "");
           console.log(error);
         } catch (error) {
+          setLoading(false);
           openNotificationError("¡Error al crear la Vivienda!");
         }
         setOpen(false);
+
         openNotificationSuccess("¡Vivienda creada con exito!");
       } else {
         try {
@@ -131,6 +134,7 @@ const ViviendasContent: React.FC<{
             await updateVivienda(idVivienda, values, token ? token : "");
           }
         } catch (error) {
+          setLoading(false);
           openNotificationError("¡Error al actualizar la Vivienda!");
           return;
         }
@@ -419,7 +423,7 @@ const ViviendasContent: React.FC<{
         {contextHolder}
         <Divider />
         <Modal
-          title="Consejo Comunal: "
+          title="Añadir vivienda: "
           open={open}
           onCancel={handleCancel}
           footer={customFooter}

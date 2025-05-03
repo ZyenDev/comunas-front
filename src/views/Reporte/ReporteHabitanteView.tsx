@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Typography, Button, Space, Divider, Row, Col, Select } from "antd";
-import { PrinterOutlined } from "@ant-design/icons";
-import pdf1 from "../../assets/pdf-comunas/Constancia de Residencia Los Godos.pdf";
+import pdf1 from "../../../public/pdf-comunas/ConstanciaDeResidenciaLosGodos.pdf";
+import PdfViewer from "../../components/PdfViewer";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -30,29 +30,7 @@ const ReporteView: React.FC = () => {
       </Row>
       <Row gutter={[16, 16]} justify="space-between" align="middle">
         <Col span={24}>
-          <Space direction="vertical" style={{ width: "100%" }}>
-            <iframe
-              src={pdf1}
-              width="100%"
-              height="500px"
-              style={{ border: "none", display: "none" }}
-              title="PDF Preview"
-              onLoad={(e) => {
-                const iframe = e.target as HTMLIFrameElement;
-                iframe.style.display = "block";
-                const loadingElement =
-                  document.getElementById("loading-indicator");
-                if (loadingElement) {
-                  loadingElement.style.display = "none";
-                }
-              }}
-            />
-            <div id="loading-indicator" style={{ textAlign: "center" }}>
-              <Button type="primary" loading>
-                Cargando reporte...
-              </Button>
-            </div>
-          </Space>
+          <PdfViewer fileUrl="/ConstanciaDeResidenciaLosGodos.pdf" />
         </Col>
       </Row>
     </>

@@ -238,6 +238,7 @@ function Landing(): JSX.Element {
               width: "100%",
               padding: "45px",
               flexWrap: "wrap", // Allow wrapping if content is too big
+              flexDirection: "row",
             }}
           >
             <Row gutter={[16, 16]} justify="center">
@@ -276,26 +277,47 @@ function Landing(): JSX.Element {
 
           <Flex
             align="center"
+            justify="center"
             gap="small"
-            style={{ width: "100vw", height: "300px", padding: "20px" }}
+            style={{
+              width: "100%",
+              padding: "45px",
+              flexWrap: "wrap", // Allow wrapping if content is too big
+            }}
           >
-            {/* Mapa de Google Maps */}
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3932.44733983676!2d-63.20357762589083!3d9.728121577655832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c33475f3ab547b7%3A0xb4028927879acce7!2sAv.%20Principal%20de%20Los%20Godos!5e0!3m2!1ses!2sve!4v1707193193663!5m2!1ses!2sve"
-              width="30%"
-              height="250px"
-              style={{ borderRadius: "10px", border: "none" }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-            <div>
-              <p>
+            <Col
+              xs={24}
+              sm={24}
+              md={8}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              {/* Mapa de Google Maps */}
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3932.44733983676!2d-63.20357762589083!3d9.728121577655832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c33475f3ab547b7%3A0xb4028927879acce7!2sAv.%20Principal%20de%20Los%20Godos!5e0!3m2!1ses!2sve!4v1707193193663!5m2!1ses!2sve"
+                width="100%"
+                height="250px"
+                style={{ borderRadius: "10px", border: "none" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </Col>
+            <Col
+              xs={24}
+              sm={24}
+              md={16}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <p style={{ textAlign: "center" }}>
                 Actualmente la comuna "Cacique Jose Miguel Guanaguanay" se
                 encuentra ubicada en el sector Los Godos, detrás del Estadio Los
                 Comunales lateral a la escuela Manola Luna Silva.
               </p>
-            </div>
+            </Col>
           </Flex>
         </Content>
 

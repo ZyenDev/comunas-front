@@ -96,6 +96,7 @@ function Landing(): JSX.Element {
             <Image
               preview={false}
               width="100%"
+              height="100%"
               src={image02}
               style={{
                 height: "100%", // Ensure the image covers the container
@@ -139,20 +140,6 @@ function Landing(): JSX.Element {
               >
                 Descubre nuestra comunidad y participa en su desarrollo.
               </Paragraph>
-              {/* <Button
-                type="primary"
-                size="large"
-                ghost
-                style={{
-                  color: "#fff", // Texto en blanco
-                  marginTop: "15px", // Espaciado debajo del texto
-                }}
-                onClick={() => {
-                  navigate("/historia");
-                }}
-              >
-                Historia
-              </Button> */}
             </div>
           </div>
 

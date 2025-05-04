@@ -144,7 +144,7 @@ const ReporteParlamentario: React.FC = () => {
     <div style={{ padding: "20px" }}>
       {contextHolder}
       <Title level={2} style={{ marginBottom: "20px" }}>
-        Reporte de Parlamentario
+        Reporte
       </Title>
       <Row gutter={[16, 16]}>
         <Col md={6}>

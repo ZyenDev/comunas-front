@@ -169,7 +169,7 @@ const ComunasHeadContent: React.FC<{
         {contextHolder}
         <Divider />
         <Modal
-          title="Listado Comunas"
+          title="Comunas"
           open={open}
           onCancel={handleCancel}
           footer={customFooter}

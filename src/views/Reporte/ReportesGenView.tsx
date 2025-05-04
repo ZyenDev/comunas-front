@@ -46,7 +46,7 @@ const ReporteView: React.FC = () => {
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
           <Card loading={loading} title="Número de Voceros" bordered={false}>
-            <Typography.Text>{reporte?.numero_viviendas}</Typography.Text>
+            <Typography.Text>{reporte?.numero_voceros}</Typography.Text>
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>

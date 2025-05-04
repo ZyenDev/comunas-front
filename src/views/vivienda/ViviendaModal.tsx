@@ -657,7 +657,7 @@ const ViviendasContent: React.FC<{
                 {/* vivienda opcupada */}
                 <Form.Item name="vivienda_ocupada" valuePropName="checked">
                   <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
-                    ¿Vivienda ocupada?
+                    Desocupada con carácter no estacional
                   </Checkbox>
                 </Form.Item>
                 <Form.Item name="subtipo_ocupacion">

@@ -7,7 +7,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 
 export const getReporteGen = async (token: string): Promise<ReportesModelo> => {
-    const response = await axios.get<ReportesModelo>(apiUrl+"api/dashboard", { headers: { Authorization: `token ${token}` } });
+    const response = await axios.get<ReportesModelo>(apiUrl+"api/reportes/general", { headers: { Authorization: `token ${token}` } });
     return response.data;
 };
 //api/reportes/parlamentario

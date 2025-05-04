@@ -32,17 +32,18 @@ const Habitante: React.FC = () => {
   const { token } = useAuth();
 
   const columns: any = [
-    {
-      title: "N°",
-      key: "index",
-      render: (_: any, __: any, index: number) => index + 1,
-    },
+    // {
+    //   title: "N°",
+    //   key: "index",
+    //   render: (_: any, __: any, index: number) => index + 1,
+    // },
     {
       title: "ID",
       dataIndex: "id_habitante",
       key: "id_habitante",
       sorter: (a: ConsejoComunalInterface, b: ConsejoComunalInterface) =>
         b.id_comuna - a.id_comuna,
+      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       title: "Cédula",
@@ -190,6 +191,9 @@ const Habitante: React.FC = () => {
 
   useEffect(() => {
     gethabitante();
+    if (!open) {
+      setUpdateID(undefined);
+    }
   }, [open]);
 
   const showModal = () => {

@@ -1,36 +1,74 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Typography, Button, Space, Divider, Row, Col, Select } from "antd";
-import pdf1 from "../../../public/pdf-comunas/ConstanciaDeResidenciaLosGodos.pdf";
-import PdfViewer from "../../components/PdfViewer";
+import React, { useEffect, useState } from "react";
+import { Typography, Button, Row, Col, Select } from "antd";
 
-const { Title, Paragraph, Text } = Typography;
+const { Title } = Typography;
 
 const ReporteView: React.FC = () => {
-  useEffect(() => {}, []);
+  const [selectedPdf, setSelectedPdf] = useState(null);
+  useEffect(() => {
+    console.log(selectedPdf);
+  }, [selectedPdf]);
+
+  const pdfFiles = [
+    {
+      label: "Los GODOS",
+      value: "/pdf-comunas/ConstanciaDeResidenciaLosGodos.pdf",
+    },
+    {
+      label: "PDF 2",
+      value:
+        "/pdf-comunas/Constancia de Residencia Comunales-1-20250203-161723.pdf",
+    },
+    {
+      label: "El Abanico",
+      value:
+        "/pdf-comunas/2 - Formato Carta de Residencia El Abanico 2022-2024 - 2025.pdf",
+    },
+  ];
+
+  const handleDownload = () => {
+    if (!selectedPdf) return;
+
+    const file = pdfFiles.find((f) => f.value === selectedPdf);
+    if (file) {
+      const link = document.createElement("a");
+      link.href = file.value;
+      link.download = file.label + ".pdf";
+      link.click();
+    }
+  };
 
   return (
     <>
       <Row gutter={[16, 16]} justify="space-between" align="middle">
         <Col span={24}>
-          <Title level={2}>Reporte de Habitantes</Title>
+          <Title level={2}>Constacia de Residencia</Title>
         </Col>
       </Row>
+      <div style={{ marginBottom: "16px" }}></div>
       <Row>
         <Col span={24}>
           <Select
+            style={{ width: "100%" }}
             placeholder="Seleccione una comuna"
-            options={[
-              { value: "1", label: "Comuna 1" },
-              { value: "2", label: "Comuna 2" },
-              { value: "3", label: "Comuna 3" },
-            ]}
+            onChange={(e) => {
+              setSelectedPdf(e);
+            }}
+            options={pdfFiles}
           />
-          <Button type="primary">Imprimir</Button>
         </Col>
       </Row>
+      <div style={{ marginBottom: "16px" }}></div>
       <Row gutter={[16, 16]} justify="space-between" align="middle">
         <Col span={24}>
-          <PdfViewer fileUrl="/ConstanciaDeResidenciaLosGodos.pdf" />
+          <Button
+            type="primary"
+            onClick={handleDownload}
+            disabled={!selectedPdf}
+            block
+          >
+            Descargar
+          </Button>
         </Col>
       </Row>
     </>

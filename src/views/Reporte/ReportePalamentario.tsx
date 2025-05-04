@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Row, Col, Select, InputNumber, Table } from "antd";
+import {
+  Typography,
+  Row,
+  Col,
+  Select,
+  InputNumber,
+  Table,
+  notification,
+} from "antd";
 import { getReporteParlamentario } from "../../controllers/ReportesController";
 import { useAuth } from "../../components/AuthContext";
 import { getAllComunas } from "../../controllers/ComunaController";
 
 const { Title } = Typography;
 
-//"id": h.id, "nombre": h.nombre, "edad": h.edad
 const columnsHabitante = [
   {
     title: "ID",
@@ -15,8 +22,13 @@ const columnsHabitante = [
   },
   {
     title: "Nombre",
-    dataIndex: "nombre",
-    key: "age",
+    dataIndex: "primer_nombre",
+    key: "primer_nombre",
+  },
+  {
+    title: "Apellido",
+    dataIndex: "primer_apellido",
+    key: "primer_apellido",
   },
   {
     title: "Edad",
@@ -24,7 +36,6 @@ const columnsHabitante = [
     key: "edad",
   },
 ];
-//{"id": v.id, "direccion": v.direccion, "estado": v.estado}
 const columnsVivienda = [
   {
     title: "ID",
@@ -42,7 +53,6 @@ const columnsVivienda = [
     key: "estado",
   },
 ];
-//"id": h.id, "nombre": h.nombre, "discapacidad": h.discapacidad
 const columnsDiscapacitados = [
   {
     title: "ID",
@@ -51,8 +61,13 @@ const columnsDiscapacitados = [
   },
   {
     title: "Nombre",
-    dataIndex: "nombre",
-    key: "nombre",
+    dataIndex: "primer_nombre",
+    key: "primer_nombre",
+  },
+  {
+    title: "Apellido",
+    dataIndex: "primer_apellido",
+    key: "primer_apellido",
   },
   {
     title: "Discapacidad",
@@ -70,8 +85,8 @@ const ReporteParlamentario: React.FC = () => {
   const [idEdadMax, setIdEdadMax] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [tipoReporte, setTipoReporte] = useState<any>(null);
-
   const [ReporteData, setReporteData] = useState<any>(null);
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     const GetComunas = async () => {
@@ -90,24 +105,44 @@ const ReporteParlamentario: React.FC = () => {
 
   useEffect(() => {
     const getReporte = async () => {
-      const res = await getReporteParlamentario(
-        token ? token : "",
-        idComuna,
-        idTipoReporte,
-        idEdadMin ? idEdadMin : 0,
-        idEdadMax ? idEdadMax : 99
-      );
-      setTipoReporte(res.tipo_reporte ? res.tipo_reporte : null);
-      setReporteData(res.data ? res.data : null);
-      console.log(res);
+      try {
+        const res = await getReporteParlamentario(
+          token ? token : "",
+          idComuna,
+          idTipoReporte,
+          idEdadMin ? idEdadMin : 0,
+          idEdadMax ? idEdadMax : 99
+        );
+        console.log(res);
+        setTipoReporte(res.tipo_reporte ? res.tipo_reporte : null);
+        setReporteData(res.data ? res.data : null);
+        console.log(res);
+        openNotificationSuccess("Reporte generado con exito");
+      } catch (error) {
+        console.log(error);
+        openNotificationError("Error al obtener el reporte");
+      }
     };
+
     if (idComuna) {
       getReporte();
     }
-  }, [idComuna]);
+  }, [idComuna, idTipoReporte, idEdadMin, idEdadMax]);
+
+  const openNotificationError = (msg: string) => {
+    api.error({
+      message: msg,
+    });
+  };
+  const openNotificationSuccess = (msg: string) => {
+    api.success({
+      message: msg,
+    });
+  };
 
   return (
     <div style={{ padding: "20px" }}>
+      {contextHolder}
       <Title level={2} style={{ marginBottom: "20px" }}>
         Reporte de Parlamentario
       </Title>
@@ -130,6 +165,7 @@ const ReporteParlamentario: React.FC = () => {
             defaultValue="selecciona el tipo de reporte"
             loading={loading}
             onChange={(e: any) => {
+              console.log(e);
               setIdTipoReporte(e);
             }}
             style={{ width: "100%" }}
@@ -169,7 +205,9 @@ const ReporteParlamentario: React.FC = () => {
         </Col>
       </Row>
       <Row gutter={[16, 16]}>
-        <Col md={24}>{tipoReporte}</Col>
+        <Col md={24}>
+          <Title level={4}>{tipoReporte}</Title>
+        </Col>
       </Row>
       <Row gutter={[16, 16]}>
         {/* habitante */}
@@ -187,10 +225,12 @@ const ReporteParlamentario: React.FC = () => {
           </Col>
         )}
         {/* Habitantes Discapacitados */}
-        <Col md={24}>
-          {/* {"id": h.id, "nombre": h.nombre, "discapacidad": h.discapacidad} for h in habitantes_discapacitados */}
-          <Table columns={columnsDiscapacitados} dataSource={ReporteData} />
-        </Col>
+        {idTipoReporte === "habitantes_discapacitados" && (
+          <Col md={24}>
+            {/* {"id": h.id, "nombre": h.nombre, "discapacidad": h.discapacidad} for h in habitantes_discapacitados */}
+            <Table columns={columnsDiscapacitados} dataSource={ReporteData} />
+          </Col>
+        )}
       </Row>
     </div>
   );

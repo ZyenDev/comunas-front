@@ -90,7 +90,7 @@ const menuItems = [
     label: "Reportes",
     icon: <ConstanciaResidenciaIcon />,
     path: "/dashboard/reporte/parlamentario",
-    roles: ["Parlamentario"],
+    roles: ["Administrador", "Parlamentario", "Vocero"],
   },
 ];
 

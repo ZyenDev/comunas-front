@@ -60,12 +60,15 @@ const HabitanteContent: React.FC<{
         new Date(values.fecha_nacimiento).getFullYear();
       try {
         if (!isUpdated) {
+          //create
           values.id_vivienda = Number(
             id_habitantes ? id_habitantes : id_vivienda_local
           );
           await createHabitante(values, token ? token : "");
         } else if (id_habitante != null) {
-          values.id_vivienda = Number(id_habitantes);
+          //update
+          console.log(values);
+          values.id_vivienda = Number(id_vivienda_local);
           await updateHabitante(id_habitante, values, token ? token : "");
         } else {
           console.log(error);
@@ -104,6 +107,7 @@ const HabitanteContent: React.FC<{
 
   useEffect(() => {
     if (open) {
+      console.log(id_habitantes);
       const getPaises = async () => {
         setLoading(true);
         try {
@@ -154,6 +158,7 @@ const HabitanteContent: React.FC<{
       getPaises();
       getHabitanteById();
       setError(false);
+      console.log(id_habitante);
     }
   }, [open]);
 
@@ -319,7 +324,7 @@ const HabitanteContent: React.FC<{
                   </Form.Item>
                 )}
 
-                {id_habitante === undefined && (
+                {id_habitantes === undefined && !isUpdated && (
                   <Form.Item name="vivenda" label="Vivienda">
                     <Select
                       options={vivienda}
@@ -363,67 +368,78 @@ const HabitanteContent: React.FC<{
                 </Form.Item>
 
                 <Divider />
-                <Typography.Title level={5}>Datos de Usuario</Typography.Title>
-                <Flex vertical style={{ width: "80%" }}>
-                  <Form.Item
-                    name="username"
-                    rules={[
-                      {
-                        required: true,
-                        message: "¡Por favor, ingrese su Usuario!",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Usuario" suffix={<UserOutlined />} />
-                  </Form.Item>
-                  <Form.Item
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: "¡Por favor, ingrese su Correo Electrónico!",
-                      },
-                    ]}
-                  >
-                    <Input
-                      placeholder="Correo Electrónico"
-                      suffix={<MailOutlined />}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "¡Por favor, ingrese su Contraseña!",
-                      },
-                    ]}
-                  >
-                    <div style={{ position: "relative" }}>
-                      <Input
-                        type={showPassword ? "password" : "text"}
-                        placeholder="Ingresa tu Contraseña"
-                      />
-                      <Button
-                        type="text"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                        style={{
-                          position: "absolute",
-                          right: 10,
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                        }}
-                        icon={
-                          showPassword ? (
-                            <EyeInvisibleOutlined />
-                          ) : (
-                            <EyeOutlined />
-                          )
-                        }
-                      />
-                    </div>
-                  </Form.Item>
-                </Flex>
+
+                {!isUpdated && (
+                  <>
+                    <Typography.Title level={5}>
+                      Datos de Usuario
+                    </Typography.Title>
+                    <Flex vertical style={{ width: "80%" }}>
+                      <Form.Item
+                        name="username"
+                        rules={[
+                          {
+                            required: true,
+                            message: "¡Por favor, ingrese su Usuario!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          placeholder="Usuario"
+                          suffix={<UserOutlined />}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        name="email"
+                        rules={[
+                          {
+                            required: true,
+                            message:
+                              "¡Por favor, ingrese su Correo Electrónico!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          placeholder="Correo Electrónico"
+                          suffix={<MailOutlined />}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        name="password"
+                        rules={[
+                          {
+                            required: true,
+                            message: "¡Por favor, ingrese su Contraseña!",
+                          },
+                        ]}
+                      >
+                        <div style={{ position: "relative" }}>
+                          <Input
+                            type={showPassword ? "password" : "text"}
+                            placeholder="Ingresa tu Contraseña"
+                          />
+                          <Button
+                            type="text"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            style={{
+                              position: "absolute",
+                              right: 10,
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                            }}
+                            icon={
+                              showPassword ? (
+                                <EyeInvisibleOutlined />
+                              ) : (
+                                <EyeOutlined />
+                              )
+                            }
+                          />
+                        </div>
+                      </Form.Item>
+                    </Flex>
+                  </>
+                )}
               </Flex>
             </Form>
           </Row>

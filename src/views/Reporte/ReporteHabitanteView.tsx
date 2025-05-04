@@ -15,7 +15,7 @@ const ReporteView: React.FC = () => {
       value: "/pdf-comunas/ConstanciaDeResidenciaLosGodos.pdf",
     },
     {
-      label: "PDF 2",
+      label: "COMUNALES EN VICTORIA",
       value:
         "/pdf-comunas/Constancia de Residencia Comunales-1-20250203-161723.pdf",
     },

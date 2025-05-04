@@ -214,21 +214,36 @@ const ReporteParlamentario: React.FC = () => {
         {idTipoReporte === "habitantes" && (
           <Col md={24}>
             {/* "id": h.id, "nombre": h.nombre, "edad": h.edad  */}
-            <Table columns={columnsHabitante} dataSource={ReporteData} />
+            <Table
+              columns={columnsHabitante}
+              dataSource={ReporteData}
+              pagination={{ pageSize: 5 }}
+              scroll={{ x: "max-content" }}
+            />
           </Col>
         )}
         {/* Viviendas */}
         {idTipoReporte === "viviendas" && (
           <Col md={24}>
             {/* {"id": v.id, "direccion": v.direccion, "estado": v.estado} for v in viviendas - array */}
-            <Table columns={columnsVivienda} dataSource={ReporteData} />
+            <Table
+              columns={columnsVivienda}
+              dataSource={ReporteData}
+              pagination={{ pageSize: 5 }}
+              scroll={{ x: "max-content" }}
+            />
           </Col>
         )}
         {/* Habitantes Discapacitados */}
         {idTipoReporte === "habitantes_discapacitados" && (
           <Col md={24}>
             {/* {"id": h.id, "nombre": h.nombre, "discapacidad": h.discapacidad} for h in habitantes_discapacitados */}
-            <Table columns={columnsDiscapacitados} dataSource={ReporteData} />
+            <Table
+              columns={columnsDiscapacitados}
+              dataSource={ReporteData}
+              pagination={{ pageSize: 5 }}
+              scroll={{ x: "max-content" }}
+            />
           </Col>
         )}
       </Row>

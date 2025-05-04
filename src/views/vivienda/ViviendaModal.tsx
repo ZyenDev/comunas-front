@@ -423,7 +423,7 @@ const ViviendasContent: React.FC<{
         {contextHolder}
         <Divider />
         <Modal
-          title="Añadir vivienda: "
+          title="vivienda: "
           open={open}
           onCancel={handleCancel}
           footer={customFooter}

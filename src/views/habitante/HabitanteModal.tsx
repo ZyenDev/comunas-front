@@ -184,7 +184,7 @@ const HabitanteContent: React.FC<{
         {contextHolder}
         <Divider />
         <Modal
-          title="Añadir Habitante: "
+          title="Habitante: "
           open={open}
           onCancel={handleCancel}
           footer={customFooter}

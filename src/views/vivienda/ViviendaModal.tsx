@@ -78,6 +78,7 @@ const ViviendasContent: React.FC<{
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
+      console.log(values);
       setLoading(true);
       let tipoOcupacionVivienda: TipoOcupacionViviendaInterface = {
         id_tipo_ocupacion: values.id_tipo_ocupacion,
@@ -613,27 +614,55 @@ const ViviendasContent: React.FC<{
               <Select options={tipoTecho} />
             </Form.Item>
             {/* Servicios Básicos */}
-            <Form.Item
-              label="Servicios Básicos"
-              name="servicios_basicos"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, seleccione los Servicios Básicos!",
-                },
-              ]}
-            >
-              <Select
-                mode="multiple"
-                placeholder="Seleccione los servicios básicos"
-                options={[
-                  { value: "agua", label: "Agua" },
-                  { value: "electricidad", label: "Electricidad" },
-                  { value: "gas", label: "Gas" },
-                  { value: "internet", label: "Internet" },
-                  { value: "telefono", label: "Teléfono" },
-                ]}
-              />
+            <Form.Item label="Servicios Básicos">
+              <Flex>
+                <Form.Item
+                  name="agua"
+                  valuePropName="checked"
+                  initialValue={false}
+                  style={{ marginRight: "10px" }}
+                >
+                  <Checkbox defaultChecked={false}>Agua</Checkbox>
+                </Form.Item>
+                <Form.Item
+                  name="electricidad"
+                  valuePropName="checked"
+                  initialValue={false}
+                  style={{ marginRight: "10px" }}
+                >
+                  <Checkbox defaultChecked={false}>Electricidad</Checkbox>
+                </Form.Item>
+                <Form.Item
+                  name="gas"
+                  valuePropName="checked"
+                  initialValue={false}
+                  style={{ marginRight: "10px" }}
+                >
+                  <Checkbox defaultChecked={false}>Gas</Checkbox>
+                </Form.Item>
+                <Form.Item
+                  name="internet"
+                  valuePropName="checked"
+                  initialValue={false}
+                  style={{ marginRight: "10px" }}
+                >
+                  <Checkbox defaultChecked={false}>Internet</Checkbox>
+                </Form.Item>
+                <Form.Item
+                  name="aseo"
+                  valuePropName="checked"
+                  initialValue={false}
+                >
+                  <Checkbox defaultChecked={false}>aseo</Checkbox>
+                </Form.Item>
+                <Form.Item
+                  name="cloaca"
+                  valuePropName="checked"
+                  initialValue={false}
+                >
+                  <Checkbox defaultChecked={false}>cloaca</Checkbox>
+                </Form.Item>
+              </Flex>
             </Form.Item>
 
             {/* ID Tipo de Pared */}
@@ -667,7 +696,7 @@ const ViviendasContent: React.FC<{
             {/* Tipo de Ocupación */}
             <Form.Item
               label="Tipo de Ocupación"
-              name="id_tipo_ocupacion"
+              name="subtipo_ocupacion"
               rules={[
                 {
                   required: true,
@@ -698,7 +727,30 @@ const ViviendasContent: React.FC<{
                 },
               ]}
             >
-              <Select options={situacionVivienda} />
+              <Select
+                options={[
+                  {
+                    value: 1,
+                    label: "Construida terminada",
+                  },
+                  {
+                    value: 2,
+                    label: "En construcción activa",
+                  },
+                  {
+                    value: 3,
+                    label: "En construcción paralizada",
+                  },
+                  {
+                    value: 4,
+                    label: "En estado de ruina/abandono",
+                  },
+                  {
+                    value: 5,
+                    label: "Otra",
+                  },
+                ]}
+              />
             </Form.Item>
 
             {/* vivienda opcupada */}
@@ -708,10 +760,10 @@ const ViviendasContent: React.FC<{
               </Checkbox>
             </Form.Item>
 
-            <Form.Item name="subtipo_ocupacion">
+            <Form.Item name="subtipo_ocupacion" label="Tipo de ocupacion">
               <Select
                 defaultValue={
-                  check ? optOcupada[0].value : optDesocupada[0].value
+                  check ? optDesocupada[0].value : optOcupada[0].value
                 }
                 options={check ? optDesocupada : optOcupada}
                 onChange={(value) => setCheckBoxint(value)}

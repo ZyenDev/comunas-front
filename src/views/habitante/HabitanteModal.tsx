@@ -88,6 +88,8 @@ const HabitanteContent: React.FC<{
         Register(userData, role ? role : "", token ? token : "");
 
         form.resetFields();
+        setEtnia(false);
+        setTieneDiscapacidad(false);
         setOpen(false);
         setError(false);
         setLoading(false);
@@ -105,6 +107,8 @@ const HabitanteContent: React.FC<{
   };
   const handleCancel = () => {
     form.resetFields();
+    setEtnia(false);
+    setTieneDiscapacidad(false);
     setOpen(false);
   };
 
@@ -311,6 +315,50 @@ n° tlf + (operadora) [x]
                 }}
               />
             </Form.Item>
+            {TieneDiscapacidad && (
+              <Form.Item
+                name="discapacidad_valor"
+                label="Discapacidad"
+                initialValue={"elige una discapacidad"}
+              >
+                <Select
+                  options={[
+                    {
+                      value: 1,
+                      label: "Ceguera",
+                    },
+                    {
+                      value: 2,
+                      label: "Sordera",
+                    },
+                    {
+                      value: 3,
+                      label: "Mudez",
+                    },
+                    {
+                      value: 4,
+                      label: "Discapacidad de miembros inferiores",
+                    },
+                    {
+                      value: 5,
+                      label: "Discapacidad de miembros superiores",
+                    },
+                    {
+                      value: 6,
+                      label: "Discapacidad física total",
+                    },
+                    {
+                      value: 7,
+                      label: "Movilidad reducida",
+                    },
+                    {
+                      value: 8,
+                      label: "Otra",
+                    },
+                  ]}
+                />
+              </Form.Item>
+            )}
 
             <Form.Item
               name="tipo_sangre"
@@ -322,33 +370,43 @@ n° tlf + (operadora) [x]
                 },
               ]}
             >
-              <Select>
-                <Select.Option value="A+">A+</Select.Option>
-                <Select.Option value="A-">A-</Select.Option>
-                <Select.Option value="B+">B+</Select.Option>
-                <Select.Option value="B-">B-</Select.Option>
-                <Select.Option value="AB+">AB+</Select.Option>
-                <Select.Option value="AB-">AB-</Select.Option>
-                <Select.Option value="O+">O+</Select.Option>
-                <Select.Option value="O-">O-</Select.Option>
-              </Select>
+              <Select
+                options={[
+                  {
+                    value: 1,
+                    label: "A+",
+                  },
+                  {
+                    value: 2,
+                    label: "A-",
+                  },
+                  {
+                    value: 3,
+                    label: "B+",
+                  },
+                  {
+                    value: 4,
+                    label: "B-",
+                  },
+                  {
+                    value: 5,
+                    label: "AB+",
+                  },
+                  {
+                    value: 6,
+                    label: "AB-",
+                  },
+                  {
+                    value: 7,
+                    label: "O+",
+                  },
+                  {
+                    value: 8,
+                    label: "O-",
+                  },
+                ]}
+              />
             </Form.Item>
-
-            {TieneDiscapacidad && (
-              <Form.Item
-                name="discapacidad"
-                label="Discapacidad"
-                initialValue={"elige una discapacidad"}
-              >
-                <Select
-                  options={[
-                    { label: "discapacidad 1", value: "1" },
-                    { label: "discapacidad 2", value: "2" },
-                    { label: "discapacidad 3", value: "3" },
-                  ]}
-                />
-              </Form.Item>
-            )}
 
             <Form.Item
               style={{ width: "120px" }}
@@ -363,11 +421,26 @@ n° tlf + (operadora) [x]
             >
               <Select
                 options={[
-                  { value: "soltero", label: "Soltero" },
-                  { value: "casado", label: "Casado" },
-                  { value: "divorciado", label: "Divorcio" },
-                  { value: "viudo", label: "Viudo" },
-                  { value: "union_libre", label: "Unión" },
+                  {
+                    value: 1,
+                    label: "Solter@",
+                  },
+                  {
+                    value: 2,
+                    label: "Casad@",
+                  },
+                  {
+                    value: 3,
+                    label: "Divorciad@",
+                  },
+                  {
+                    value: 4,
+                    label: "Viud@",
+                  },
+                  {
+                    value: 5,
+                    label: "Concubinato",
+                  },
                 ]}
               />
             </Form.Item>
@@ -384,8 +457,8 @@ n° tlf + (operadora) [x]
             >
               <Input
                 addonBefore={
-                  <Select defaultValue="+0426" style={{ width: 70 }}>
-                    <Select.Option value="0424">+0424</Select.Option>
+                  <Select defaultValue="0426" style={{ width: "120px" }}>
+                    <Select.Option value="0424">0424</Select.Option>
                     <Select.Option value="0416">0416</Select.Option>
                     <Select.Option value="0291">0291</Select.Option>
                     {/* Add more country codes as needed */}
@@ -415,9 +488,58 @@ n° tlf + (operadora) [x]
               >
                 <Select
                   options={[
-                    { label: "etnia 1", value: "1" },
-                    { label: "etnia 2", value: "2" },
-                    { label: "etnia 3", value: "3" },
+                    {
+                      value: 1,
+                      label: "Los piaroas",
+                    },
+                    {
+                      value: 2,
+                      label: "Los waraos",
+                    },
+                    {
+                      value: 3,
+                      label: "Los yukpas",
+                    },
+                    {
+                      value: 4,
+                      label: "Los yanomamis",
+                    },
+                    {
+                      value: 5,
+                      label: "Los barís",
+                    },
+                    {
+                      value: 6,
+                      label: "Los pemón",
+                    },
+                    {
+                      value: 7,
+                      label: "Los wayúus",
+                    },
+                    {
+                      value: 8,
+                      label: "Los makiritares",
+                    },
+                    {
+                      value: 9,
+                      label: "Los panares",
+                    },
+                    {
+                      value: 10,
+                      label: "Los pumés",
+                    },
+                    {
+                      value: 11,
+                      label: "Los kari'ñas",
+                    },
+                    {
+                      value: 12,
+                      label: "Otra",
+                    },
+                    {
+                      value: 13,
+                      label: "No sabe/No contesta",
+                    },
                   ]}
                 />
               </Form.Item>
@@ -461,21 +583,47 @@ n° tlf + (operadora) [x]
                 },
               ]}
             >
-              <Select>
-                <Select.Option value={1}>Ninguno</Select.Option>
-                <Select.Option value={2}>Preescolar</Select.Option>
-                <Select.Option value={3}>Primaria</Select.Option>
-                <Select.Option value={4}>Secundaria</Select.Option>
-                <Select.Option value={5}>Formación profesional</Select.Option>
-                <Select.Option value={6}>
-                  Educación universitaria (diplomatura, grado, licenciatura)
-                </Select.Option>
-                <Select.Option value={7}>
-                  Post grado (Maestría, doctorado)
-                </Select.Option>
-                <Select.Option value={8}>Otro</Select.Option>
-                <Select.Option value={9}>No sabe/No contesta</Select.Option>
-              </Select>
+              <Select
+                options={[
+                  {
+                    value: 1,
+                    label: "Ninguno",
+                  },
+                  {
+                    value: 2,
+                    label: "Preescolar",
+                  },
+                  {
+                    value: 3,
+                    label: "Primaria",
+                  },
+                  {
+                    value: 4,
+                    label: "Secundaria",
+                  },
+                  {
+                    value: 5,
+                    label: "Formación profesional",
+                  },
+                  {
+                    value: 6,
+                    label:
+                      "Educación universitaria (diplomatura, grado, licenciatura)",
+                  },
+                  {
+                    value: 7,
+                    label: "Post grado (Maestría, doctorado)",
+                  },
+                  {
+                    value: 8,
+                    label: "Otro",
+                  },
+                  {
+                    value: 9,
+                    label: "No sabe/No contesta",
+                  },
+                ]}
+              />
             </Form.Item>
             {!isUpdated && (
               <Flex vertical>

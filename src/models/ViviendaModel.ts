@@ -15,6 +15,13 @@ export interface ViviendaInterface {
     id_situacion_vivienda: number;
     id_tipo_ocupacion_vivienda: number;
     // solo usado para parse no llega al servidor
+    agua: boolean;
+    electricidad: boolean;
+    gas: boolean;
+    internet: boolean;
+    aseo: boolean;
+    cloaca: boolean;
+    
     id_tipo_ocupacion?: number;
     vivienda_ocupada: boolean;
     subtipo_ocupacion: string;

@@ -64,21 +64,23 @@ const ReporteView: React.FC = () => {
             </Card>
           </Col>
         )}
-        {(role == "Administrador" || "Parlamentario") && (
+        {(role == "Administrador" || role == "Parlamentario") && (
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card loading={loading} title="Voceros" bordered={false}>
               <Typography.Text>{reporte?.numero_voceros}</Typography.Text>
             </Card>
           </Col>
         )}
-        {(role == "Administrador" || "Parlamentario" || "Vocero") && (
+        {(role == "Administrador" || role == "Parlamentario" || "Vocero") && (
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card loading={loading} title="Habitantes" bordered={false}>
               <Typography.Text>{reporte?.numero_habitantes}</Typography.Text>
             </Card>
           </Col>
         )}
-        {(role == "Administrador" || "Parlamentario" || "Vocero") && (
+        {(role == "Administrador" ||
+          role == "Parlamentario" ||
+          role == "Vocero") && (
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card loading={loading} title="Viviendas" bordered={false}>
               <Typography.Text>{reporte?.numero_viviendas}</Typography.Text>

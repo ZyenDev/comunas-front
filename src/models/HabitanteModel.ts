@@ -1,17 +1,25 @@
 export interface HabitanteInterface {
-    id_habitante: number;
+    id_habitante?: number
     cedula: string;
-    primer_nombre: string;
-    segundo_nombre: string;
-    primer_apellido: string;
-    segundo_apellido: string;
-    fecha_nacimiento: string;
+    discapacidad: boolean;
+    discapacidad_valor: number;
     edad: number;
-    sexo: string;
-    discapacidad: number;
-    pertenece_etnia: number;
+    email: string;
+    estado_civil: number;
+    etnia: string;
+    fecha_nacimiento: string;
+    grado_intrusion: number;
     id_nacionalidad: number;
-    id_pais_origen: number;
     id_vivienda: number;
-    nombre?: string;
+    password: string;
+    pertenece_etnia: boolean;
+    primer_apellido: string;
+    primer_nombre: string;
+    segundo_apellido: string;
+    segundo_nombre: string;
+    sexo: string;
+    telefono: string;
+    tipo_sangre: number;
+    username: string;
+    vivenda: string;
 }

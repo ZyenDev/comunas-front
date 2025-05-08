@@ -5,8 +5,22 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const baseUrl = apiUrl + "api/viviendas/vivienda";
 
 export const createVivienda = async (comuna: ViviendaInterface, token: string): Promise<ViviendaInterface> => {
-    const response = await axios.post<ViviendaInterface>(baseUrl+'/', comuna, { headers: { Authorization: `token ${token}` } });
+    try{
+        const response = await axios.post<ViviendaInterface>(baseUrl+'/', comuna, { headers: { Authorization: `token ${token}` } });
+        await axios.post(apiUrl+'/api/viviendas/serviciosbasicos/', {
+        agua: comuna.agua,
+        electricidad: comuna.electricidad,
+        gas: comuna.gas,
+        internet: comuna.internet,
+        aseo: comuna.aseo,
+        cloaca: comuna.cloaca,
+        id_vivienda: response.data.id_vivienda
+    },{ headers: { Authorization: `token ${token}` } })
     return response.data;
+    } catch(err){
+        throw err
+    }
+
 };
 
 export const getAllVivienda = async (token: string): Promise<ViviendaInterface[]> => {

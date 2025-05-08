@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  Row,
-  Col,
-  Select,
-  InputNumber,
-  Table,
-  notification,
-} from "antd";
+import { Typography, Row, Col, Select, Table, notification } from "antd";
 import { getReporteParlamentario } from "../../controllers/ReportesController";
 import { useAuth } from "../../components/AuthContext";
 import { getAllComunas } from "../../controllers/ComunaController";
@@ -84,8 +76,6 @@ const ReporteParlamentario: React.FC = () => {
   const [ComunasOpt, setComunas] = useState<any>(null);
   const [idComuna, setIdComuna] = useState<any>();
   const [idTipoReporte, setIdTipoReporte] = useState<any>();
-  const [idEdadMin, setIdEdadMin] = useState<any>();
-  const [idEdadMax, setIdEdadMax] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [tipoReporte, setTipoReporte] = useState<any>(null);
   const [ReporteData, setReporteData] = useState<any>(null);
@@ -113,8 +103,8 @@ const ReporteParlamentario: React.FC = () => {
           token ? token : "",
           idComuna,
           idTipoReporte,
-          idEdadMin ? idEdadMin : 0,
-          idEdadMax ? idEdadMax : 99
+          0,
+          99
         );
         console.log(res);
         setTipoReporte(res.tipo_reporte ? res.tipo_reporte : null);
@@ -130,7 +120,7 @@ const ReporteParlamentario: React.FC = () => {
     if (idComuna) {
       getReporte();
     }
-  }, [idComuna, idTipoReporte, idEdadMin, idEdadMax]);
+  }, [idComuna, idTipoReporte]);
 
   const openNotificationError = (msg: string) => {
     api.error({

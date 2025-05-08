@@ -56,18 +56,22 @@ const columnsDiscapacitados = [
   },
   {
     title: "Nombre",
-    dataIndex: "primer_nombre",
+    dataIndex: "nombre",
     key: "primer_nombre",
   },
   {
     title: "Apellido",
-    dataIndex: "primer_apellido",
+    dataIndex: "apellido",
     key: "primer_apellido",
   },
   {
     title: "Discapacidad",
-    dataIndex: "discapacidad",
+    dataIndex: "discapacidades",
     key: "discapacidad",
+    render: (discapacidad: any) =>
+      discapacidad[0]?.id_tipo_discapacidad__descripcion
+        ? discapacidad[0]?.id_tipo_discapacidad__descripcion
+        : "N/A",
   },
 ];
 
@@ -172,30 +176,6 @@ const ReporteParlamentario: React.FC = () => {
             ]}
           />
         </Col>
-        {/* <Col md={6}>
-          <Typography>Edad Minima</Typography>
-          <InputNumber
-            style={{ width: "100%" }}
-            min={1}
-            max={99}
-            defaultValue={0}
-            onChange={(e: any) => {
-              setIdEdadMin(e);
-            }}
-          />{" "}
-        </Col> */}
-        {/* <Col md={6}>
-          <Typography>Edad Maxima</Typography>
-          <InputNumber
-            style={{ width: "100%" }}
-            min={1}
-            max={99}
-            defaultValue={0}
-            onChange={(e: any) => {
-              setIdEdadMax(e);
-            }}
-          />
-        </Col> */}
       </Row>
       <Row gutter={[16, 16]}>
         <Col md={24}>

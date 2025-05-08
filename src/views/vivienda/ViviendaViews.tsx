@@ -93,6 +93,20 @@ const viviendas: React.FC = () => {
       key: "id_ubicacion",
     },
     {
+      title: "Servicios Básicos",
+      key: "servicios_basicos",
+      render: (vivienda: ViviendaInterface) => (
+        <>
+          <div>Agua: {vivienda.agua ? "Sí" : "No"}</div>
+          <div>Electricidad: {vivienda.electricidad ? "Sí" : "No"}</div>
+          <div>Gas: {vivienda.gas ? "Sí" : "No"}</div>
+          <div>Internet: {vivienda.internet ? "Sí" : "No"}</div>
+          <div>Aseo: {vivienda.aseo ? "Sí" : "No"}</div>
+          <div>Cloaca: {vivienda.cloaca ? "Sí" : "No"}</div>
+        </>
+      ),
+    },
+    {
       title: "Consejo Comunal",
       dataIndex: "id_consejo_comunal",
       key: "id_consejo_comunal",

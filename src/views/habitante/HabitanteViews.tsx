@@ -69,7 +69,7 @@ const Habitante: React.FC = () => {
       title: "Discapacidad",
       dataIndex: "discapacidad",
       key: "discapacidad",
-      render: (discapacidad: any) => (discapacidad === 1 ? "Sí" : "No"),
+      render: (discapacidad: any) => (discapacidad ? "Sí" : "No"),
     },
     {
       title: "Etnia",

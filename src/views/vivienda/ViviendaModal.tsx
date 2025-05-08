@@ -717,7 +717,7 @@ const ViviendasContent: React.FC<{
             </Form.Item>
 
             {/* ID Situación de Vivienda */}
-            <Form.Item
+            {/* <Form.Item
               label="Situación de Vivienda"
               name="id_situacion_vivienda"
               rules={[
@@ -751,12 +751,12 @@ const ViviendasContent: React.FC<{
                   },
                 ]}
               />
-            </Form.Item>
+            </Form.Item> */}
 
             {/* vivienda opcupada */}
             <Form.Item name="vivienda_ocupada" valuePropName="checked">
               <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
-                Desocupada con carácter no estacional
+                Vivienda Desocupada
               </Checkbox>
             </Form.Item>
 

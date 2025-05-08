@@ -59,7 +59,7 @@ function Landing(): JSX.Element {
             style={{ height: "64px" }}
           >
             <Image preview={false} width="45px" src={logocomuna} />
-            <h1>GUANAGUANAY</h1>
+            <h1>SIGECOM</h1>
             <Button
               type="primary"
               shape="default"
@@ -129,7 +129,7 @@ function Landing(): JSX.Element {
                   fontSize: "clamp(1.5rem, 4vw, 2rem)", // Responsive font size
                 }}
               >
-                Bienvenido a Guanaguanay
+                Bienvenido a SIGECOM
               </Title>
               <Paragraph
                 style={{

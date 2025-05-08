@@ -42,6 +42,7 @@ const Registrar: React.FC = () => {
       title: "id",
       dataIndex: "id",
       key: "id",
+      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       title: "usuario",

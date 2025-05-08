@@ -311,6 +311,7 @@ const ConsejoComunal: React.FC = () => {
       key: "id_consejo_comunal",
       sorter: (a: ConsejoComunalInterface, b: ConsejoComunalInterface) =>
         b.id_comuna - a.id_comuna,
+      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       title: "Nombre",

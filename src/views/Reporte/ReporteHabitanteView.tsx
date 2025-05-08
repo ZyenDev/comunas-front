@@ -11,11 +11,11 @@ const ReporteView: React.FC = () => {
 
   const pdfFiles = [
     {
-      label: "Los GODOS",
+      label: "Los Godos",
       value: "/pdf-comunas/ConstanciaDeResidenciaLosGodos.pdf",
     },
     {
-      label: "COMUNALES EN VICTORIA",
+      label: "Comunales en Victoria",
       value:
         "/pdf-comunas/Constancia de Residencia Comunales-1-20250203-161723.pdf",
     },
@@ -50,7 +50,7 @@ const ReporteView: React.FC = () => {
         <Col span={24}>
           <Select
             style={{ width: "100%" }}
-            placeholder="Seleccione una comuna"
+            placeholder="Seleccione un Consejo Comunal"
             onChange={(e) => {
               setSelectedPdf(e);
             }}

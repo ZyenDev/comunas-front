@@ -10,7 +10,6 @@ import {
   Input,
   notification,
   Checkbox,
-  Row,
 } from "antd";
 import {
   createHabitante,
@@ -49,8 +48,12 @@ const HabitanteContent: React.FC<{
   const [id_vivienda_local, setVin] = useState<number>();
   const [showPassword, setShowPassword] = useState(true);
 
+  const [TieneEtnia, setEtnia] = useState<Boolean>(false);
+  const [TieneDiscapacidad, setTieneDiscapacidad] = useState<Boolean>(false);
+
   const handleOk = () => {
     form.validateFields().then(async (values) => {
+      console.log(values);
       setLoading(true);
       if (id_habitante !== undefined) {
         values.id_vivienda = id_habitante;
@@ -178,273 +181,368 @@ const HabitanteContent: React.FC<{
     </Button>,
   ];
 
+  /*
+- REMODELACION DE MODAL HABITANTES (ANADIR DROPDOWNS DE ETNIA Y DISCAPACIDAD, TIPO SANGRE, ESTADO CIVIL, NUMERO TELEFONICO INCLUYENDO SU CODIGO DE OPERADORA)
+etnia [x]
+discapacidad [x]
+tipo sangre [x]
+estado civil [x]
+n° tlf + (operadora) [x]
+ */
+
   return (
     <>
-      <Flex vertical>
-        {contextHolder}
-        <Divider />
-        <Modal
-          title="Habitante: "
-          open={open}
-          onCancel={handleCancel}
-          footer={customFooter}
-          width={600} // Adjust the width as needed
-          loading={loading}
-        >
-          <Row>
-            <Form
-              form={form}
-              layout="vertical"
-              name="form_in_modal"
-              initialValues={{ cantidad_habitante: 1 }}
-              style={{ display: "flex", gap: "20px" }}
+      {contextHolder}
+      <Divider />
+      <Modal
+        title="Habitante: "
+        open={open}
+        onCancel={handleCancel}
+        footer={customFooter}
+        width={800} // Adjust the width as needed
+        loading={loading}
+      >
+        <Flex wrap="wrap">
+          <Form
+            form={form}
+            layout="vertical"
+            name="form_in_modal"
+            initialValues={{ cantidad_habitante: 1 }}
+            style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}
+          >
+            <Form.Item name="id_nacionalidad" label=" " initialValue={2}>
+              <Select
+                // loading={loading}
+                style={{ width: "50px" }}
+                defaultValue={2}
+                onChange={(value) => {
+                  if (value === 2) {
+                    setNAd(false);
+                  } else {
+                    setNAd(true);
+                  }
+                }}
+              >
+                <Select.Option value={1}>E</Select.Option>
+                <Select.Option value={2}>V</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="cedula"
+              label="Cédula"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, ingrese la Cédula!",
+                },
+              ]}
             >
-              <Flex vertical>
-                <Flex align="center">
-                  <Form.Item name="id_nacionalidad" label=" " initialValue={2}>
-                    <Select
-                      // loading={loading}
-                      style={{ width: "50px" }}
-                      defaultValue={2}
-                      onChange={(value) => {
-                        if (value === 2) {
-                          setNAd(false);
-                        } else {
-                          setNAd(true);
-                        }
-                      }}
-                    >
-                      <Select.Option value={1}>E</Select.Option>
-                      <Select.Option value={2}>V</Select.Option>
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    name="cedula"
-                    label="Cédula"
-                    rules={[
-                      {
-                        required: true,
-                        message: "¡Por favor, ingrese la Cédula!",
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                </Flex>
-                <Form.Item
-                  name="primer_nombre"
-                  label="Primer Nombre"
-                  rules={[
-                    {
-                      required: true,
-                      message: "¡Por favor, ingrese el Primer Nombre!",
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item name="segundo_nombre" label="Segundo Nombre">
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name="primer_apellido"
-                  label="Primer Apellido"
-                  rules={[
-                    {
-                      required: true,
-                      message: "¡Por favor, ingrese el Primer Apellido!",
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item name="segundo_apellido" label="Segundo Apellido">
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name="fecha_nacimiento"
-                  label="Fecha de Nacimiento"
-                  rules={[
-                    {
-                      required: true,
-                      message: "¡Por favor, ingrese la Fecha de Nacimiento!",
-                    },
-                  ]}
-                >
-                  <Input type="date" />
-                </Form.Item>
-              </Flex>
-              <Flex vertical>
-                <Form.Item
-                  name="sexo"
-                  label="Sexo"
-                  rules={[
-                    {
-                      required: true,
-                      message: "¡Por favor, seleccione el Sexo!",
-                    },
-                  ]}
-                >
-                  <Select>
-                    <Select.Option value={1}>Masculino</Select.Option>
-                    <Select.Option value={2}>Femenino</Select.Option>
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  name="discapacidad"
-                  label="Discapacidad"
-                  valuePropName="checked"
-                  initialValue={false}
-                >
-                  <Checkbox />
-                </Form.Item>
-                <Form.Item
-                  name="pertenece_etnia"
-                  label="¿Pertenece a una Etnia?"
-                  valuePropName="checked"
-                  initialValue={false}
-                >
-                  <Checkbox />
-                </Form.Item>
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="primer_nombre"
+              label="Primer Nombre"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, ingrese el Primer Nombre!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item name="segundo_nombre" label="Segundo Nombre">
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="primer_apellido"
+              label="Primer Apellido"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, ingrese el Primer Apellido!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item name="segundo_apellido" label="Segundo Apellido">
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="fecha_nacimiento"
+              label="Fecha de Nacimiento"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, ingrese la Fecha de Nacimiento!",
+                },
+              ]}
+            >
+              <Input type="date" />
+            </Form.Item>
+            <Form.Item
+              name="sexo"
+              label="Sexo"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, seleccione el Sexo!",
+                },
+              ]}
+            >
+              <Select
+                style={{ width: "120px" }}
+                options={[
+                  { value: 1, label: "Masculino" },
+                  { value: 2, label: "Femenino" },
+                ]}
+              />
+            </Form.Item>
+            <Form.Item
+              name="discapacidad"
+              label="Discapacidad"
+              valuePropName="checked"
+              initialValue={false}
+            >
+              <Checkbox
+                onChange={(e: any) => {
+                  setTieneDiscapacidad(e.target.checked);
+                }}
+              />
+            </Form.Item>
 
-                {vene && (
-                  <Form.Item name="id_pais_origen" label="País de Origen">
-                    <Select
-                      showSearch
-                      filterOption={(
-                        input: string,
-                        option?: { label?: string }
-                      ) =>
-                        (option?.label ?? "")
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
+            <Form.Item
+              name="tipo_sangre"
+              label="Tipo de Sangre"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, seleccione el Tipo de Sangre!",
+                },
+              ]}
+            >
+              <Select>
+                <Select.Option value="A+">A+</Select.Option>
+                <Select.Option value="A-">A-</Select.Option>
+                <Select.Option value="B+">B+</Select.Option>
+                <Select.Option value="B-">B-</Select.Option>
+                <Select.Option value="AB+">AB+</Select.Option>
+                <Select.Option value="AB-">AB-</Select.Option>
+                <Select.Option value="O+">O+</Select.Option>
+                <Select.Option value="O-">O-</Select.Option>
+              </Select>
+            </Form.Item>
+
+            {TieneDiscapacidad && (
+              <Form.Item
+                name="discapacidad"
+                label="Discapacidad"
+                initialValue={"elige una discapacidad"}
+              >
+                <Select
+                  options={[
+                    { label: "discapacidad 1", value: "1" },
+                    { label: "discapacidad 2", value: "2" },
+                    { label: "discapacidad 3", value: "3" },
+                  ]}
+                />
+              </Form.Item>
+            )}
+
+            <Form.Item
+              style={{ width: "120px" }}
+              name="estado_civil"
+              label="Estado Civil"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, seleccione el Estado Civil!",
+                },
+              ]}
+            >
+              <Select
+                options={[
+                  { value: "soltero", label: "Soltero" },
+                  { value: "casado", label: "Casado" },
+                  { value: "divorciado", label: "Divorcio" },
+                  { value: "viudo", label: "Viudo" },
+                  { value: "union_libre", label: "Unión" },
+                ]}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="telefono"
+              label="Número de Teléfono"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, ingrese el Número de Teléfono!",
+                },
+              ]}
+            >
+              <Input
+                addonBefore={
+                  <Select defaultValue="+0426" style={{ width: 70 }}>
+                    <Select.Option value="0424">+0424</Select.Option>
+                    <Select.Option value="0416">0416</Select.Option>
+                    <Select.Option value="0291">0291</Select.Option>
+                    {/* Add more country codes as needed */}
+                  </Select>
+                }
+                placeholder="Ingrese el número"
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="pertenece_etnia"
+              label="¿Pertenece a una Etnia?"
+              valuePropName="checked"
+              initialValue={false}
+            >
+              <Checkbox
+                onChange={(e: any) => {
+                  setEtnia(e.target.checked);
+                }}
+              />
+            </Form.Item>
+            {TieneEtnia && (
+              <Form.Item
+                name="etnia"
+                label="Etnia"
+                initialValue={"elige una etnia"}
+              >
+                <Select
+                  options={[
+                    { label: "etnia 1", value: "1" },
+                    { label: "etnia 2", value: "2" },
+                    { label: "etnia 3", value: "3" },
+                  ]}
+                />
+              </Form.Item>
+            )}
+
+            {vene && (
+              <Form.Item name="id_pais_origen" label="País de Origen">
+                <Select
+                  showSearch
+                  filterOption={(input: string, option?: { label?: string }) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                  options={paisOrigen}
+                />
+              </Form.Item>
+            )}
+
+            {id_habitantes === undefined && !isUpdated && (
+              <Form.Item name="vivenda" label="Vivienda">
+                <Select
+                  style={{ width: "120px" }}
+                  options={vivienda}
+                  value={form.getFieldValue("vivenda")}
+                  onChange={(value) => {
+                    setVin(value);
+                    form.setFieldsValue({ vivenda: value });
+                  }}
+                />
+              </Form.Item>
+            )}
+
+            <Form.Item
+              name="grado_intrusion"
+              label="Grado de Instrucción"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, seleccione el Grado de Instrucción!",
+                },
+              ]}
+            >
+              <Select>
+                <Select.Option value={1}>Ninguno</Select.Option>
+                <Select.Option value={2}>Preescolar</Select.Option>
+                <Select.Option value={3}>Primaria</Select.Option>
+                <Select.Option value={4}>Secundaria</Select.Option>
+                <Select.Option value={5}>Formación profesional</Select.Option>
+                <Select.Option value={6}>
+                  Educación universitaria (diplomatura, grado, licenciatura)
+                </Select.Option>
+                <Select.Option value={7}>
+                  Post grado (Maestría, doctorado)
+                </Select.Option>
+                <Select.Option value={8}>Otro</Select.Option>
+                <Select.Option value={9}>No sabe/No contesta</Select.Option>
+              </Select>
+            </Form.Item>
+            {!isUpdated && (
+              <Flex vertical>
+                <Typography.Title level={5}>Datos de Usuario</Typography.Title>
+                <Form.Item
+                  name="username"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese su Usuario!",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Usuario" suffix={<UserOutlined />} />
+                </Form.Item>
+                <Form.Item
+                  name="email"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese su Correo Electrónico!",
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder="Correo Electrónico"
+                    suffix={<MailOutlined />}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese su Contraseña!",
+                    },
+                  ]}
+                >
+                  <div style={{ position: "relative" }}>
+                    <Input
+                      type={showPassword ? "password" : "text"}
+                      placeholder="Ingresa tu Contraseña"
+                    />
+                    <Button
+                      type="text"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      style={{
+                        position: "absolute",
+                        right: 10,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                      }}
+                      icon={
+                        showPassword ? (
+                          <EyeInvisibleOutlined />
+                        ) : (
+                          <EyeOutlined />
+                        )
                       }
-                      options={paisOrigen}
                     />
-                  </Form.Item>
-                )}
-
-                {id_habitantes === undefined && !isUpdated && (
-                  <Form.Item name="vivenda" label="Vivienda">
-                    <Select
-                      options={vivienda}
-                      value={form.getFieldValue("vivenda")}
-                      onChange={(value) => {
-                        setVin(value);
-                        form.setFieldsValue({ vivenda: value });
-                      }}
-                    />
-                  </Form.Item>
-                )}
-
-                <Form.Item
-                  name="grado_intrusion"
-                  label="Grado de Instrucción"
-                  rules={[
-                    {
-                      required: true,
-                      message:
-                        "¡Por favor, seleccione el Grado de Instrucción!",
-                    },
-                  ]}
-                >
-                  <Select>
-                    <Select.Option value={1}>Ninguno</Select.Option>
-                    <Select.Option value={2}>Preescolar</Select.Option>
-                    <Select.Option value={3}>Primaria</Select.Option>
-                    <Select.Option value={4}>Secundaria</Select.Option>
-                    <Select.Option value={5}>
-                      Formación profesional
-                    </Select.Option>
-                    <Select.Option value={6}>
-                      Educación universitaria (diplomatura, grado, licenciatura)
-                    </Select.Option>
-                    <Select.Option value={7}>
-                      Post grado (Maestría, doctorado)
-                    </Select.Option>
-                    <Select.Option value={8}>Otro</Select.Option>
-                    <Select.Option value={9}>No sabe/No contesta</Select.Option>
-                  </Select>
+                  </div>
                 </Form.Item>
-
-                <Divider />
-
-                {!isUpdated && (
-                  <>
-                    <Typography.Title level={5}>
-                      Datos de Usuario
-                    </Typography.Title>
-                    <Flex vertical style={{ width: "80%" }}>
-                      <Form.Item
-                        name="username"
-                        rules={[
-                          {
-                            required: true,
-                            message: "¡Por favor, ingrese su Usuario!",
-                          },
-                        ]}
-                      >
-                        <Input
-                          placeholder="Usuario"
-                          suffix={<UserOutlined />}
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        name="email"
-                        rules={[
-                          {
-                            required: true,
-                            message:
-                              "¡Por favor, ingrese su Correo Electrónico!",
-                          },
-                        ]}
-                      >
-                        <Input
-                          placeholder="Correo Electrónico"
-                          suffix={<MailOutlined />}
-                        />
-                      </Form.Item>
-                      <Form.Item
-                        name="password"
-                        rules={[
-                          {
-                            required: true,
-                            message: "¡Por favor, ingrese su Contraseña!",
-                          },
-                        ]}
-                      >
-                        <div style={{ position: "relative" }}>
-                          <Input
-                            type={showPassword ? "password" : "text"}
-                            placeholder="Ingresa tu Contraseña"
-                          />
-                          <Button
-                            type="text"
-                            onClick={() => setShowPassword((prev) => !prev)}
-                            style={{
-                              position: "absolute",
-                              right: 10,
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                            }}
-                            icon={
-                              showPassword ? (
-                                <EyeInvisibleOutlined />
-                              ) : (
-                                <EyeOutlined />
-                              )
-                            }
-                          />
-                        </div>
-                      </Form.Item>
-                    </Flex>
-                  </>
-                )}
               </Flex>
-            </Form>
-          </Row>
-        </Modal>
-      </Flex>
+            )}
+          </Form>
+        </Flex>
+      </Modal>
     </>
   );
 };

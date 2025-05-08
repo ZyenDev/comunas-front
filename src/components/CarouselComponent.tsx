@@ -56,7 +56,7 @@ const CarouselComponent: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <Title style={{ color: "#fff" }}>Bienvenido a COMUNAS</Title>
+            <Title style={{ color: "#fff" }}>Bienvenido a SIGECOM</Title>
             <p
               style={{ maxWidth: "400px", textAlign: "center", color: "#fff" }}
             >

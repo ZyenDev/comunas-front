@@ -76,7 +76,7 @@ const menuItems = [
     label: "Habitantes",
     icon: <TeamOutlined />,
     path: "viviendas/habitantes/",
-    roles: ["Parlamentario", "Vocero"],
+    roles: ["Vocero"],
   },
   {
     key: "Reportes",

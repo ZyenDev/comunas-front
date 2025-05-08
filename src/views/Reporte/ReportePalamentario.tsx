@@ -19,6 +19,7 @@ const columnsHabitante = [
     title: "ID",
     dataIndex: "id",
     key: "id",
+    render: (_: any, __: any, index: number) => index + 1,
   },
   {
     title: "Nombre",
@@ -41,6 +42,7 @@ const columnsVivienda = [
     title: "ID",
     dataIndex: "id",
     key: "id",
+    render: (_: any, __: any, index: number) => index + 1,
   },
   {
     title: "Dirección",
@@ -58,6 +60,7 @@ const columnsDiscapacitados = [
     title: "ID",
     dataIndex: "id",
     key: "id",
+    render: (_: any, __: any, index: number) => index + 1,
   },
   {
     title: "Nombre",
@@ -148,9 +151,9 @@ const ReporteParlamentario: React.FC = () => {
       </Title>
       <Row gutter={[16, 16]}>
         <Col md={6}>
-          <Typography>seleccionar columna</Typography>
+          <Typography>Seleccionar Comuna</Typography>
           <Select
-            defaultValue="selecciona una comuna columna"
+            defaultValue="Selecciona una Comuna"
             loading={loading}
             onChange={(e: any) => {
               setIdComuna(e);
@@ -162,7 +165,7 @@ const ReporteParlamentario: React.FC = () => {
         <Col md={6}>
           <Typography>Tipo Reporte</Typography>
           <Select
-            defaultValue="selecciona el tipo de reporte"
+            defaultValue="Selecciona el Tipo de Reporte"
             loading={loading}
             onChange={(e: any) => {
               console.log(e);
@@ -179,7 +182,7 @@ const ReporteParlamentario: React.FC = () => {
             ]}
           />
         </Col>
-        <Col md={6}>
+        {/* <Col md={6}>
           <Typography>Edad Minima</Typography>
           <InputNumber
             style={{ width: "100%" }}
@@ -189,9 +192,9 @@ const ReporteParlamentario: React.FC = () => {
             onChange={(e: any) => {
               setIdEdadMin(e);
             }}
-          />
-        </Col>
-        <Col md={6}>
+          />{" "}
+        </Col> */}
+        {/* <Col md={6}>
           <Typography>Edad Maxima</Typography>
           <InputNumber
             style={{ width: "100%" }}
@@ -202,7 +205,7 @@ const ReporteParlamentario: React.FC = () => {
               setIdEdadMax(e);
             }}
           />
-        </Col>
+        </Col> */}
       </Row>
       <Row gutter={[16, 16]}>
         <Col md={24}>

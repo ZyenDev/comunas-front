@@ -60,6 +60,7 @@ const viviendas: React.FC = () => {
       dataIndex: "id_vivienda",
       key: "id_vivienda",
       sorter: (a: any, b: any) => a.id_vivienda - b.id_vivienda,
+      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       title: "Nro. Vivienda",

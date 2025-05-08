@@ -295,6 +295,7 @@ const ComunaViews: React.FC = () => {
       key: "id_comuna",
       sorter: (a: ComunaInterface, b: ComunaInterface) =>
         b.id_comuna - a.id_comuna,
+      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       title: "Nombre",

@@ -760,12 +760,12 @@ const ViviendasContent: React.FC<{
               </Checkbox>
             </Form.Item>
 
-            <Form.Item name="subtipo_ocupacion" label="Tipo de ocupacion">
+            <Form.Item name="subtipo_ocupacion" label="Estado Actual">
               <Select
                 defaultValue={
                   check ? optDesocupada[0].value : optOcupada[0].value
                 }
-                options={check ? optDesocupada : optOcupada}
+                options={check ? optOcupada : optDesocupada}
                 onChange={(value) => setCheckBoxint(value)}
               />
             </Form.Item>

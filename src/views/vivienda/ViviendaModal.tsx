@@ -29,7 +29,7 @@ import { getAllTipoTecho } from "../../controllers/TipoTechoController";
 import { TipoTechoInterface } from "../../models/TipoTechoModel";
 import { getAllTipoPared } from "../../controllers/TipoParedController";
 import { getAllTipoPiso } from "../../controllers/TipoPisoController";
-import { getAllSituacionVivienda } from "../../controllers/SituacionViviendaController";
+// import { getAllSituacionVivienda } from "../../controllers/SituacionViviendaController";
 import { TipoOcupacionViviendaInterface } from "../../models/TipoOcupacionViviendaModel";
 import {
   createTipoOcupacionVivienda,
@@ -55,8 +55,8 @@ const ViviendasContent: React.FC<{
   const [tipoTecho, setTipoTecho] = useState<DefaultOptionType[]>();
   const [tipoPared, setTipoPared] = useState<DefaultOptionType[]>();
   const [tipoPiso, setTipoPiso] = useState<DefaultOptionType[]>();
-  const [situacionVivienda, setSituacionVivienta] =
-    useState<DefaultOptionType[]>();
+  // const [situacionVivienda, setSituacionVivienta] =
+  useState<DefaultOptionType[]>();
   const [api, contextHolder] = notification.useNotification();
   const [check, setCheckBox] = useState(true);
   const [checkboxint, setCheckBoxint] = useState(0);
@@ -201,23 +201,23 @@ const ViviendasContent: React.FC<{
         }
         setLoading(false);
       };
-      const getSituacionVivienda = async () => {
-        setLoading(true);
-        try {
-          const data = await getAllSituacionVivienda(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_situacion_vivienda,
-              label: element.descripcion,
-            });
-          });
-          setSituacionVivienta(opt);
-        } catch (error) {
-          openNotificationError("Error.");
-        }
-        setLoading(false);
-      };
+      // const getSituacionVivienda = async () => {
+      //   setLoading(true);
+      //   try {
+      //     const data = await getAllSituacionVivienda(token ? token : "");
+      //     let opt: DefaultOptionType[] = [];
+      //     data.forEach((element) => {
+      //       opt.push({
+      //         value: element.id_situacion_vivienda,
+      //         label: element.descripcion,
+      //       });
+      //     });
+      //     setSituacionVivienta(opt);
+      //   } catch (error) {
+      //     openNotificationError("Error.");
+      //   }
+      //   setLoading(false);
+      // };
       const getConsejo = async () => {
         setLoading(true);
         try {
@@ -308,7 +308,7 @@ const ViviendasContent: React.FC<{
 
       //selects
       // getEstados(); //para tener el estado
-      getSituacionVivienda();
+      // getSituacionVivienda();
       getTipoPiso();
       getTipoPared();
       getTipoTecho();

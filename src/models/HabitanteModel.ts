@@ -1,5 +1,5 @@
 export interface HabitanteInterface {
-    id_habitante?: number
+    id_habitante: number
     cedula: string;
     discapacidad: boolean;
     discapacidad_valor: number;
@@ -17,6 +17,7 @@ export interface HabitanteInterface {
     primer_nombre: string;
     segundo_apellido: string;
     segundo_nombre: string;
+    nombre?:string;
     sexo: string;
     telefono: string;
     tipo_sangre: number;

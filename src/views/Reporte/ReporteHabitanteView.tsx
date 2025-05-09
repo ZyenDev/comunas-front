@@ -11,7 +11,7 @@ const ReporteView: React.FC = () => {
 
   const pdfFiles = [
     {
-      label: "Los Godos",
+      label: "Batalla de los Godos II",
       value: "/pdf-comunas/ConstanciaDeResidenciaLosGodos.pdf",
     },
     {

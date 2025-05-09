@@ -694,7 +694,7 @@ const ViviendasContent: React.FC<{
             </Form.Item>
 
             {/* Tipo de Ocupación */}
-            <Form.Item
+            {/*<Form.Item
               label="Tipo de Ocupación"
               name="subtipo_ocupacion"
               rules={[
@@ -714,10 +714,10 @@ const ViviendasContent: React.FC<{
                 ]}
                 placeholder="Seleccione el Tipo de Ocupación"
               />
-            </Form.Item>
+            </Form.Item>*/}
 
             {/* ID Situación de Vivienda */}
-            {/* <Form.Item
+            <Form.Item
               label="Situación de Vivienda"
               name="id_situacion_vivienda"
               rules={[
@@ -751,33 +751,32 @@ const ViviendasContent: React.FC<{
                   },
                 ]}
               />
-            </Form.Item> */}
+            </Form.Item>
 
+            <Form.Item name="subtipo_ocupacion" label="Ocupación de la Vivienda">
             {/* vivienda opcupada */}
             <Form.Item name="vivienda_ocupada" valuePropName="checked">
               <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
-                Vivienda Desocupada
+                ¿La Vivienda está Ocupada?
               </Checkbox>
             </Form.Item>
-
-            <Form.Item name="subtipo_ocupacion" label="Estado Actual">
               <Select
                 defaultValue={
                   check ? optDesocupada[0].value : optOcupada[0].value
                 }
-                options={check ? optOcupada : optDesocupada}
+                options={check ? optDesocupada : optOcupada}
                 onChange={(value) => setCheckBoxint(value)}
               />
             </Form.Item>
             {checkboxint != 5 && (
-              <Form.Item
-                label="Tiene documentacion?"
+            <Form.Item
+                label="¿La Vivienda poseé documentación?"
                 name="tiene_documentacion"
                 valuePropName="checked"
                 initialValue={false}
               >
                 <Checkbox />
-              </Form.Item>
+            </Form.Item>
             )}
             <Form.Item name="respuesta_otro">
               {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}

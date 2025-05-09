@@ -125,7 +125,7 @@ const HabitanteContent: React.FC<{
           }));
           setPaisOrigen(parsedPaises);
         } catch (error) {
-          openNotificationError("fallo al buscar paises origen");
+          openNotificationError("¡Fallo al buscar Pais de Origen!");
         }
       };
       const getHabitanteById = async () => {
@@ -319,7 +319,7 @@ n° tlf + (operadora) [x]
               <Form.Item
                 name="discapacidad_valor"
                 label="Discapacidad"
-                initialValue={"elige una discapacidad"}
+                initialValue={"Elige la Discapacidad"}
               >
                 <Select
                   options={[
@@ -447,7 +447,7 @@ n° tlf + (operadora) [x]
 
             <Form.Item
               name="telefono"
-              label="Número de Teléfono"
+              label="Número de Celular"
               rules={[
                 {
                   required: true,
@@ -458,9 +458,10 @@ n° tlf + (operadora) [x]
               <Input
                 addonBefore={
                   <Select defaultValue="0426" style={{ width: "120px" }}>
-                    <Select.Option value="0424">0424</Select.Option>
                     <Select.Option value="0416">0416</Select.Option>
-                    <Select.Option value="0291">0291</Select.Option>
+                    <Select.Option value="0424">0424</Select.Option>
+                    <Select.Option value="0414">0414</Select.Option>
+                    <Select.Option value="0414">0412</Select.Option>
                     {/* Add more country codes as needed */}
                   </Select>
                 }
@@ -484,7 +485,7 @@ n° tlf + (operadora) [x]
               <Form.Item
                 name="etnia"
                 label="Etnia"
-                initialValue={"elige una etnia"}
+                initialValue={"Elige la Etnia"}
               >
                 <Select
                   options={[

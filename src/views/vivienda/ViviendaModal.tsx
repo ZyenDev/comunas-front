@@ -68,13 +68,13 @@ const ViviendasContent: React.FC<{
   // const [estadoSelect, setEstadoSelect] = useState<number>();
 
   const [municipioOpt, setMunicipioOpt] = useState<DefaultOptionType[]>();
-  const [municipioSelect, setMunicipioSelect] = useState<number>();
+  const [municipioSelect, setMunicipioSelect] = useState<number>(0);
 
   const [parroquiaOpt, setparroquiaOpt] = useState<DefaultOptionType[]>();
-  const [parroquiaSelect, setParroquiaSelect] = useState<number>();
+  const [parroquiaSelect, setParroquiaSelect] = useState<number>(0);
 
   const [sectorOpt, setSectorOpt] = useState<DefaultOptionType[]>();
-  const [sectorSelect, setSectorSelect] = useState<number>();
+  const [sectorSelect, setSectorSelect] = useState<number>(0);
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
@@ -153,32 +153,37 @@ const ViviendasContent: React.FC<{
       const getTipoVivienda = async () => {
         setLoading(true);
         try {
-          const data = await getAllTipoVivienda(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element: TipoViviendaInterface) => {
-            opt.push({
-              value: element.id_tipo_vivienda,
-              label: element.descripcion,
+          if (tipoVivienda === undefined) {
+            const data = await getAllTipoVivienda(token ? token : "");
+            let opt: DefaultOptionType[] = [];
+            data.forEach((element: TipoViviendaInterface) => {
+              opt.push({
+                value: element.id_tipo_vivienda,
+                label: element.descripcion,
+              });
             });
-          });
-          setTipoVivienda(opt);
+            setTipoVivienda(opt);
+          }
         } catch (error) {
           openNotificationError("Error.");
         }
         setLoading(false);
       };
+
       const getTipoTecho = async () => {
         setLoading(true);
         try {
-          const data = await getAllTipoTecho(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element: TipoTechoInterface) => {
-            opt.push({
-              value: element.id_tipo_techo,
-              label: element.descripcion,
+          if (tipoTecho === undefined) {
+            const data = await getAllTipoTecho(token ? token : "");
+            let opt: DefaultOptionType[] = [];
+            data.forEach((element: TipoTechoInterface) => {
+              opt.push({
+                value: element.id_tipo_techo,
+                label: element.descripcion,
+              });
             });
-          });
-          setTipoTecho(opt);
+            setTipoTecho(opt);
+          }
         } catch (error) {
           openNotificationError("Error.");
         }
@@ -187,49 +192,37 @@ const ViviendasContent: React.FC<{
       const getTipoPiso = async () => {
         setLoading(true);
         try {
-          const data = await getAllTipoPiso(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_tipo_piso,
-              label: element.descripcion,
+          if (tipoPiso === undefined) {
+            const data = await getAllTipoPiso(token ? token : "");
+            let opt: DefaultOptionType[] = [];
+            data.forEach((element) => {
+              opt.push({
+                value: element.id_tipo_piso,
+                label: element.descripcion,
+              });
             });
-          });
-          setTipoPiso(opt);
+            setTipoPiso(opt);
+          }
         } catch (error) {
           openNotificationError("Error.");
         }
         setLoading(false);
       };
-      // const getSituacionVivienda = async () => {
-      //   setLoading(true);
-      //   try {
-      //     const data = await getAllSituacionVivienda(token ? token : "");
-      //     let opt: DefaultOptionType[] = [];
-      //     data.forEach((element) => {
-      //       opt.push({
-      //         value: element.id_situacion_vivienda,
-      //         label: element.descripcion,
-      //       });
-      //     });
-      //     setSituacionVivienta(opt);
-      //   } catch (error) {
-      //     openNotificationError("Error.");
-      //   }
-      //   setLoading(false);
-      // };
+
       const getConsejo = async () => {
         setLoading(true);
         try {
-          const data = await getAllConsejoComunal(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_consejo_comunal,
-              label: element.nombre,
+          if (Comuna === undefined) {
+            const data = await getAllConsejoComunal(token ? token : "");
+            let opt: DefaultOptionType[] = [];
+            data.forEach((element) => {
+              opt.push({
+                value: element.id_consejo_comunal,
+                label: element.nombre,
+              });
             });
-          });
-          setComunas(opt);
+            setComunas(opt);
+          }
         } catch (error) {
           openNotificationError("Error.");
         }
@@ -238,15 +231,17 @@ const ViviendasContent: React.FC<{
       const getTipoPared = async () => {
         setLoading(true);
         try {
-          const data = await getAllTipoPared(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_tipo_pared,
-              label: element.descripcion,
+          if (tipoPared === undefined) {
+            const data = await getAllTipoPared(token ? token : "");
+            let opt: DefaultOptionType[] = [];
+            data.forEach((element) => {
+              opt.push({
+                value: element.id_tipo_pared,
+                label: element.descripcion,
+              });
             });
-          });
-          setTipoPared(opt);
+            setTipoPared(opt);
+          }
         } catch (error) {
           openNotificationError("Error.");
         }
@@ -269,15 +264,17 @@ const ViviendasContent: React.FC<{
       const getMunicipio = async () => {
         setLoading(true);
         try {
-          const data = await getMunicipioByEstadosID(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_municipio,
-              label: element.nombre,
+          if (municipioOpt === undefined) {
+            const data = await getMunicipioByEstadosID(token ? token : "");
+            let opt: DefaultOptionType[] = [];
+            data.forEach((element) => {
+              opt.push({
+                value: element.id_municipio,
+                label: element.nombre,
+              });
             });
-          });
-          setMunicipioOpt(opt);
+            setMunicipioOpt(opt);
+          }
         } catch (error) {
           openNotificationError("Error.");
         }
@@ -286,29 +283,9 @@ const ViviendasContent: React.FC<{
 
       getMunicipio();
 
-      /* para empeazar por estado
-      const getEstados = async () => {
-        try {
-          const data = await getAllEstados(token ? token : "");
-          let opt: DefaultOptionType[] = [];
-          data.forEach((element) => {
-            opt.push({
-              value: element.id_estado,
-              label: element.nombre,
-            });
-          });
-          setEstadosOpt(opt);
-        } catch (error) {
-          openNotificationError("Error");
-        }
-      };
-      */
-      //llamar par el edit
       getViviendabyId();
 
       //selects
-      // getEstados(); //para tener el estado
-      // getSituacionVivienda();
       getTipoPiso();
       getTipoPared();
       getTipoTecho();
@@ -329,6 +306,7 @@ const ViviendasContent: React.FC<{
           municipioSelect,
           token ? token : ""
         );
+        setparroquiaOpt(undefined);
         let opt: DefaultOptionType[] = [];
         data.forEach((element) => {
           opt.push({
@@ -522,9 +500,15 @@ const ViviendasContent: React.FC<{
               ]}
             >
               <Select
+                placeholder={"ingrese el Consejo Comunal"}
                 options={municipioOpt}
                 value={municipioSelect}
                 onChange={(values) => {
+                  setParroquiaSelect(0);
+                  setSectorSelect(0);
+                  setparroquiaOpt(undefined);
+                  setSectorOpt(undefined);
+
                   setMunicipioSelect(values);
                 }}
               />
@@ -536,11 +520,13 @@ const ViviendasContent: React.FC<{
               rules={[
                 {
                   required: true,
-                  message: "¡Por favor, ingrese el Consejo Comunal!",
+                  message: "¡Por favor, ingrese el Parroquia!",
                 },
               ]}
             >
               <Select
+                placeholder={"ingrese el Parroquia"}
+                disabled={municipioSelect === 0 ? true : false}
                 options={parroquiaOpt}
                 value={parroquiaSelect}
                 onChange={(values) => {
@@ -549,10 +535,21 @@ const ViviendasContent: React.FC<{
               />
             </Form.Item>
 
-            <Form.Item label="Sector" name="id_sector">
+            <Form.Item
+              label="Sector"
+              name="id_sector"
+              rules={[
+                {
+                  required: true,
+                  message: "¡Por favor, ingrese el Sector!",
+                },
+              ]}
+            >
               <Select
+                placeholder={"Ingrese un Sector"}
                 options={sectorOpt}
                 value={sectorSelect}
+                disabled={parroquiaSelect === 0 ? true : false}
                 onChange={(values) => {
                   setSectorSelect(values);
                 }}
@@ -753,13 +750,16 @@ const ViviendasContent: React.FC<{
               />
             </Form.Item>
 
-            <Form.Item name="subtipo_ocupacion" label="Ocupación de la Vivienda">
-            {/* vivienda opcupada */}
-            <Form.Item name="vivienda_ocupada" valuePropName="checked">
-              <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
-                ¿La Vivienda está Ocupada?
-              </Checkbox>
-            </Form.Item>
+            <Form.Item
+              name="subtipo_ocupacion"
+              label="Ocupación de la Vivienda"
+            >
+              {/* vivienda opcupada */}
+              <Form.Item name="vivienda_ocupada" valuePropName="checked">
+                <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
+                  ¿La Vivienda está Ocupada?
+                </Checkbox>
+              </Form.Item>
               <Select
                 defaultValue={
                   check ? optDesocupada[0].value : optOcupada[0].value
@@ -769,14 +769,14 @@ const ViviendasContent: React.FC<{
               />
             </Form.Item>
             {checkboxint != 5 && (
-            <Form.Item
+              <Form.Item
                 label="¿La Vivienda poseé documentación?"
                 name="tiene_documentacion"
                 valuePropName="checked"
                 initialValue={false}
               >
                 <Checkbox />
-            </Form.Item>
+              </Form.Item>
             )}
             <Form.Item name="respuesta_otro">
               {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}

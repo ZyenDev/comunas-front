@@ -32,11 +32,6 @@ const Habitante: React.FC = () => {
   const { token } = useAuth();
 
   const columns: any = [
-    // {
-    //   title: "N°",
-    //   key: "index",
-    //   render: (_: any, __: any, index: number) => index + 1,
-    // },
     {
       title: "ID",
       dataIndex: "id_habitante",
@@ -64,6 +59,22 @@ const Habitante: React.FC = () => {
       title: "Sexo",
       dataIndex: "sexo",
       key: "sexo",
+    },
+    {
+      title: "T. Sangre",
+      dataIndex: "tipo_sangre",
+      key: "tipo_sangre",
+      render: (tipoSangre: any) => (tipoSangre.tipo ? tipoSangre.tipo : "n/a"),
+    },
+    {
+      title: "Est. Civil",
+      dataIndex: "estado_civil",
+      key: "estado_civil",
+    },
+    {
+      title: "tlf.",
+      dataIndex: "telefono",
+      key: "telefono",
     },
     {
       title: "Discapacidad",
@@ -144,6 +155,7 @@ const Habitante: React.FC = () => {
         data.forEach((item: HabitanteInterface) => {
           item.nombre = `${item.primer_nombre} ${item.primer_apellido}`;
         });
+        console.log(data);
         setHabitante(data);
         setLoading(false);
       } else {

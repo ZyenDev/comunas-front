@@ -59,7 +59,7 @@ const ViviendasContent: React.FC<{
   useState<DefaultOptionType[]>();
   const [api, contextHolder] = notification.useNotification();
   const [check, setCheckBox] = useState(true);
-  const [checkboxint, setCheckBoxint] = useState(0);
+  const [checkboxint, setCheckBoxint] = useState<number>(0);
   const [error, setError] = useState(false);
   const { token } = useAuth();
 
@@ -82,10 +82,14 @@ const ViviendasContent: React.FC<{
       setLoading(true);
       let tipoOcupacionVivienda: TipoOcupacionViviendaInterface = {
         id_tipo_ocupacion: values.id_tipo_ocupacion,
-        subtipo_ocupacion: values.subtipo_ocupacion,
-        vivienda_ocupada: values.vivienda_ocupada,
-        tiene_documentacion: values.tiene_documentacion,
-        respuesta_otro: values.respuesta_otro,
+        subtipo_ocupacion: checkboxint,
+        vivienda_ocupada: values.vivienda_ocupada
+          ? values.vivienda_ocupada
+          : false,
+        tiene_documentacion: values.tiene_documentacion
+          ? values.tiene_documentacion
+          : false,
+        respuesta_otro: values.respuesta_otro ? values.respuesta_otro : "a",
       };
       let ubicacion: UbicacionInterface = {
         id_ubicacion: values.id_ubicacion,
@@ -95,10 +99,6 @@ const ViviendasContent: React.FC<{
       };
       if (!isUpdated) {
         try {
-          if (tipoOcupacionVivienda.respuesta_otro !== null) {
-            tipoOcupacionVivienda.respuesta_otro = "a";
-          }
-
           const ubica = await createUbicacion(ubicacion, token ? token : "");
 
           values.id_ubicacion = ubica.id_ubicacion;

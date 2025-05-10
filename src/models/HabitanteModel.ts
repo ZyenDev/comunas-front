@@ -19,6 +19,7 @@ export interface HabitanteInterface {
     segundo_nombre: string;
     nombre?:string;
     sexo: string;
+    operadora: string;
     telefono: string;
     tipo_sangre: number;
     username: string;

@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
+import { useNavigate } from "react-router";
 
 interface AuthContextType {
   // user: User | null;
@@ -51,7 +52,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
+  const navigate = useNavigate();
   if (!context) {
+    navigate("/");
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;

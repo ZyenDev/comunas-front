@@ -185,15 +185,6 @@ const HabitanteContent: React.FC<{
     </Button>,
   ];
 
-  /*
-- REMODELACION DE MODAL HABITANTES (ANADIR DROPDOWNS DE ETNIA Y DISCAPACIDAD, TIPO SANGRE, ESTADO CIVIL, NUMERO TELEFONICO INCLUYENDO SU CODIGO DE OPERADORA)
-etnia [x]
-discapacidad [x]
-tipo sangre [x]
-estado civil [x]
-n° tlf + (operadora) [x]
- */
-
   return (
     <>
       {contextHolder}
@@ -457,13 +448,16 @@ n° tlf + (operadora) [x]
             >
               <Input
                 addonBefore={
-                  <Select defaultValue="0426" style={{ width: "120px" }}>
-                    <Select.Option value="0416">0416</Select.Option>
-                    <Select.Option value="0424">0424</Select.Option>
-                    <Select.Option value="0414">0414</Select.Option>
-                    <Select.Option value="0414">0412</Select.Option>
-                    {/* Add more country codes as needed */}
-                  </Select>
+                  <Select
+                    defaultValue="0426"
+                    style={{ width: "120px" }}
+                    options={[
+                      { value: "0416-", label: "0416" },
+                      { value: "0424-", label: "0424" },
+                      { value: "0414-", label: "0414" },
+                      { value: "0412-", label: "0412" },
+                    ]}
+                  />
                 }
                 placeholder="Ingrese el número"
               />

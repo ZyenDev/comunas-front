@@ -6,6 +6,7 @@ const baseUrl = apiUrl + "api/viviendas/tipoocupacionvivienda/";
 
 
 export const createTipoOcupacionVivienda = async (tipoOcupacionVivienda: TipoOcupacionViviendaInterface, token: string): Promise<TipoOcupacionViviendaInterface> => {
+    console.log(tipoOcupacionVivienda)
     const response = await axios.post<TipoOcupacionViviendaInterface>(baseUrl, tipoOcupacionVivienda, { headers: { Authorization: `token ${token}` } });
     return response.data;
 };

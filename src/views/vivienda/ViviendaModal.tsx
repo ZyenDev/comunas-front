@@ -11,6 +11,8 @@ import {
   notification,
   InputNumber,
   Checkbox,
+  Row,
+  Col,
 } from "antd";
 
 import {
@@ -413,6 +415,7 @@ const ViviendasContent: React.FC<{
           onCancel={handleCancel}
           footer={customFooter}
           loading={loading}
+          width={800} // Adj
         >
           <Form
             form={form}
@@ -420,367 +423,348 @@ const ViviendasContent: React.FC<{
             name="form_in_modal"
             initialValues={{ cantidad_consejo_comunal: 1 }}
           >
-            <Form.Item
-              label="Número de Vivienda"
-              name="numero_vivienda"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Número de Vivienda!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-
-            {/* Cantidad de Habitantes */}
-            <Form.Item
-              label="Cantidad de Habitantes"
-              name="cantidad_habitantes"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese la Cantidad de Habitantes!",
-                },
-              ]}
-            >
-              <InputNumber min={0} />
-            </Form.Item>
-
-            {/* Cantidad de Familias */}
-            <Form.Item
-              label="Cantidad de Familias"
-              name="cantidad_familias"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese la Cantidad de Familias!",
-                },
-              ]}
-            >
-              <InputNumber min={0} />
-            </Form.Item>
-
-            {/* Cantidad de Baños */}
-            <Form.Item
-              label="Cantidad de Baños"
-              name="cantidad_banos"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese la Cantidad de Baños!",
-                },
-              ]}
-            >
-              <InputNumber min={0} />
-            </Form.Item>
-
-            {/* Cantidad de Cuartos */}
-            <Form.Item
-              label="Cantidad de Cuartos"
-              name="cantidad_cuartos"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese la Cantidad de Cuartos!",
-                },
-              ]}
-            >
-              <InputNumber min={0} />
-            </Form.Item>
-
-            <Form.Item
-              label="Municipio"
-              name="id_municipio"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Consejo Comunal!",
-                },
-              ]}
-            >
-              <Select
-                placeholder={"ingrese el Consejo Comunal"}
-                options={municipioOpt}
-                value={municipioSelect}
-                onChange={(values) => {
-                  setParroquiaSelect(0);
-                  setSectorSelect(0);
-                  setparroquiaOpt(undefined);
-                  setSectorOpt(undefined);
-
-                  setMunicipioSelect(values);
-                }}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Parroquia"
-              name="id_parroquia"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Parroquia!",
-                },
-              ]}
-            >
-              <Select
-                placeholder={"ingrese el Parroquia"}
-                disabled={municipioSelect === 0 ? true : false}
-                options={parroquiaOpt}
-                value={parroquiaSelect}
-                onChange={(values) => {
-                  setParroquiaSelect(values);
-                }}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Sector"
-              name="id_sector"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Sector!",
-                },
-              ]}
-            >
-              <Select
-                placeholder={"Ingrese un Sector"}
-                options={sectorOpt}
-                value={sectorSelect}
-                disabled={parroquiaSelect === 0 ? true : false}
-                onChange={(values) => {
-                  setSectorSelect(values);
-                }}
-              />
-            </Form.Item>
-
-            {/* Direccion */}
-            <Form.Item
-              label="Dirección"
-              name="direccion"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Consejo Comunal!",
-                },
-              ]}
-            >
-              <Input placeholder="Dirección" />
-            </Form.Item>
-
-            {/* ID Consejo Comunal */}
-            <Form.Item
-              label="Consejo Comunal"
-              name="id_consejo_comunal"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Consejo Comunal!",
-                },
-              ]}
-            >
-              <Select options={Comuna} />
-            </Form.Item>
-            {/* ID Tipo de Vivienda */}
-            <Form.Item
-              label="Tipo de Vivienda"
-              name="id_tipo_vivienda"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Tipo de Vivienda!",
-                },
-              ]}
-            >
-              <Select options={tipoVivienda} />
-            </Form.Item>
-
-            {/* ID Tipo de Techo */}
-            <Form.Item
-              label="Tipo de Techo"
-              name="id_tipo_techo"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Tipo de Techo!",
-                },
-              ]}
-            >
-              <Select options={tipoTecho} />
-            </Form.Item>
-            {/* Servicios Básicos */}
-            <Form.Item label="Servicios Básicos">
-              <Flex>
+            <Row gutter={[16, 16]}>
+              <Col span={8}>
                 <Form.Item
-                  name="agua"
-                  valuePropName="checked"
-                  initialValue={false}
-                  style={{ marginRight: "10px" }}
+                  label="Número de Vivienda"
+                  name="numero_vivienda"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Número de Vivienda!",
+                    },
+                  ]}
                 >
-                  <Checkbox defaultChecked={false}>Agua</Checkbox>
+                  <Input />
+                </Form.Item>
+
+                {/* Cantidad de Habitantes */}
+                <Form.Item
+                  label="Cantidad de Habitantes"
+                  name="cantidad_habitantes"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese la Cantidad de Habitantes!",
+                    },
+                  ]}
+                >
+                  <InputNumber min={0} />
+                </Form.Item>
+
+                {/* Cantidad de Familias */}
+                <Form.Item
+                  label="Cantidad de Familias"
+                  name="cantidad_familias"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese la Cantidad de Familias!",
+                    },
+                  ]}
+                >
+                  <InputNumber min={0} />
+                </Form.Item>
+
+                {/* Cantidad de Baños */}
+                <Form.Item
+                  label="Cantidad de Baños"
+                  name="cantidad_banos"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese la Cantidad de Baños!",
+                    },
+                  ]}
+                >
+                  <InputNumber min={0} />
+                </Form.Item>
+
+                {/* Cantidad de Cuartos */}
+                <Form.Item
+                  label="Cantidad de Cuartos"
+                  name="cantidad_cuartos"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese la Cantidad de Cuartos!",
+                    },
+                  ]}
+                >
+                  <InputNumber min={0} />
                 </Form.Item>
                 <Form.Item
-                  name="electricidad"
-                  valuePropName="checked"
-                  initialValue={false}
-                  style={{ marginRight: "10px" }}
+                  label="Municipio"
+                  name="id_municipio"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Consejo Comunal!",
+                    },
+                  ]}
                 >
-                  <Checkbox defaultChecked={false}>Electricidad</Checkbox>
+                  <Select
+                    placeholder={"ingrese el Consejo Comunal"}
+                    options={municipioOpt}
+                    value={municipioSelect}
+                    onChange={(values) => {
+                      setParroquiaSelect(0);
+                      setSectorSelect(0);
+                      setparroquiaOpt(undefined);
+                      setSectorOpt(undefined);
+
+                      setMunicipioSelect(values);
+                    }}
+                  />
                 </Form.Item>
+
                 <Form.Item
-                  name="gas"
-                  valuePropName="checked"
-                  initialValue={false}
-                  style={{ marginRight: "10px" }}
+                  label="Parroquia"
+                  name="id_parroquia"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Parroquia!",
+                    },
+                  ]}
                 >
-                  <Checkbox defaultChecked={false}>Gas</Checkbox>
+                  <Select
+                    placeholder={"ingrese el Parroquia"}
+                    disabled={municipioSelect === 0 ? true : false}
+                    options={parroquiaOpt}
+                    value={parroquiaSelect}
+                    onChange={(values) => {
+                      setParroquiaSelect(values);
+                    }}
+                  />
                 </Form.Item>
+
                 <Form.Item
-                  name="internet"
-                  valuePropName="checked"
-                  initialValue={false}
-                  style={{ marginRight: "10px" }}
+                  label="Sector"
+                  name="id_sector"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Sector!",
+                    },
+                  ]}
                 >
-                  <Checkbox defaultChecked={false}>Internet</Checkbox>
+                  <Select
+                    placeholder={"Ingrese un Sector"}
+                    options={sectorOpt}
+                    value={sectorSelect}
+                    disabled={parroquiaSelect === 0 ? true : false}
+                    onChange={(values) => {
+                      setSectorSelect(values);
+                    }}
+                  />
                 </Form.Item>
+
+                {/* Direccion */}
                 <Form.Item
-                  name="aseo"
-                  valuePropName="checked"
-                  initialValue={false}
+                  label="Dirección"
+                  name="direccion"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Consejo Comunal!",
+                    },
+                  ]}
                 >
-                  <Checkbox defaultChecked={false}>aseo</Checkbox>
+                  <Input placeholder="Dirección" />
                 </Form.Item>
+              </Col>
+              <Col span={8}>
+                {/* ID Consejo Comunal */}
                 <Form.Item
-                  name="cloaca"
-                  valuePropName="checked"
-                  initialValue={false}
+                  label="Consejo Comunal"
+                  name="id_consejo_comunal"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Consejo Comunal!",
+                    },
+                  ]}
                 >
-                  <Checkbox defaultChecked={false}>cloaca</Checkbox>
+                  <Select options={Comuna} />
                 </Form.Item>
-              </Flex>
-            </Form.Item>
+                {/* ID Tipo de Vivienda */}
+                <Form.Item
+                  label="Tipo de Vivienda"
+                  name="id_tipo_vivienda"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Tipo de Vivienda!",
+                    },
+                  ]}
+                >
+                  <Select options={tipoVivienda} />
+                </Form.Item>
+                {/* ID Tipo de Techo */}
+                <Form.Item
+                  label="Tipo de Techo"
+                  name="id_tipo_techo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Tipo de Techo!",
+                    },
+                  ]}
+                >
+                  <Select options={tipoTecho} />
+                </Form.Item>
+                {/* Servicios Básicos */}
+                <Form.Item label="Servicios Básicos">
+                  <Flex>
+                    <Form.Item
+                      name="agua"
+                      valuePropName="checked"
+                      initialValue={false}
+                      style={{ marginRight: "10px" }}
+                    >
+                      <Checkbox defaultChecked={false}>Agua</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                      name="electricidad"
+                      valuePropName="checked"
+                      initialValue={false}
+                      style={{ marginRight: "10px" }}
+                    >
+                      <Checkbox defaultChecked={false}>Electricidad</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                      name="gas"
+                      valuePropName="checked"
+                      initialValue={false}
+                      style={{ marginRight: "10px" }}
+                    >
+                      <Checkbox defaultChecked={false}>Gas</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                      name="internet"
+                      valuePropName="checked"
+                      initialValue={false}
+                      style={{ marginRight: "10px" }}
+                    >
+                      <Checkbox defaultChecked={false}>Internet</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                      name="aseo"
+                      valuePropName="checked"
+                      initialValue={false}
+                    >
+                      <Checkbox defaultChecked={false}>aseo</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                      name="cloaca"
+                      valuePropName="checked"
+                      initialValue={false}
+                    >
+                      <Checkbox defaultChecked={false}>cloaca</Checkbox>
+                    </Form.Item>
+                  </Flex>
+                </Form.Item>
 
-            {/* ID Tipo de Pared */}
-            <Form.Item
-              label="Tipo de Pared"
-              name="id_tipo_pared"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Tipo de Pared!",
-                },
-              ]}
-            >
-              <Select options={tipoPared} />
-            </Form.Item>
+                {/* ID Tipo de Pared */}
+                <Form.Item
+                  label="Tipo de Pared"
+                  name="id_tipo_pared"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Tipo de Pared!",
+                    },
+                  ]}
+                >
+                  <Select options={tipoPared} />
+                </Form.Item>
 
-            {/* ID Tipo de Piso */}
-            <Form.Item
-              label="Tipo de Piso"
-              name="id_tipo_piso"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese el Tipo de Piso!",
-                },
-              ]}
-            >
-              <Select options={tipoPiso} />
-            </Form.Item>
+                {/* ID Tipo de Piso */}
+                <Form.Item
+                  label="Tipo de Piso"
+                  name="id_tipo_piso"
+                  rules={[
+                    {
+                      required: true,
+                      message: "¡Por favor, ingrese el Tipo de Piso!",
+                    },
+                  ]}
+                >
+                  <Select options={tipoPiso} />
+                </Form.Item>
 
-            {/* Tipo de Ocupación */}
-            {/*<Form.Item
-              label="Tipo de Ocupación"
-              name="subtipo_ocupacion"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, seleccione el Tipo de Ocupación!",
-                },
-              ]}
-            >
-              <Select
-                options={[
-                  { value: 1, label: "Propia" },
-                  { value: 2, label: "Alquilada" },
-                  { value: 3, label: "Cedida" },
-                  { value: 4, label: "Ocupada sin título" },
-                  { value: 5, label: "Otra" },
-                ]}
-                placeholder="Seleccione el Tipo de Ocupación"
-              />
-            </Form.Item>*/}
+                {/* ID Situación de Vivienda */}
+                <Form.Item
+                  label="Situación de Vivienda"
+                  name="id_situacion_vivienda"
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        "¡Por favor, ingrese la Situación de la Vivienda!",
+                    },
+                  ]}
+                >
+                  <Select
+                    options={[
+                      {
+                        value: 1,
+                        label: "Construida terminada",
+                      },
+                      {
+                        value: 2,
+                        label: "En construcción activa",
+                      },
+                      {
+                        value: 3,
+                        label: "En construcción paralizada",
+                      },
+                      {
+                        value: 4,
+                        label: "En estado de ruina/abandono",
+                      },
+                      {
+                        value: 5,
+                        label: "Otra",
+                      },
+                    ]}
+                  />
+                </Form.Item>
 
-            {/* ID Situación de Vivienda */}
-            <Form.Item
-              label="Situación de Vivienda"
-              name="id_situacion_vivienda"
-              rules={[
-                {
-                  required: true,
-                  message: "¡Por favor, ingrese la Situación de la Vivienda!",
-                },
-              ]}
-            >
-              <Select
-                options={[
-                  {
-                    value: 1,
-                    label: "Construida terminada",
-                  },
-                  {
-                    value: 2,
-                    label: "En construcción activa",
-                  },
-                  {
-                    value: 3,
-                    label: "En construcción paralizada",
-                  },
-                  {
-                    value: 4,
-                    label: "En estado de ruina/abandono",
-                  },
-                  {
-                    value: 5,
-                    label: "Otra",
-                  },
-                ]}
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="subtipo_ocupacion"
-              label="Ocupación de la Vivienda"
-            >
-              {/* vivienda opcupada */}
-              <Form.Item name="vivienda_ocupada" valuePropName="checked">
-                <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
-                  ¿La Vivienda está Ocupada?
-                </Checkbox>
-              </Form.Item>
-              <Select
-                defaultValue={
-                  check ? optDesocupada[0].value : optOcupada[0].value
-                }
-                options={check ? optDesocupada : optOcupada}
-                onChange={(value) => setCheckBoxint(value)}
-              />
-            </Form.Item>
-            {checkboxint != 5 && (
-              <Form.Item
-                label="¿La Vivienda poseé documentación?"
-                name="tiene_documentacion"
-                valuePropName="checked"
-                initialValue={false}
-              >
-                <Checkbox />
-              </Form.Item>
-            )}
-            <Form.Item name="respuesta_otro">
-              {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}
-            </Form.Item>
+                <Form.Item
+                  name="subtipo_ocupacion"
+                  label="Ocupación de la Vivienda"
+                >
+                  {/* vivienda opcupada */}
+                  <Form.Item name="vivienda_ocupada" valuePropName="checked">
+                    <Checkbox onChange={haddleCheckId_tipo_ocupacion_vivienda}>
+                      ¿La Vivienda está Ocupada?
+                    </Checkbox>
+                  </Form.Item>
+                  <Select
+                    defaultValue={
+                      check ? optDesocupada[0].value : optOcupada[0].value
+                    }
+                    options={check ? optDesocupada : optOcupada}
+                    onChange={(value) => setCheckBoxint(value)}
+                  />
+                </Form.Item>
+                {checkboxint != 5 && (
+                  <Form.Item
+                    label="¿La Vivienda poseé documentación?"
+                    name="tiene_documentacion"
+                    valuePropName="checked"
+                    initialValue={false}
+                  >
+                    <Checkbox />
+                  </Form.Item>
+                )}
+                <Form.Item name="respuesta_otro">
+                  {checkboxint == 5 && <Input placeholder="Otra. Indicar:" />}
+                </Form.Item>
+              </Col>
+            </Row>
           </Form>
         </Modal>
       </Flex>

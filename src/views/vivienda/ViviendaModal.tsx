@@ -312,7 +312,7 @@ const ViviendasContent: React.FC<{
         let opt: DefaultOptionType[] = [];
         data.forEach((element) => {
           opt.push({
-            value: element.id_municipio,
+            value: element.id_parroquia, // Cambiado de id_municipio a id_parroquia
             label: element.nombre,
           });
         });
@@ -337,7 +337,7 @@ const ViviendasContent: React.FC<{
         let opt: DefaultOptionType[] = [];
         data.forEach((element) => {
           opt.push({
-            value: element.id_parroquia,
+            value: element.id_sector, // Cambiado de id_parroquia a id_sector
             label: element.nombre,
           });
         });

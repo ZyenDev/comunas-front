@@ -301,7 +301,7 @@ const HabitanteContent: React.FC<{
             </Form.Item>
             <Form.Item
               name="discapacidad"
-              label="Discapacidad"
+              label="¿Posee una Discapacidad?"
               valuePropName="checked"
               initialValue={false}
             >

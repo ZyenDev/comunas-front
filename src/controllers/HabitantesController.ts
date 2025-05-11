@@ -8,7 +8,7 @@ export const createHabitante = async (habitante: HabitanteInterface, token: stri
     console.log(habitante)
     const response = await axios.post<HabitanteInterface>(baseUrl + "/", habitante, { headers: { Authorization: `token ${token}` } });
     try {
-        await axios.post(`${apiUrl}api/habitantes/celular/`, {id_habitate: response.data.id_habitante, })//TODO: hacer que cree un tlf 
+        await axios.post(`${apiUrl}api/habitantes/celular/`, {id_habitante: response.data.id_habitante, codigo_operadora: habitante.operadora,numero: habitante.telefono })
 
         if (habitante.pertenece_etnia) {
             await axios.post(`${apiUrl}api/habitantes/habitanteetnia/`, { id_habitante: response.data.id_habitante, id_etnia: habitante.etnia }, { headers: { Authorization: `token ${token}` } });

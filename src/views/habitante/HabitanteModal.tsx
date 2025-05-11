@@ -51,13 +51,18 @@ const HabitanteContent: React.FC<{
   const [TieneEtnia, setEtnia] = useState<Boolean>(false);
   const [TieneDiscapacidad, setTieneDiscapacidad] = useState<Boolean>(false);
 
+  const [operadora, setOperadora] = useState<string>("0426");
+
   const handleOk = () => {
     form.validateFields().then(async (values) => {
+      console.log(values);
       console.log(values);
       setLoading(true);
       if (id_habitante !== undefined) {
         values.id_vivienda = id_habitante;
       }
+      values.operadora = operadora ? operadora : "0426";
+      values.telefono = values.telefono;
       values.edad =
         new Date().getFullYear() -
         new Date(values.fecha_nacimiento).getFullYear();
@@ -452,11 +457,15 @@ const HabitanteContent: React.FC<{
                     defaultValue="0426"
                     style={{ width: "120px" }}
                     options={[
-                      { value: "0416-", label: "0416" },
-                      { value: "0424-", label: "0424" },
-                      { value: "0414-", label: "0414" },
-                      { value: "0412-", label: "0412" },
+                      { value: "0416", label: "0416" },
+                      { value: "0426", label: "0426" },
+                      { value: "0424", label: "0424" },
+                      { value: "0414", label: "0414" },
+                      { value: "0412", label: "0412" },
                     ]}
+                    onChange={(operadoraPrefix) => {
+                      setOperadora(operadoraPrefix);
+                    }}
                   />
                 }
                 placeholder="Ingrese el número"

@@ -64,17 +64,19 @@ const Habitante: React.FC = () => {
       title: "T. Sangre",
       dataIndex: "tipo_sangre",
       key: "tipo_sangre",
-      render: (tipoSangre: any) => (tipoSangre.tipo ? tipoSangre.tipo : "n/a"),
+      render: (tipoSangre: any) => (tipoSangre ? tipoSangre.tipo : "n/a"),
+    },
+    {
+      title: "Celular",
+      dataIndex: "celular",
+      key: "celular",
+      render: (celular: any) =>
+        celular ? celular[0].codigo_operadora + "-" + celular[0].numero : "n/a",
     },
     {
       title: "Est. Civil",
       dataIndex: "estado_civil",
       key: "estado_civil",
-    },
-    {
-      title: "tlf.",
-      dataIndex: "telefono",
-      key: "telefono",
     },
     {
       title: "Discapacidad",

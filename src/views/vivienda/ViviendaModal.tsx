@@ -770,7 +770,7 @@ const ViviendasContent: React.FC<{
             </Form.Item>
             {checkboxint != 5 && (
               <Form.Item
-                label="¿La Vivienda poseé documentación?"
+                label="¿La Vivienda posee documentación?"
                 name="tiene_documentacion"
                 valuePropName="checked"
                 initialValue={false}

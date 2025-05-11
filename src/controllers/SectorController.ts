@@ -2,7 +2,7 @@ import axios from 'axios';
 import { SectorInterface } from '../models/SectorModel';
 
 const apiUrl = import.meta.env.VITE_API_URL;
-const baseUrl = apiUrl + "/api/ubicaciones/sector";
+const baseUrl = apiUrl + "api/ubicaciones/sector";
 
 export const getSectorByParroquia = async (id_parroquia:number,token: string): Promise<SectorInterface[]> => {
     const response = await axios.get<SectorInterface[]>(baseUrl + "/", { headers: { Authorization: `token ${token}` } });

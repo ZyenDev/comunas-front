@@ -97,18 +97,18 @@ const viviendas: React.FC = () => {
       key: "servicios_basicos",
       render: (vivienda: any) => (
         <>
-          <div>Agua: {vivienda.servicios_basicos[0].agua ? "Sí" : "No"}</div>
+          <div>Agua: {vivienda.servicios_basicos?.[0]?.agua ? "Sí" : "No"}</div>
           <div>
             Electricidad:{" "}
-            {vivienda.servicios_basicos[0].electricidad ? "Sí" : "No"}
+            {vivienda.servicios_basicos?.[0]?.electricidad ? "Sí" : "No"}
           </div>
-          <div>Gas: {vivienda.servicios_basicos[0].gas ? "Sí" : "No"}</div>
+          <div>Gas: {vivienda.servicios_basicos?.[0]?.gas ? "Sí" : "No"}</div>
           <div>
-            Internet: {vivienda.servicios_basicos[0].internet ? "Sí" : "No"}
+            Internet: {vivienda.servicios_basicos?.[0]?.internet ? "Sí" : "No"}
           </div>
-          <div>Aseo: {vivienda.servicios_basicos[0].aseo ? "Sí" : "No"}</div>
+          <div>Aseo: {vivienda.servicios_basicos?.[0]?.aseo ? "Sí" : "No"}</div>
           <div>
-            Cloaca: {vivienda.servicios_basicos[0].cloaca ? "Sí" : "No"}
+            Cloaca: {vivienda.servicios_basicos?.[0]?.cloaca ? "Sí" : "No"}
           </div>
         </>
       ),

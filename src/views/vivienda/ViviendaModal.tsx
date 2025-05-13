@@ -312,7 +312,7 @@ const ViviendasContent: React.FC<{
         let opt: DefaultOptionType[] = [];
         data.forEach((element) => {
           opt.push({
-            value: element.id_municipio,
+            value: element.id_parroquia, // Cambiado de id_municipio a id_parroquia
             label: element.nombre,
           });
         });
@@ -337,7 +337,7 @@ const ViviendasContent: React.FC<{
         let opt: DefaultOptionType[] = [];
         data.forEach((element) => {
           opt.push({
-            value: element.id_parroquia,
+            value: element.id_sector, // Cambiado de id_parroquia a id_sector
             label: element.nombre,
           });
         });
@@ -504,7 +504,7 @@ const ViviendasContent: React.FC<{
                   ]}
                 >
                   <Select
-                    placeholder={"ingrese el Consejo Comunal"}
+                    placeholder={"Ingrese el Consejo Comunal"}
                     options={municipioOpt}
                     value={municipioSelect}
                     onChange={(values) => {
@@ -524,12 +524,12 @@ const ViviendasContent: React.FC<{
                   rules={[
                     {
                       required: true,
-                      message: "¡Por favor, ingrese el Parroquia!",
+                      message: "¡Por favor, ingrese la Parroquia!",
                     },
                   ]}
                 >
                   <Select
-                    placeholder={"ingrese el Parroquia"}
+                    placeholder={"Ingrese la Parroquia"}
                     disabled={municipioSelect === 0 ? true : false}
                     options={parroquiaOpt}
                     value={parroquiaSelect}
@@ -752,7 +752,7 @@ const ViviendasContent: React.FC<{
                 </Form.Item>
                 {checkboxint != 5 && (
                   <Form.Item
-                    label="¿La Vivienda poseé documentación?"
+                    label="¿La Vivienda posee documentación?"
                     name="tiene_documentacion"
                     valuePropName="checked"
                     initialValue={false}

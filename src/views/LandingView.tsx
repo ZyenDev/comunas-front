@@ -13,12 +13,12 @@ import { JSX } from "react";
 import { useNavigate } from "react-router";
 import { UserOutlined } from "@ant-design/icons";
 import logocomuna from "../assets/logo.webp";
-import image02 from "../assets/carousel-img/cap223.jpg";
-import image03 from "../assets/carousel-img/espc4.jpg";
+import image02 from "../assets/carousel-img/cap223.jpeg";
+import image03 from "../assets/carousel-img/espc4.jpeg";
 import cardimg01 from "../assets/card-img/espc1.png";
 import cardimg02 from "../assets/card-img/espc2.png";
-import cardimg03 from "../assets/card-img/espc3.jpg";
-import cajasimg from "../assets/cajas.jpg";
+import cardimg03 from "../assets/card-img/espc3.jpeg";
+import cajasimg from "../assets/cajas.jpeg";
 
 const { Header, Footer, Content } = Layout;
 const { Title, Paragraph } = Typography;

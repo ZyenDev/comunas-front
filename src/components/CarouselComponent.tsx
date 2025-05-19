@@ -1,8 +1,8 @@
 import React from "react";
 import { Carousel } from "antd";
 import { Typography } from "antd";
-import imageone from "../assets/carousel-img/32r.jpg";
-import imagtwo from "../assets/carousel-img/cap223.jpg";
+import imageone from "../assets/carousel-img/32r.jpeg";
+import imagtwo from "../assets/carousel-img/cap223.jpeg";
 
 const { Title } = Typography;
 
